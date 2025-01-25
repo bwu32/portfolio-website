@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "DIN Next";
+  src: url("/fonts/dinnextw1g.otf") format("otf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --navy-bg: #1b224c;
+  --text-cream: #f0e0a1;
+  --text-white: #ffffff;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "DIN Next", sans-serif;
+  background-color: var(--navy-bg);
+  color: var(--text-cream);
+
+  background-image: url('/icons/background.png'); /* Specify the path to your image */
+  background-size: cover; /* Makes the background image cover the entire area */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+
