@@ -43,7 +43,7 @@ export default function NavLink({ href, icon, text, isActive = false }: NavLinkP
     if (section) {
       const sectionTop = section.getBoundingClientRect().top + window.pageYOffset
       window.scrollTo({
-        top: sectionTop - 48, // Adjust offset for smooth scroll
+        top: sectionTop, // Adjust offset for smooth scroll
         behavior: "smooth",
       })
     }
