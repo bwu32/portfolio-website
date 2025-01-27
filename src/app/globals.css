@@ -9,6 +9,15 @@
   font-style: normal;
 }
 
+@keyframes slow-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.slow-spin {
+  animation: slow-spin 3s linear infinite; /* Change 2s to your desired speed */
+}
+
 :root {
   --navy-bg: #1b224c;
   --text-cream: #f0e0a1;
