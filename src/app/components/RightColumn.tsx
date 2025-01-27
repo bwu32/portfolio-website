@@ -33,9 +33,28 @@ export default function RightColumn() {
             company: "ThePachStore",
             link: "https://thepachstore.com",
             description:
-                "number one victory royale yeah fortnite we're bout to get down get down 10 kills on the board right now just wiped out tomato town my friend just got downed i revived him now we're heading southbound",
+                "number one victory royale yeah fortnite we're bout to get down get down 10 kills on the board right now just wiped out tomato town my friend just got downed i revived him now we're heading southbound now we're in the pleasant park streets look at the map go to the marked sheets",
         },
     ]
+
+    const skills = [
+        {
+            category: "Computer",
+            skills: ["Java", "C", "HTML & CSS", "ChatGPT", "MATLAB", "OCaml", "Rust", "Node.js", "Next.js", "React", "Excel", "MS Teams", "Google Workspace", "Google Notebook", "Windows", "Zoom"],
+        },
+        {
+            category: "UI / UX Design",
+            skills: ["Canva", "Paint.NET", "Adobe Creative Cloud", "Premiere Pro", "Photoshop", "After Effects", "Illustrator", "Figma", "Audacity"],
+        },
+        {
+            category: "Product Design",
+            skills: ["Fusion360 CAD & CAM", "Solidworks CAD & FEA", "3D Space", "Blender", "Inventor", "Meshmixer", "PrusaSlicer", "Cura"],
+        },
+        {
+            category: "Fabrication",
+            skills: ["FDM & SLA 3D Printing", "CNC", "Laser Cutting", "Arduino", "Soldering", "Automotive Painting", "Post Processing"],
+        },
+    ];
 
     return (
         <div className="w-2/3 ml-[33.333333%]">
@@ -46,7 +65,7 @@ export default function RightColumn() {
                         <p className="text-lg opacity-100">
                             hello there! i'm a junior studying{" "}
                             <a
-                                href="#"
+                                href="https://ece.umd.edu/undergraduate/degrees/bs-computer-engineering"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-white hover:opacity-80"
@@ -58,7 +77,7 @@ export default function RightColumn() {
                         <p className="text-lg opacity-100">
                             i'm passionate about engineering solutions that blend{" "}
                             <a
-                                href="#"
+                                href="https://www.merriam-webster.com/dictionary/creativity"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-white hover:opacity-80"
@@ -67,7 +86,7 @@ export default function RightColumn() {
                             </a>{" "}
                             with{" "}
                             <a
-                                href="#"
+                                href="https://www.merriam-webster.com/dictionary/functionality"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-white hover:opacity-80"
@@ -94,6 +113,7 @@ export default function RightColumn() {
                     </div>
                 </div>
             </section>
+
             <section id="experience" className="mb-6 p-12">
                 <h2 className="text-2xl mb-8 text-white">EXPERIENCE</h2>
                 <div className="space-y-4">
@@ -105,11 +125,12 @@ export default function RightColumn() {
                             rel="noopener noreferrer"
                             className="block"
                         >
-                            <div
-                                className="relative rounded-lg p-6 group cursor-pointer overflow-hidden"
-                            >
-                                {/* Background rectangle with 15% opacity */}
-                                <div className="absolute inset-0 bg-[#2b366d] opacity-20 group-hover:bg-gradient-to-r group-hover:opacity-40 group-hover:from-[#5666b6] group-hover:to-[#2b366d] transition-all duration-300" />
+                            <div className="relative rounded-lg p-6 group cursor-pointer overflow-hidden">
+                                {/* Background rectangle with animated gradient */}
+                                <div className="absolute inset-0 bg-[#2b366d] opacity-30 transition-all duration-300">
+                                    <div className="absolute inset-0 bg-gradient-to-r from-[#5F72BF] to-[#2b366d] 
+                            -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+                                </div>
 
                                 {/* Foreground content */}
                                 <div className="relative z-10">
@@ -127,7 +148,6 @@ export default function RightColumn() {
                             </div>
                         </a>
                     ))}
-
                 </div>
                 <a
                     href="https://docs.google.com/document/d/1e6fQ6P6m8larExX2ccj7fZfvQNDNU5cgAks3SnQANV4/edit?usp=sharing"
@@ -146,8 +166,37 @@ export default function RightColumn() {
             </section>
 
             <section id="skills" className="mb-6 p-12">
-                <h2 className="text-2xl text-white mb-8">SKILLS</h2>
-                {/* Content will be added later */}
+                <h2 className="text-2xl mb-8 text-white">SKILLS</h2>
+                <div className="space-y-4">
+                    {skills.map((skillCategory, index) => (
+                        <div
+                            key={index}
+                            className="relative rounded-lg p-6 bg-[#2b366d] bg-opacity-30 overflow-hidden"
+                        >
+                            <h3 className="text-white text-lg mb-4 font-medium">
+                                {skillCategory.category}
+                            </h3>
+                            <div className="flex flex-wrap gap-2">
+                                {skillCategory.skills.map((skill, idx) => (
+                                    <div
+                                        key={idx}
+                                        className="relative rounded-full px-4 py-2 text-white text-opacity-60 bg-[#2b366d] overflow-hidden
+              transition-all duration-500 ease-out group"
+                                    >
+                                        <span className="relative z-10 transition-all duration-500 ease-out group-hover:text-[#f0e0a1]">
+                                            {skill}
+                                        </span>
+                                        {/* Smooth scrolling effect */}
+                                        <div
+                                            className="absolute inset-0 bg-gradient-to-r from-[#5F72BF] to-[#2b366d] 
+                -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out opacity-50"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </section>
 
             <section id="more" className="mb-6 p-12">
