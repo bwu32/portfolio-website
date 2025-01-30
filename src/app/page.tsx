@@ -35,9 +35,9 @@ export default function Home() {
   }, []);
 
   // If loading, show the loader
-  if (isLoading) {
-    return <Loader loading={isLoading} progress={progress} />;
-  }
+  // if (isLoading) {
+  //   return <Loader loading={isLoading} progress={progress} />;
+  // }
 
   return (
     <main className="flex min-h-screen">
