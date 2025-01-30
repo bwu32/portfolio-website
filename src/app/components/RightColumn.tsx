@@ -1,5 +1,6 @@
 import Image from "next/image"
 import { ArrowUpRight } from "lucide-react"
+import Link from "next/link";
 
 export default function RightColumn() {
     const experiences = [
@@ -17,7 +18,7 @@ export default function RightColumn() {
             company: "Bethel College Fellowship",
             link: "https://instagram.com/bethelcollegefellowship",
             description:
-                "number one victory royale yeah fortnite we're bout to get down get down 10 kills on the board right now just wiped out tomato town my friend just got downed i revived him now we're heading southbound",
+                "the snow glows white on the mountain tonight not a footprint to be seen a kingdom of isolation and it looks like im the queen the wind is howling like this swirling storm inside couldn't keep it in heaven knows i tried",
         },
         {
             period: "2023 — 2024",
@@ -40,7 +41,7 @@ export default function RightColumn() {
     const skills = [
         {
             category: "Computer",
-            skills: ["Java", "C", "HTML & CSS", "ChatGPT", "MATLAB", "OCaml", "Rust", "Node.js", "Next.js", "React", "Excel", "MS Teams", "Google Workspace", "Google Notebook", "Windows", "Zoom"],
+            skills: ["Java", "C", "HTML & CSS", "AI Prompting", "MATLAB", "OCaml", "Rust", "Node.js", "React", "Excel", "MS Teams", "Google Workspace", "Google Notebook", "Windows", "Zoom"],
         },
         {
             category: "UI / UX Design",
@@ -161,8 +162,16 @@ export default function RightColumn() {
             </section>
 
             <section id="portfolio" className="mb-6 p-12">
-                <h2 className="text-2xl mb-8 text-white">PORTFOLIO</h2>
+                <h2 className="text-2xl mb-8 text-white">SOME OF MY WORKS</h2>
                 {/* Content will be added later */}
+
+                <Link
+                    href="/portfolio" // ✅ Set this to your new page route
+                    className="inline-flex items-center gap-2 mt-6 opacity-60 text-white hover:opacity-100 transition-opacity"
+                >
+                    view full project archive
+                    <ArrowUpRight className="w-4 h-4" />
+                </Link>
             </section>
 
             <section id="skills" className="mb-6 p-12">
