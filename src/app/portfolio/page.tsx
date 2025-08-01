@@ -1,4 +1,4 @@
-export default function NewPage() {
+export default function Portfolio() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#121826] text-white">
       <h1 className="text-4xl font-bold">Welcome to My New Page</h1>

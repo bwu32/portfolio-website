@@ -57,7 +57,12 @@ export default function LeftColumn() {
                         height={24}
                     />
                 </a>
-                <a href="mailto:bwu32@terpmail.umd.edu" className="opacity-60 hover:opacity-100 transition-opacity">
+                <a
+                    href="https://mail.google.com/mail/?view=cm&fs=1&to=bwu32@terpmail.umd.edu"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="opacity-60 hover:opacity-100 transition-opacity"
+                >
                     <Image
                         src="/icons/email.png"
                         alt="Email"
@@ -65,8 +70,9 @@ export default function LeftColumn() {
                         height={24}
                     />
                 </a>
+
                 <a
-                    href="https://instagram.com/brian._wu"
+                    href="https://instagram.com/kachowoo"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="opacity-60 hover:opacity-100 transition-opacity"
