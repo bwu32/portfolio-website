@@ -3,7 +3,13 @@ import NavLink from "./NavLink"
 
 export default function LeftColumn() {
     return (
-        <div className="w-1/3 h-screen p-12 flex flex-col justify-between sticky top-0">
+        <div 
+            className="h-screen p-12 flex flex-col justify-between fixed"
+            style={{
+                width: 'var(--left-col-width)',
+                left: 'var(--left-start)'
+            }}
+        >
             <div className="space-y-12">
                 <div>
                     <h2 className="text-2xl text-white mb-2 opacity-50">JUNIOR DESIGNER
@@ -16,6 +22,7 @@ export default function LeftColumn() {
                     </a>
                     <p className="text-lg text-white mt-4 opacity-50 max-w-[300px] leading-relaxed">doing the work. having fun. not sweating the small stuff.</p>
                 </div>
+                
                 <nav className="space-y-2">
                     <NavLink
                         href="#about"
@@ -101,4 +108,3 @@ export default function LeftColumn() {
         </div>
     )
 }
-

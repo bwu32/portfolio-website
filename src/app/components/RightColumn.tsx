@@ -115,8 +115,13 @@ export default function RightColumn() {
     ]
 
     return (
-        <div className="w-2/3">
-            <section id="about" className="mb-6 p-12">
+        <div 
+            style={{
+                width: 'var(--right-col-width)',
+                marginLeft: 'var(--right-start)'
+            }}
+        >
+            <section id="about" className="mb-6 p-12 scroll-mt-12">
                 <h1 className="text-2xl inline-block text-white mb-8">WHAT'S UP GAMERS.</h1>
                 <div className="flex gap-12">
                     <div className="space-y-6 flex-1">
@@ -174,7 +179,7 @@ export default function RightColumn() {
                 </div>
             </section>
 
-            <section id="experience" className="mb-6 p-12">
+            <section id="experience" className="mb-6 p-12 scroll-mt-12">
                 <h2 className="text-2xl mb-8 text-white">EXPERIENCE</h2>
                 <div className="space-y-4">
                     {experiences.map((exp, index) => (
@@ -226,7 +231,7 @@ export default function RightColumn() {
                 </a>
             </section>
 
-            <section id="portfolio" className="mb-6 p-12">
+            <section id="portfolio" className="mb-6 p-12 scroll-mt-12">
                 <h2 className="text-2xl mb-8 text-white">SOME OF MY WORKS</h2>
 
                 <Link
@@ -240,7 +245,7 @@ export default function RightColumn() {
                 </Link>
             </section>
 
-            <section id="skills" className="mb-6 p-12">
+            <section id="skills" className="mb-6 p-12 scroll-mt-12">
                 <h2 className="text-2xl mb-8 text-white">SKILLS</h2>
                 <div className="space-y-4">
                     {skills.map((skillCategory, index) => (
