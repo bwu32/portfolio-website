@@ -3,7 +3,7 @@ import NavLink from "./NavLink"
 
 export default function LeftColumn() {
     return (
-        <div className="w-1/3 h-screen p-12 flex flex-col justify-between fixed left-0">
+        <div className="w-1/3 h-screen p-12 flex flex-col justify-between sticky top-0">
             <div className="space-y-12">
                 <div>
                     <h2 className="text-2xl text-white mb-2 opacity-50">JUNIOR DESIGNER
@@ -14,7 +14,7 @@ export default function LeftColumn() {
                     <a href="#">
                         <h1 className="text-7xl font-['Impact'] text-[#E8DDB5]">BRIAN WU</h1>
                     </a>
-                    <p className="text-lg text-white mt-4 opacity-50 w-1/2">doing the work. having fun. not sweating the small stuff.</p>
+                    <p className="text-lg text-white mt-4 opacity-50 max-w-[300px] leading-relaxed">doing the work. having fun. not sweating the small stuff.</p>
                 </div>
                 <nav className="space-y-2">
                     <NavLink
