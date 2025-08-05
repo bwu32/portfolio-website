@@ -115,7 +115,7 @@ export default function RightColumn() {
     ]
 
     return (
-        <div className="w-2/3 ml-[33.333333%]">
+        <div className="w-2/3">
             <section id="about" className="mb-6 p-12">
                 <h1 className="text-2xl inline-block text-white mb-8">WHAT'S UP GAMERS.</h1>
                 <div className="flex gap-12">

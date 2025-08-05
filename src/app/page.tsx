@@ -39,11 +39,12 @@ export default function Home() {
   //   return <Loader loading={isLoading} progress={progress} />;
   // }
 
-  return (
-    <main className="flex min-h-screen">
+return (
+    <main className="relative min-h-screen bg-black">
       <Background />
-      <div className="flex w-4/5 z-10 relative">
-        <CursorGlow />
+      <CursorGlow />
+      
+      <div className="relative z-10 flex w-full max-w-screen-xl mx-auto">
         <LeftColumn />
         <RightColumn />
       </div>
