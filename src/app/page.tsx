@@ -8,43 +8,45 @@ import RightColumn from "@/app/components/RightColumn";
 import CursorGlow from "./components/CursorGlow";
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(false); // Start with false
+  const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  // Function to simulate data fetching
   const fetchData = () => {
     setIsLoading(true);
     setProgress(0);
 
-    // Simulate data loading with progress
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
-          setIsLoading(false); // Hide loader when done
+          setIsLoading(false);
           return 100;
         }
-        return Math.min(prev + 20, 100); // Increase progress by 20%
+        return Math.min(prev + 20, 100);
       });
-    }, 500); // Adjust interval time as needed
+    }, 500);
   };
 
   useEffect(() => {
-    // Call fetchData() when the component mounts to simulate loading
     fetchData();
   }, []);
 
-  // If loading, show the loader
-  // if (isLoading) {
-  //   return <Loader loading={isLoading} progress={progress} />;
-  // }
-
-return (
-    <main className="relative min-h-screen bg-black">
+  return (
+    <main className="flex min-h-screen">
       <Background />
-      <CursorGlow />
-      
-      <div className="relative z-10 flex w-full max-w-screen-xl mx-auto">
+      <div 
+        className="flex w-full z-10 relative"
+        style={{
+          '--left-col-width': '26.67vw',
+          '--right-col-width': '53.33vw',
+          '--total-content-width': 'calc(var(--left-col-width) + var(--right-col-width))',
+          '--remaining-space': 'calc(100vw - var(--total-content-width))',
+          '--side-margin': 'calc(var(--remaining-space) / 2)',
+          '--left-start': 'var(--side-margin)',
+          '--right-start': 'calc(var(--side-margin) + var(--left-col-width))'
+        } as React.CSSProperties}
+      >
+        <CursorGlow />
         <LeftColumn />
         <RightColumn />
       </div>
