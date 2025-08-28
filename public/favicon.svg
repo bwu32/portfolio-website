@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    .light-theme { display: block; }
+    .dark-theme { display: none; }
+    
+    @media (prefers-color-scheme: dark) {
+      .light-theme { display: none; }
+      .dark-theme { display: block; }
+    }
+  </style>
+  
+  <!-- Light theme version -->
+  <g class="light-theme">
+    <!-- Put your light theme design here -->
+    <!-- Example: <circle cx="16" cy="16" r="14" fill="#000000"/> -->
+  </g>
+  
+  <!-- Dark theme version -->
+  <g class="dark-theme">
+    <!-- Put your dark theme design here -->
+    <!-- Example: <circle cx="16" cy="16" r="14" fill="#ffffff"/> -->
+  </g>
+</svg>
