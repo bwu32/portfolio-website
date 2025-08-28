@@ -3,7 +3,7 @@ import NavLink from "./NavLink"
 
 export default function LeftColumn() {
     return (
-        <div 
+        <div
             className="h-screen p-12 flex flex-col justify-between fixed"
             style={{
                 width: 'var(--left-col-width)',
@@ -13,16 +13,16 @@ export default function LeftColumn() {
             <div className="space-y-12">
                 <div>
                     <h2 className="text-2xl text-white mb-2 opacity-50">JUNIOR DESIGNER
-                        <a className="ml-4 text-white text-sm">
+                        {/* <a className="ml-4 text-white text-sm">
                             (maybe)
-                        </a>
+                        </a> */}
                     </h2>
                     <a href="#">
                         <h1 className="text-7xl font-['Impact'] text-[#E8DDB5]">BRIAN WU</h1>
                     </a>
                     <p className="text-lg text-white mt-4 opacity-50 max-w-[300px] leading-relaxed">doing the work. having fun. not sweating the small stuff.</p>
                 </div>
-                
+
                 <nav className="space-y-2">
                     <NavLink
                         href="#about"
@@ -82,7 +82,7 @@ export default function LeftColumn() {
                     href="https://instagram.com/kachowoo"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="opacity-60 hover:opacity-100 transition-opacity"
+                    className="relative group flex items-center opacity-60 hover:opacity-100 transition-opacity"
                 >
                     <Image
                         src="/icons/instagram.png"
@@ -90,7 +90,15 @@ export default function LeftColumn() {
                         width={24}
                         height={24}
                     />
+                    {/* Tooltip */}
+                    {/* <span
+                        className="absolute left-full ml-2 px-2 py-1 text-xs rounded bg-black text-white 
+               opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
+                    >
+                        Instagram
+                    </span> */}
                 </a>
+
                 <a
                     href="https://tracker.gg/valorant/profile/riot/glizzy%23sugoi/overview"
                     target="_blank"

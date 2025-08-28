@@ -48,24 +48,24 @@ export default function RightColumn() {
 
     const projects = [
         {
-            title: "Highborn Lightsaber Design",
-            description: "a custom lightsaber design that was mass produced with 3000+ units sold worldwide.",
-            image: "/icons/projects/lightsaber.jpg", // Replace with your actual image path
-            link: "https://www.thepachstore.com/products/wf-highborn-custom-saber-2021", // Replace with actual link
+            title: "The Highborn",
+            description: "a custom lightsaber design that was designed and manufactured in collaboration with ThePachStore. mass produced with 3000+ units sold worldwide.",
+            image: "/icons/projects/lightsaber.jpg",
+            link: "https://www.thepachstore.com/products/wf-highborn-custom-saber-2021",
             tech: ["Fusion 360 (CAD / CAM)", "CNC Milling & Turning", "PCB Soldering"]
         },
         {
-            title: "Portfolio Website",
+            title: "Collegiate Wushu Tournament Medal",
             description: "A modern, responsive portfolio website built with Next.js and Tailwind CSS. Features smooth animations, dynamic content, and an optimized user experience across all devices.",
-            image: "/images/portfolio-project.jpg", // Replace with your actual image path
-            link: "https://github.com/yourusername/portfolio", // Replace with actual link
+            image: "/icons/projects/medal.jpg",
+            link: "http://collegiatewushu.org/home.php",
             tech: ["Next.js", "React", "Tailwind CSS", "TypeScript"]
         },
         {
             title: "AI Chat Application",
             description: "Full-stack chat application with real-time messaging and AI integration. Built with modern web technologies and deployed on cloud infrastructure.",
-            image: "/images/chat-project.jpg", // Replace with your actual image path
-            link: "https://github.com/yourusername/ai-chat", // Replace with actual link
+            image: "/images/chat-project.jpg",
+            link: "https://github.com/yourusername/ai-chat",
             tech: ["React", "Socket.io", "OpenAI API", "MongoDB"]
         }
     ];
@@ -296,14 +296,14 @@ export default function RightColumn() {
                         >
                             <div
                                 className={`relative rounded-lg p-6 group/proj cursor-pointer overflow-hidden transition-all duration-300 ease-out 
-                                ${typeof projHoveredIndex === "number" && projHoveredIndex !== index ? "opacity-50" : "opacity-100"}`}
+                    ${typeof projHoveredIndex === "number" && projHoveredIndex !== index ? "opacity-50" : "opacity-100"}`}
                             >
                                 <div className="absolute inset-0 bg-[#2b366d] opacity-30 transition-all duration-300">
                                     <div className="absolute inset-0 bg-gradient-to-r from-[#5F72BF] to-[#2b366d] 
-                                    -translate-x-full group-hover/proj:translate-x-0 transition-transform duration-500 ease-out" />
+                        -translate-x-full group-hover/proj:translate-x-0 transition-transform duration-500 ease-out" />
                                 </div>
 
-                                <div className="relative z-10 flex gap-6">
+                                <div className="relative z-10 flex gap-6 h-32">
                                     {/* Project Screenshot */}
                                     <div className="w-48 h-32 relative flex-shrink-0 rounded-lg overflow-hidden bg-[#2b366d] bg-opacity-50">
                                         <Image
@@ -319,25 +319,26 @@ export default function RightColumn() {
                                                 }
                                             }}
                                         />
-                                        {/* Fallback placeholder */}
-                                        
                                     </div>
 
                                     {/* Project Content */}
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex items-start justify-between mb-3">
-                                            <h3 className="text-lg text-white font-medium transition-all duration-300 group-hover/proj:text-[#f0e0a1]">
-                                                {project.title}
-                                            </h3>
-                                            <ArrowUpRight className="w-4 h-4 opacity-50 text-white transition-all group-hover/proj:text-[#f0e0a1] flex-shrink-0 ml-2" />
+                                    <div className="flex-1 min-w-0 flex flex-col justify-between">
+                                        {/* Title and Description */}
+                                        <div>
+                                            <div className="flex items-start justify-between mb-3">
+                                                <h3 className="text-lg text-white font-medium transition-all duration-300 group-hover/proj:text-[#f0e0a1]">
+                                                    {project.title}
+                                                </h3>
+                                                <ArrowUpRight className="w-4 h-4 opacity-50 text-white transition-all group-hover/proj:text-[#f0e0a1] flex-shrink-0 ml-2" />
+                                            </div>
+
+                                            <p className="text-white transition-opacity duration-300 group-hover/proj:opacity-100 opacity-60 text-sm leading-relaxed">
+                                                {project.description}
+                                            </p>
                                         </div>
 
-                                        <p className="text-white transition-opacity duration-300 group-hover/proj:opacity-100 opacity-60 mb-3 text-sm leading-relaxed">
-                                            {project.description}
-                                        </p>
-
-                                        {/* Tech Stack Tags */}
-                                        <div className="flex flex-wrap gap-2">
+                                        {/* Tech Stack Tags - Always at bottom */}
+                                        <div className="flex flex-wrap gap-2 mt-3">
                                             {project.tech.map((tech, idx) => (
                                                 <div
                                                     key={idx}
@@ -493,7 +494,16 @@ export default function RightColumn() {
                             >
                                 tailwind css
                             </a>
-                            .<br /> i may or may not be using the{" "}
+                            .<br /> set in the{" "}
+                            <a
+                                href="https://rsms.me/inter/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-block text-white hover:opacity-80 transition-opacity"
+                            >
+                                inter
+                            </a>{" "}
+                            typeface. i may or may not be using{" "}
                             <a
                                 href="https://playvalorant.com/en-us/"
                                 target="_blank"
@@ -502,7 +512,7 @@ export default function RightColumn() {
                             >
                                 valorant
                             </a>{" "}
-                            typeface.
+                            typography.
                         </p>
                     </div>
 
