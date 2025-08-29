@@ -148,18 +148,18 @@ export default function RightColumn() {
     const coolStuff = [
         {
             title: "Guestbook",
-            description: "Sign my guestbook!",
-            link: "https://example.com/props"
+            description: "come sign :)",
+            link: "/guestbook"
         },
         {
             title: "Victory Royales",
-            description: "Proof that I can always get that dub.",
-            link: "https://example.com/dance"
+            description: "just wiped out tomato town",
+            link: "/vicroys"
         },
         {
             title: "Blog",
-            description: "See what I've been writing about.",
-            link: "https://example.com/gaming"
+            description: "i wonder if i can become a writer on medium",
+            link: "/portfolio"
         }
     ]
 
@@ -422,7 +422,6 @@ export default function RightColumn() {
                             <a
                                 key={index}
                                 href={item.link}
-                                target="_blank"
                                 rel="noopener noreferrer"
                                 className="block"
                                 onMouseEnter={() => setMoreHoveredIndex(index)}
