@@ -17,7 +17,7 @@ export default function Sidebar() {
   return (
     <aside className="bg-[#1B224C] h-screen w-1/4 flex flex-col px-8 py-4 text-[#E8DDB5]">
       <div className="mb-8">
-        <p className="uppercase text-sm opacity-80">Junior Designer</p>
+        <p className="uppercase text-sm opacity-80">Product Designer</p>
         <h1 className="text-[#E8DDB5] text-4xl font-['Impact']">BRIAN WU</h1>
         <p className="mt-2 text-sm opacity-80">doing the work. having fun. not sweating the small stuff.</p>
       </div>
