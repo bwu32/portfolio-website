@@ -12,7 +12,7 @@ export default function LeftColumn() {
         >
             <div className="space-y-12">
                 <div>
-                    <h2 className="text-2xl text-white mb-2 opacity-50">JUNIOR DESIGNER
+                    <h2 className="text-2xl text-white mb-2 opacity-50">PRODUCT DESIGNER
                         {/* <a className="ml-4 text-white text-sm">
                             (maybe)
                         </a> */}
@@ -20,7 +20,7 @@ export default function LeftColumn() {
                     <a href="#">
                         <h1 className="text-7xl font-['Impact'] text-[#E8DDB5]">BRIAN WU</h1>
                     </a>
-                    <p className="text-lg text-white mt-4 opacity-50 max-w-[300px] leading-relaxed">doing the work. having fun. not sweating the small stuff.</p>
+                    <p className="text-lg text-white mt-4 opacity-50 max-w-[300px] leading-relaxed">now this is awesome.</p>
                 </div>
 
                 <nav className="space-y-2">
