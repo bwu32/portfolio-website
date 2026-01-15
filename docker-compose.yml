@@ -1,15 +1,11 @@
 services:
-  # Your Website (High performance Nginx Alpine)
-  my-website:
-    image: nginx:alpine
-    container_name: web_server
+  portfolio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nextjs_portfolio
     restart: always
-    volumes:
-      - ./html:/usr/share/nginx/html
-
-  # The Tunnel Agent (The bridge to the internet)
-  tunnel:
-    image: cloudflare/cloudflared:latest
-    container_name: cloudflare_tunnel
-    restart: always
-    command: tunnel run --token YOUR_CLOUDFLARE_TOKEN_HERE
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
