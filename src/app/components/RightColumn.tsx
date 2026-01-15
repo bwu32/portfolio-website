@@ -148,18 +148,13 @@ export default function RightColumn() {
     const coolStuff = [
         {
             title: "Guestbook",
-            description: "come sign :)",
+            description: "stole ts from andrew cupps",
             link: "/guestbook"
         },
         {
             title: "Victory Royales",
             description: "just wiped out tomato town",
             link: "/vicroys"
-        },
-        {
-            title: "Blog",
-            description: "i wonder if i can become a writer on medium",
-            link: "/portfolio"
         }
     ]
 
@@ -360,7 +355,6 @@ export default function RightColumn() {
 
                 <a
                     href="/portfolio"
-                    target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 mt-6 opacity-60 text-white hover:opacity-100 transition-opacity"
                 >

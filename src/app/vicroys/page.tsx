@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Background from "@/app/components/Background";
 
 export default function VictoryRoyales() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -71,20 +72,34 @@ export default function VictoryRoyales() {
   }, [selectedIndex, wins.length]);
 
   return (
-    <main className="min-h-screen px-12 py-20" style={{ marginLeft: "var(--left-col-width)" }}>
+    <main
+      className="min-h-screen py-12"
+      style={{
+        paddingLeft: '240px',
+        paddingRight: '240px'
+      } as React.CSSProperties}
+    >
+      <div className="fixed inset-0 -z-10">
+        <Background />
+      </div>
       {/* Subheading with link back home */}
       <Link
         href="/"
-        className="group text-2xl text-white mb-2 opacity-50 hover:opacity-100 transition-opacity inline-flex items-center gap-1"
+        className="group text-2xl text-white mb-2 opacity-50 hover:opacity-100 transition-opacity inline-flex items-center gap-2"
       >
-        <span className="transform transition-transform duration-300 group-hover:-translate-x-1">
-          &lt;
+        <span
+          className="relative -top-[2px] text-3xl leading-none transform transition-transform duration-300 group-hover:-translate-x-2"
+        >
+          &laquo;
         </span>
-        BRIAN WU
+        <span className="tracking-wide">BRIAN WU</span>
       </Link>
 
       {/* Main Title */}
-      <h1 className="text-6xl text-[#E8DDB5] mb-12 font-['Impact']">VICTORY ROYALES</h1>
+      <div>
+        <h1 className="text-7xl text-[#E8DDB5] font-['Impact']">VICTORY ROYALES</h1>
+        <p className="text-lg text-white mt-4 mb-12 opacity-50 max-w-[300px] leading-relaxed">now this is awesome.</p>
+      </div>
 
       {/* Grid of Wins */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
