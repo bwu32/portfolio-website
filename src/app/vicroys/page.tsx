@@ -10,12 +10,12 @@ export default function VictoryRoyales() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const wins = [
+    { image: "/icons/vicroys/83125.png", date: "Aug 31 2025", description: "soup or man" },
     { image: "/icons/vicroys/81425.png", date: "Aug 14 2025", description: "cranked on em" },
     { image: "/icons/vicroys/8525.png", date: "Aug 5 2025", description: "no builds no problem" },
     { image: "/icons/vicroys/8525_2.png", date: "Aug 5 2025", description: "squad no deaths" },
     { image: "/icons/vicroys/8525_3.png", date: "Aug 5 2025", description: "duo rebooted and won" },
     { image: "/icons/vicroys/8425.png", date: "Aug 4 2025", description: "clutch" },
-
     { image: "/icons/vicroys/73025.png", date: "Jul 30 2025", description: "clean sweep" },
     { image: "/icons/vicroys/72825.png", date: "Jul 28 2025", description: "boxed like fish" },
     { image: "/icons/vicroys/72325.png", date: "Jul 23 2025", description: "zero ping vibes" },
