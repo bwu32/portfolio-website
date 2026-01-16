@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Background from "@/app/components/Background";
+import CursorGlow from "@/app/components/CursorGlow";
 
 export default function GuestbookPage() {
   return (
@@ -34,7 +35,7 @@ export default function GuestbookPage() {
         <h1 className="text-7xl text-[#E8DDB5] font-['Impact']">GUESTBOOK</h1>
         <p className="text-lg text-white mt-4 mb-12 opacity-50 max-w-[300px] leading-relaxed">now this is awesome.</p>
       </div>
-
-      </main>
+      <CursorGlow />
+    </main>
   );
 }
