@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Background from "@/app/components/Background";
+import CursorGlow from "@/app/components/CursorGlow";
 
 export default function VictoryRoyales() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -171,6 +172,7 @@ export default function VictoryRoyales() {
           </motion.div>
         )}
       </AnimatePresence>
+      <CursorGlow/>
     </main>
   );
 }
