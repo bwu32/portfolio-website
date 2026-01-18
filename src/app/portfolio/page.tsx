@@ -2,52 +2,134 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { ArrowUpRight } from "lucide-react";
-import Background from "@/app/components/Background";
+import ReactMarkdown from 'react-markdown';
+import CursorGlow from "@/app/components/CursorGlow";
+
+// This will be your project type based on markdown frontmatter
+interface Project {
+  date: string;
+  title: string;
+  subtitle?: string; // Optional subtitle for sections
+  madeAt: string;
+  category: string[];
+  image: string;
+  builtWith: string[];
+  link: string;
+  slug: string;
+  content?: string;
+}
 
 export default function Portfolio() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
+  const [projects, setProjects] = useState<Project[]>([]);
 
-  // Sample project data - replace with your actual projects
-  const projects = [
+  // Set page title
+  useEffect(() => {
+    document.title = "All Projects | Brian Wu";
+  }, []);
+
+  // Load markdown files on component mount
+  useEffect(() => {
+    async function loadProjects() {
+      try {
+        // This will load all your markdown files
+        const projectFiles = [
+          'highborn-lightsaber',
+          'wushu-medal',
+          'portfolio-website'
+        ];
+
+        const loadedProjects = await Promise.all(
+          projectFiles.map(async (slug) => {
+            try {
+              const response = await fetch(`/icons/projects/${slug}.md`);
+              const text = await response.text();
+              
+              // Parse frontmatter and content
+              const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
+              const match = text.match(frontmatterRegex);
+              
+              if (match) {
+                const frontmatter = match[1];
+                const content = match[2];
+                
+                // Parse frontmatter fields
+                const metadata: any = {};
+                frontmatter.split('\n').forEach(line => {
+                  const colonIndex = line.indexOf(':');
+                  if (colonIndex > -1) {
+                    const key = line.substring(0, colonIndex).trim();
+                    let value: any = line.substring(colonIndex + 1).trim();
+                    
+                    // Remove quotes
+                    value = value.replace(/^["']|["']$/g, '');
+                    
+                    // Parse arrays
+                    if (value.startsWith('[') && value.endsWith(']')) {
+                      value = value.slice(1, -1).split(',').map((v: string) => 
+                        v.trim().replace(/^["']|["']$/g, '')
+                      );
+                    }
+                    
+                    metadata[key] = value;
+                  }
+                });
+                
+                return {
+                  ...metadata,
+                  slug,
+                  content,
+                  category: Array.isArray(metadata.category) ? metadata.category : [],
+                  builtWith: Array.isArray(metadata.builtWith) ? metadata.builtWith : [],
+                } as Project;
+              }
+            } catch (error) {
+              console.error(`Error loading ${slug}:`, error);
+            }
+            return null;
+          })
+        );
+
+        setProjects(loadedProjects.filter(Boolean) as Project[]);
+      } catch (error) {
+        console.error('Error loading projects:', error);
+        // Fallback to sample data if loading fails
+        setProjects(sampleProjects);
+      }
+    }
+
+    loadProjects();
+  }, []);
+
+  // Fallback sample data
+  const sampleProjects: Project[] = [
     {
-      year: "2025",
+      date: "01/15/2025",
       title: "The Highborn",
       madeAt: "ThePachStore",
       category: ["Product Design", "Commission"],
       image: "/icons/projects/lightsaber.jpg",
-      description: "A custom lightsaber design that was designed and manufactured in collaboration with ThePachStore. Mass produced with 3000+ units sold worldwide.",
       builtWith: ["Fusion 360", "CNC Milling", "PCB Soldering"],
       link: "https://www.thepachstore.com/products/wf-highborn-custom-saber-2021",
-      fullDescription: `This project involved extensive CAD work and manufacturing coordination. The design needed to balance aesthetic appeal with functional ergonomics for lightsaber combat enthusiasts.
-      
-      The manufacturing process required precision CNC machining and careful attention to detail in post-processing. Each unit was individually tested for quality assurance.`
-    },
-    {
-      year: "2024",
-      title: "Collegiate Wushu Tournament Medal",
-      madeAt: "UMD Wushu Club",
-      category: ["Product Design", "Personal"],
-      image: "/icons/projects/medal.jpg",
-      description: "Custom medal design for annual collegiate wushu tournament.",
-      builtWith: ["Fusion 360", "3D Printing", "Metalworking", "Fortnite", "Awesome"],
-      link: "http://collegiatewushu.org/home.php",
-      fullDescription: `Designed commemorative medals for the annual collegiate wushu championship tournament.`
-    },
-    {
-      year: "2024",
-      title: "Portfolio Website",
-      madeAt: "",
-      category: ["Digital", "Personal"],
-      image: "/icons/projects/portfolio.jpg",
-      description: "Personal portfolio website showcasing design and engineering work.",
-      builtWith: ["Next.js", "React", "Tailwind CSS", "TypeScript"],
-      link: "/",
-      fullDescription: `Built a modern, responsive portfolio website using Next.js and Tailwind CSS.`
-    },
+      slug: "highborn-lightsaber",
+      content: "# The Highborn\n\nA custom lightsaber design..."
+    }
   ];
+
+  // Sort projects by date (most recent first) and memoize the result
+  const sortedProjects = useMemo(() => {
+    return [...projects].sort((a, b) => 
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+  }, [projects]);
+
+  // Helper function to get year from date
+  const getYear = (dateString: string) => {
+    return new Date(dateString).getFullYear().toString();
+  };
 
   return (
     <main
@@ -57,10 +139,6 @@ export default function Portfolio() {
         paddingRight: '240px'
       } as React.CSSProperties}
     >
-      <div className="fixed inset-0 -z-10">
-        <Background />
-      </div>
-      
       {/* Header */}
       <Link
         href="/"
@@ -78,7 +156,7 @@ export default function Portfolio() {
       </div>
 
       {/* Sticky Column Headers */}
-      <div className="sticky top-0 z-20 py-4 grid grid-cols-12 gap-4 text-white text-sm font-medium opacity-100 border-b border-white border-opacity-20">
+      <div className="sticky top-0 z-20 py-4 grid grid-cols-12 gap-4 text-white text-sm font-medium opacity-100 border-b border-white border-opacity-20 -mx-2 px-2">
         <div className="col-span-1">Year</div>
         <div className="col-span-3">Project</div>
         <div className="col-span-2">Made at</div>
@@ -88,21 +166,22 @@ export default function Portfolio() {
 
       {/* Projects List */}
       <div>
-        {projects.map((project, index) => (
+        {sortedProjects.map((project, index) => (
           <div
             key={index}
-            className={`relative cursor-pointer transition-all duration-300 ease-out grid grid-cols-12 gap-4 py-6 border-b border-white border-opacity-20 group
-              ${typeof hoveredIndex === "number" && hoveredIndex !== index ? "opacity-50" : "opacity-100"}`}
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
             onClick={() => setSelectedProject(index)}
+            className={`
+        relative cursor-pointer transition-all duration-300 ease-out grid grid-cols-12 gap-4 py-6 border-b border-white border-opacity-20 group -mx-2 px-2
+        ${typeof hoveredIndex === "number" && hoveredIndex !== index ? "opacity-50" : "opacity-100"}`}
           >
-            {/* Hover background effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#5F72BF] to-transparent opacity-0 group-hover:opacity-10 transition-opacity duration-300 -mx-6" />
+            {/* Hover background effect - Adjusted to fill the extended width */}
+            <div className="absolute inset-y-0 -left-0 right-0 bg-gradient-to-r from-[#5F72BF] to-transparent opacity-0 group-hover:opacity-10 transition-opacity duration-300 pointer-events-none" />
 
             {/* Year */}
             <div className="relative z-10 col-span-1 flex items-start">
-              <p className="text-white opacity-60 text-sm leading-tight">{project.year}</p>
+              <p className="text-white opacity-60 text-sm leading-tight">{getYear(project.date)}</p>
             </div>
 
             {/* Project */}
@@ -123,7 +202,10 @@ export default function Portfolio() {
                 {project.builtWith.map((tech, idx) => (
                   <span
                     key={idx}
-                    className="text-xs px-3 py-1 rounded-full bg-[#2b366d] text-white text-opacity-60 transition-all duration-300 group-hover:text-opacity-80 leading-tight"
+                    className="text-xs px-3 py-1 rounded-full bg-[#2b366d] text-white text-opacity-60 
+                   transition-all duration-300 
+                   group-hover:text-[#E8DDB5] group-hover:text-opacity-100 
+                   leading-tight"
                   >
                     {tech}
                   </span>
@@ -155,59 +237,122 @@ export default function Portfolio() {
           onClick={() => setSelectedProject(null)}
         >
           <div
-            className="bg-[#1a1f3a] rounded-lg max-w-4xl w-full max-h-[80vh] overflow-y-auto p-8 relative"
+            className="bg-[#1a1f3a] rounded-lg max-w-6xl w-full max-h-[85vh] overflow-y-auto relative"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Close button */}
             <button
-              className="absolute top-6 right-6 text-white text-3xl opacity-60 hover:opacity-100 transition-opacity"
+              className="absolute top-6 right-6 text-white text-3xl opacity-60 hover:opacity-100 transition-opacity z-50"
               onClick={() => setSelectedProject(null)}
             >
               ✕
             </button>
-            
-            <div className="flex items-center gap-3 mb-6">
-              <h2 className="text-4xl text-[#E8DDB5] font-['Impact']">
-                {projects[selectedProject].title}
-              </h2>
-              <a
-                href={projects[selectedProject].link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#E8DDB5] opacity-60 hover:opacity-100 transition-opacity"
-              >
-                <ArrowUpRight className="w-6 h-6" />
-              </a>
-            </div>
 
-            {/* Project Image */}
-            <div className="relative w-full h-64 mb-6 rounded-lg overflow-hidden">
-              <Image
-                src={projects[selectedProject].image}
-                alt={projects[selectedProject].title}
-                fill
-                className="object-cover"
-              />
-            </div>
-
-            {/* Categories */}
-            <div className="flex flex-wrap gap-2 mb-4">
-              {projects[selectedProject].category.map((cat, idx) => (
-                <span
-                  key={idx}
-                  className="text-xs px-3 py-1 rounded-full bg-[#2b366d] text-white opacity-60"
+            <div className="flex gap-8 p-8">
+              {/* Left Side - Images */}
+              <div className="w-2/5 flex-shrink-0 space-y-6">
+                {/* Clickable Title with Link */}
+                <a
+                  href={sortedProjects[selectedProject].link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 group/title w-fit"
                 >
-                  {cat}
-                </span>
-              ))}
-            </div>
-            
-            <div className="text-white opacity-80 space-y-4">
-              <p>{projects[selectedProject].fullDescription}</p>
-              {/* Add more detailed content here */}
+                  <h2 className="text-4xl text-[#E8DDB5] font-['Impact'] group-hover/title:text-white transition-colors duration-300">
+                    {sortedProjects[selectedProject].title}
+                  </h2>
+                  <ArrowUpRight className="w-6 h-6 text-[#E8DDB5] group-hover/title:text-white transition-colors duration-300" />
+                </a>
+
+                {/* Main Project Image */}
+                <div className="relative w-full aspect-video rounded-lg overflow-hidden">
+                  <Image
+                    src={sortedProjects[selectedProject].image}
+                    alt={sortedProjects[selectedProject].title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+
+                {/* Categories */}
+                <div className="flex flex-wrap gap-2">
+                  {sortedProjects[selectedProject].category.map((cat, idx) => (
+                    <span
+                      key={idx}
+                      className="text-xs px-3 py-1 rounded-full bg-[#2b366d] text-white opacity-60"
+                    >
+                      {cat}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Additional images can go here */}
+                {/* You can add more images in your markdown and display them here */}
+              </div>
+
+              {/* Right Side - Text Content */}
+              <div className="flex-1 text-white space-y-6 overflow-y-auto pr-4">
+                {/* Render markdown content with custom styling */}
+                <ReactMarkdown
+                  components={{
+                    h1: ({children, ...props}) => <h1 className="text-3xl font-['Impact'] text-[#E8DDB5] mb-4" {...props}>{children}</h1>,
+                    h2: ({children, ...props}) => <h2 className="text-2xl font-['Impact'] text-[#E8DDB5] mt-8 mb-3" {...props}>{children}</h2>,
+                    h3: ({children, ...props}) => <h3 className="text-xl font-medium text-white opacity-80 mt-6 mb-2" {...props}>{children}</h3>,
+                    h4: ({children, ...props}) => <h4 className="text-sm font-medium text-white opacity-60 uppercase tracking-wide mt-6 mb-3" {...props}>{children}</h4>,
+                    p: ({children, ...props}) => <p className="text-white opacity-80 leading-relaxed mb-4" {...props}>{children}</p>,
+                    ul: ({children, ...props}) => <ul className="list-disc list-inside space-y-2 mb-4 opacity-80" {...props}>{children}</ul>,
+                    ol: ({children, ...props}) => <ol className="list-decimal list-inside space-y-2 mb-4 opacity-80" {...props}>{children}</ol>,
+                    li: ({children, ...props}) => <li className="text-white opacity-80" {...props}>{children}</li>,
+                    strong: ({children, ...props}) => <strong className="text-[#E8DDB5] font-medium" {...props}>{children}</strong>,
+                    em: ({children, ...props}) => <em className="text-white opacity-90 italic" {...props}>{children}</em>,
+                    code: ({children, ...props}) => <code className="bg-[#2b366d] px-2 py-1 rounded text-sm font-mono" {...props}>{children}</code>,
+                    pre: ({children, ...props}) => <pre className="bg-[#2b366d] p-4 rounded-lg overflow-x-auto mb-4" {...props}>{children}</pre>,
+                    blockquote: ({children, ...props}) => <blockquote className="border-l-4 border-[#5F72BF] pl-4 italic opacity-80 mb-4" {...props}>{children}</blockquote>,
+                    a: ({children, ...props}) => <a className="text-[#E8DDB5] hover:text-white transition-colors underline" {...props}>{children}</a>,
+                    img: ({...props}) => (
+                      <div className="my-6">
+                        <img 
+                          className="rounded-lg w-full" 
+                          {...props}
+                          src={props.src?.startsWith('/') ? props.src : `/icons/projects/${sortedProjects[selectedProject].slug}/${props.src}`}
+                        />
+                      </div>
+                    ),
+                  }}
+                >
+                  {sortedProjects[selectedProject].content || ''}
+                </ReactMarkdown>
+              </div>
             </div>
           </div>
         </div>
       )}
+      <CursorGlow/>
+      {/* Back to Top Button */}
+            <button
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="fixed bottom-8 right-8 p-2 transition-all duration-300 group
+             text-white opacity-60 hover:opacity-100 hover:text-[#E8DDB5] hover:scale-110"
+                aria-label="Scroll to top"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="transform group-hover:-translate-y-1 transition-transform"
+                >
+                    {/* Upper Chevron */}
+                    <path d="m17 11-5-5-5 5" />
+                    {/* Lower Chevron */}
+                    <path d="m17 18l-5-5-5 5" />
+                </svg>
+            </button>
     </main>
   );
 }
