@@ -155,6 +155,11 @@ export default function RightColumn() {
             title: "Victory Royales",
             description: "just wiped out tomato town",
             link: "/vicroys"
+        },
+        {
+            title: "Lego Collection",
+            description: "needed a third thing so my 'more' tab would light up",
+            link: "/legos"
         }
     ]
 

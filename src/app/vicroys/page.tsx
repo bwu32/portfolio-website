@@ -6,11 +6,13 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Background from "@/app/components/Background";
 import CursorGlow from "@/app/components/CursorGlow";
+import type { Metadata } from "next"
 
 export default function VictoryRoyales() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
+  // need to make it so it automatically sorts
   const wins = [
     { image: "/icons/vicroys/83125.png", date: "Aug 31 2025", description: "soup or man" },
     { image: "/icons/vicroys/81425.png", date: "Aug 14 2025", description: "cranked on em" },
@@ -98,7 +100,16 @@ export default function VictoryRoyales() {
 
       {/* Main Title */}
       <div>
-        <h1 className="text-7xl text-[#E8DDB5] font-['Impact']">VICTORY ROYALES</h1>
+        <a 
+  href="https://www.fortnite.com" 
+  target="_blank" 
+  rel="noopener noreferrer"
+  className="transition-colors duration-300 block w-fit"
+>
+  <h1 className="text-7xl text-[#E8DDB5] hover:text-white font-['Impact']">
+    VICTORY ROYALES
+  </h1>
+</a>
         <p className="text-lg text-white mt-4 mb-12 opacity-50 max-w-[300px] leading-relaxed">now this is awesome.</p>
       </div>
 
@@ -172,7 +183,32 @@ export default function VictoryRoyales() {
           </motion.div>
         )}
       </AnimatePresence>
-      <CursorGlow/>
+      <CursorGlow />
+      {/* Back to Top Button */}
+            <button
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="fixed bottom-8 right-8 p-2 transition-all duration-300 group
+             text-white opacity-60 hover:opacity-100 hover:text-[#E8DDB5] hover:scale-110"
+                aria-label="Scroll to top"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="transform group-hover:-translate-y-1 transition-transform"
+                >
+                    {/* Upper Chevron */}
+                    <path d="m17 11-5-5-5 5" />
+                    {/* Lower Chevron */}
+                    <path d="m17 18l-5-5-5 5" />
+                </svg>
+            </button>
     </main>
   );
 }

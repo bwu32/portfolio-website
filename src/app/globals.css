@@ -24,8 +24,10 @@
   --text-white: #ffffff;
 }
 
+/* Prevent scrollbar layout shift */
 html {
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 }
 
 body {
