@@ -140,9 +140,6 @@ export default function RightColumn() {
                 "Dance"
             ],
         },
-
-
-
     ];
 
     const coolStuff = [

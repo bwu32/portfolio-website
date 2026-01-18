@@ -4,7 +4,7 @@
 
 @font-face {
   font-family: "DIN Next";
-  src: url("/fonts/dinnextw1g.otf") format("otf");
+  src: url("/fonts/dinnextw1g.otf") format("opentype"); /* Changed from "otf" to "opentype" */
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 }
 
 .slow-spin {
-  animation: slow-spin 3s linear infinite; /* Change 2s to your desired speed */
+  animation: slow-spin 3s linear infinite;
 }
 
 :root {
@@ -34,10 +34,4 @@ body {
   font-family: "DIN Next", sans-serif;
   background-color: var(--navy-bg);
   color: var(--text-cream);
-
-  background-image: url('/icons/background.png'); /* Specify the path to your image */
-  background-size: cover; /* Makes the background image cover the entire area */
-  background-position: center; /* Centers the image */
-  background-repeat: no-repeat; /* Prevents the image from repeating */
 }
-

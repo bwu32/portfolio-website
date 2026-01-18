@@ -5,8 +5,11 @@ import { Inter } from "next/font/google"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Brian Wu",
-  description: "Personal Website of Brian Wu",
+  title: {
+    default: 'Brian Wu',
+    template: '%s | Brian Wu', // The %s is replaced by the title in subpages
+  },
+  description: 'portfolio website!'
 }
 
 export default function RootLayout({
