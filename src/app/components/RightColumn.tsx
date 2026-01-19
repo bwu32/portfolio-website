@@ -13,7 +13,7 @@ export default function RightColumn() {
 
     const experiences = [
         {
-            period: "2025 — PRESENT",
+            period: "2025 — 2026",
             title: "Design Intern",
             company: "New Dim Sum Kingdom",
             link: "https://www.newdimsumkingdom.com/",
@@ -48,26 +48,26 @@ export default function RightColumn() {
 
     const projects = [
         {
-            title: "The Highborn",
-            description: "a custom lightsaber design that was designed and manufactured in collaboration with ThePachStore. mass produced with 3000+ units sold worldwide.",
+            title: "S.Q.U.I.D. Submersible Vehicle",
+            description: "An automated pipeline that will detect whenever you achieve that #1 Victory Royale to generate and post celebratory/bragging LinkedIn posts.",
+            image: "/icons/projects/submarine.jpg",
+            link: "https://docs.google.com/document/d/1_NqtkaeeCIUAikc76VfbriEUctMEloEBvPrhvJfcN-A/edit?usp=sharing",
+            tech: ["Fusion 360 (CAD / CAM)", "Bambu Lab Slicer", "CNC Milling & Turning", "PCB Soldering", "Graphic Design"]
+        },
+        {
+            title: "Fortnite LinkedIn Auto Poster",
+            description: "An automated pipeline that will detect whenever you achieve that #1 Victory Royale to generate and post celebratory/bragging LinkedIn posts.",
+            image: "/icons/projects/linkedinautoposter.png",
+            link: "https://github.com/bwu32/fortnitelinkedinautoposter",
+            tech: ["Python", "OpenCV", "Tesseract OCR", "OpenAI API", "LinkedIn API", "Selenium"]
+        },
+        {
+            title: "The Highborn Lightsaber",
+            description: "A custom lightsaber design that was designed and manufactured in collaboration with ThePachStore. Mass produced with 3000+ units sold worldwide.",
             image: "/icons/projects/lightsaber.jpg",
             link: "https://www.thepachstore.com/products/wf-highborn-custom-saber-2021",
-            tech: ["Fusion 360 (CAD / CAM)", "CNC Milling & Turning", "PCB Soldering"]
+            tech: ["Fusion 360 (CAD / CAM)", "3D Printing", "CNC Milling & Turning", "PCB Soldering"]
         },
-        {
-            title: "Collegiate Wushu Tournament Medal",
-            description: "A modern, responsive portfolio website built with Next.js and Tailwind CSS. Features smooth animations, dynamic content, and an optimized user experience across all devices.",
-            image: "/icons/projects/medal.jpg",
-            link: "http://collegiatewushu.org/home.php",
-            tech: ["Next.js", "React", "Tailwind CSS", "TypeScript"]
-        },
-        {
-            title: "AI Chat Application",
-            description: "Full-stack chat application with real-time messaging and AI integration. Built with modern web technologies and deployed on cloud infrastructure.",
-            image: "/images/chat-project.jpg",
-            link: "https://github.com/yourusername/ai-chat",
-            tech: ["React", "Socket.io", "OpenAI API", "MongoDB"]
-        }
     ];
 
     const skills = [
@@ -225,6 +225,96 @@ export default function RightColumn() {
                 </div>
             </section>
 
+            <section id="portfolio" className="mb-6 p-12 scroll-mt-12">
+                <h2 className="text-2xl mb-8 text-white uppercase tracking-widest">SOME OF MY WORKS</h2>
+
+                <div className="space-y-4 mb-6">
+                    {projects.map((project, index) => (
+                        <a
+                            key={index}
+                            href={project.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block"
+                            onMouseEnter={() => setProjHoveredIndex(index)}
+                            onMouseLeave={() => setProjHoveredIndex(null)}
+                        >
+                            <div
+                                className={`relative rounded-lg p-6 group/proj cursor-pointer overflow-hidden transition-all duration-300 ease-out 
+          ${typeof projHoveredIndex === "number" && projHoveredIndex !== index ? "opacity-50" : "opacity-100"}`}
+                            >
+                                {/* Animated Background Gradient */}
+                                <div className="absolute inset-0 bg-[#2b366d] opacity-30 transition-all duration-300">
+                                    <div className="absolute inset-0 bg-gradient-to-r from-[#5F72BF] to-[#2b366d] 
+              -translate-x-full group-hover/proj:translate-x-0 transition-transform duration-500 ease-out" />
+                                </div>
+
+                                {/* Main Content Container - min-h instead of fixed h */}
+                                <div className="relative z-10 flex flex-col md:flex-row gap-6 min-h-[8rem]">
+
+                                    {/* Project Screenshot - flex-shrink-0 prevents image squashing */}
+                                    <div className="w-48 h-32 relative flex-shrink-0 rounded-lg overflow-hidden bg-[#2b366d] bg-opacity-50">
+                                        <Image
+                                            src={project.image}
+                                            alt={`${project.title} screenshot`}
+                                            fill
+                                            className="object-cover transition-transform duration-300 group-hover/proj:scale-105"
+                                            onError={(e) => {
+                                                e.currentTarget.style.display = 'none';
+                                                if (e.currentTarget.parentElement) {
+                                                    e.currentTarget.parentElement.style.backgroundColor = '#2b366d';
+                                                }
+                                            }}
+                                        />
+                                    </div>
+
+                                    {/* Project Text & Tags - flex-1 allows this to take remaining space */}
+                                    <div className="flex-1 min-w-0 flex flex-col">
+
+                                        {/* Title and Description - mb-auto pushes tags to the bottom if block is tall */}
+                                        <div className="mb-4">
+                                            <div className="flex items-start justify-between mb-2">
+                                                <h3 className="text-lg text-white font-medium transition-all duration-300 group-hover/proj:text-[#f0e0a1]">
+                                                    {project.title}
+                                                </h3>
+                                                <ArrowUpRight className="w-4 h-4 opacity-50 text-white transition-all group-hover/proj:text-[#f0e0a1] flex-shrink-0 ml-2" />
+                                            </div>
+
+                                            <p className="text-white transition-opacity duration-300 group-hover/proj:opacity-100 opacity-60 text-sm leading-relaxed">
+                                                {project.description}
+                                            </p>
+                                        </div>
+
+                                        {/* Tech Stack Tags - flex-wrap allows them to flow into new lines */}
+                                        <div className="flex flex-wrap gap-2 mt-auto">
+                                            {project.tech.map((tech, idx) => (
+                                                <div
+                                                    key={idx}
+                                                    className="relative rounded-full px-4 py-1.5 text-white text-opacity-60 bg-[#2b366d] overflow-hidden group/tag"
+                                                >
+                                                    <span className="relative z-10 transition-all duration-500 ease-out group-hover/tag:text-[#f0e0a1] text-xs font-medium">
+                                                        {tech}
+                                                    </span>
+                                                    <div className="absolute inset-0 bg-gradient-to-r from-[#5F72BF] to-[#2b366d] -translate-x-full group-hover/tag:translate-x-0 transition-transform duration-500 ease-out opacity-50" />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    ))}
+                </div>
+
+                <a
+                    href="/portfolio"
+                    className="inline-flex items-center gap-2 mt-6 opacity-60 text-white hover:opacity-100 transition-opacity font-medium"
+                >
+                    view full project archive
+                    <ArrowUpRight className="w-4 h-4" />
+                </a>
+            </section>
+
             <section id="experience" className="mb-6 p-12 scroll-mt-12">
                 <h2 className="text-2xl mb-8 text-white">EXPERIENCE</h2>
                 <div className="space-y-4">
@@ -243,8 +333,7 @@ export default function RightColumn() {
                                     ${typeof expHoveredIndex === "number" && expHoveredIndex !== index ? "opacity-50" : "opacity-100"}`}
                             >
                                 <div className="absolute inset-0 bg-[#2b366d] opacity-30 transition-all duration-300">
-                                    <div className="absolute inset-0 bg-gradient-to-r from-[#5F72BF] to-[#2b366d] 
-              -translate-x-full group-hover/exp:translate-x-0 transition-transform duration-500 ease-out" />
+                                    <div className="absolute inset-0 bg-gradient-to-r from-[#5F72BF] to-[#2b366d] -translate-x-full group-hover/exp:translate-x-0 transition-transform duration-500 ease-out" />
                                 </div>
 
                                 <div className="relative z-10">
@@ -267,100 +356,12 @@ export default function RightColumn() {
                 </div>
 
                 <a
-                    href="https://docs.google.com/document/d/1e6fQ6P6m8larExX2ccj7fZfvQNDNU5cgAks3SnQANV4/edit?usp=sharing"
+                    href="/bwu_resume.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 mt-6 opacity-60 text-white hover:opacity-100 transition-opacity"
                 >
                     view full resume
-                    <ArrowUpRight className="w-4 h-4" />
-                </a>
-            </section>
-
-            <section id="portfolio" className="mb-6 p-12 scroll-mt-12">
-                <h2 className="text-2xl mb-8 text-white">SOME OF MY WORKS</h2>
-
-                <div className="space-y-4 mb-6">
-                    {projects.map((project, index) => (
-                        <a
-                            key={index}
-                            href={project.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block"
-                            onMouseEnter={() => setProjHoveredIndex(index)}
-                            onMouseLeave={() => setProjHoveredIndex(null)}
-                        >
-                            <div
-                                className={`relative rounded-lg p-6 group/proj cursor-pointer overflow-hidden transition-all duration-300 ease-out 
-                    ${typeof projHoveredIndex === "number" && projHoveredIndex !== index ? "opacity-50" : "opacity-100"}`}
-                            >
-                                <div className="absolute inset-0 bg-[#2b366d] opacity-30 transition-all duration-300">
-                                    <div className="absolute inset-0 bg-gradient-to-r from-[#5F72BF] to-[#2b366d] 
-                        -translate-x-full group-hover/proj:translate-x-0 transition-transform duration-500 ease-out" />
-                                </div>
-
-                                <div className="relative z-10 flex gap-6 h-32">
-                                    {/* Project Screenshot */}
-                                    <div className="w-48 h-32 relative flex-shrink-0 rounded-lg overflow-hidden bg-[#2b366d] bg-opacity-50">
-                                        <Image
-                                            src={project.image}
-                                            alt={`${project.title} screenshot`}
-                                            fill
-                                            className="object-cover transition-transform duration-300 group-hover/proj:scale-105"
-                                            onError={(e) => {
-                                                // Fallback if image doesn't exist
-                                                e.currentTarget.style.display = 'none';
-                                                if (e.currentTarget.parentElement) {
-                                                    e.currentTarget.parentElement.style.backgroundColor = '#2b366d';
-                                                }
-                                            }}
-                                        />
-                                    </div>
-
-                                    {/* Project Content */}
-                                    <div className="flex-1 min-w-0 flex flex-col justify-between">
-                                        {/* Title and Description */}
-                                        <div>
-                                            <div className="flex items-start justify-between mb-3">
-                                                <h3 className="text-lg text-white font-medium transition-all duration-300 group-hover/proj:text-[#f0e0a1]">
-                                                    {project.title}
-                                                </h3>
-                                                <ArrowUpRight className="w-4 h-4 opacity-50 text-white transition-all group-hover/proj:text-[#f0e0a1] flex-shrink-0 ml-2" />
-                                            </div>
-
-                                            <p className="text-white transition-opacity duration-300 group-hover/proj:opacity-100 opacity-60 text-sm leading-relaxed">
-                                                {project.description}
-                                            </p>
-                                        </div>
-
-                                        {/* Tech Stack Tags - Always at bottom */}
-                                        <div className="flex flex-wrap gap-2 mt-3">
-                                            {project.tech.map((tech, idx) => (
-                                                <div
-                                                    key={idx}
-                                                    className="relative rounded-full px-4 py-2 text-white text-opacity-60 bg-[#2b366d] overflow-hidden group/tag"
-                                                >
-                                                    <span className="relative z-10 transition-all duration-500 ease-out group-hover/tag:text-[#f0e0a1] text-xs">
-                                                        {tech}
-                                                    </span>
-                                                    <div className="absolute inset-0 bg-gradient-to-r from-[#5F72BF] to-[#2b366d] -translate-x-full group-hover/tag:translate-x-0 transition-transform duration-500 ease-out opacity-50" />
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    ))}
-                </div>
-
-                <a
-                    href="/portfolio"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 mt-6 opacity-60 text-white hover:opacity-100 transition-opacity"
-                >
-                    view full project archive
                     <ArrowUpRight className="w-4 h-4" />
                 </a>
             </section>
