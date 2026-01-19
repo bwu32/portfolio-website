@@ -30,8 +30,8 @@ export default function LeftColumn() {
                         text="ABOUT"
                         isActive={true}
                     />
-                    <NavLink href="#experience" icon="/icons/cloudburst.png" text="EXPERIENCE" />
-                    <NavLink href="#portfolio" icon="/icons/updraft.png" text="PORTFOLIO" />
+                    <NavLink href="#portfolio" icon="/icons/cloudburst.png" text="PORTFOLIO" />
+                    <NavLink href="#experience" icon="/icons/updraft.png" text="EXPERIENCE" />
                     <NavLink href="#skills" icon="/icons/tailwind.png" text="SKILLS" />
                     <NavLink href="#more" icon="/icons/bladestorm.png" text="MORE" />
                 </nav>
