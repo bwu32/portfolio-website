@@ -4,7 +4,7 @@ import Image from "next/image";
 import { ArrowUpRight, Github, Linkedin, Mail, Instagram } from "lucide-react";
 import Background from "./Background";
 
-// --- TYPES ---
+// --- TYPES (Keep as they were) ---
 interface Experience {
     period: string;
     title: string;
@@ -21,18 +21,10 @@ interface Project {
     tech: string[];
 }
 
-interface SkillCategory {
-    category: string;
-    skills: string[];
-}
-
 export default function MobileView() {
-    const [activeSection, setActiveSection] = useState<string>("ABOUT");
-    const [fade, setFade] = useState(true);
-    const activeSectionRef = typeof window !== 'undefined' ? require('react').useRef("ABOUT") : { current: "ABOUT" };
     const [showTopBtn, setShowTopBtn] = useState(false);
 
-    // --- DATA ---
+    // --- DATA (Keeping your existing data arrays) ---
     const experiences: Experience[] = [
         {
             period: "2025 — 2026",
@@ -91,158 +83,55 @@ export default function MobileView() {
     const skills = [
         {
             category: "AI & Software Development",
-            skills: [
-                "AI Prompting",
-                "Google Notebook LM",
-                "Node.js",
-                "React",
-                "HTML",
-                "CSS",
-                "MATLAB",
-                "Excel",
-                "Java",
-                "C",
-                "Rust",
-                "OCaml",
-                "Google Workspace",
-                "MS Teams",
-                "Windows",
-                "Zoom"
-            ],
+            skills: ["AI Prompting", "Google Notebook LM", "Node.js", "React", "HTML", "CSS", "MATLAB", "Excel", "Java", "C", "Rust", "OCaml", "Google Workspace", "MS Teams", "Windows", "Zoom"],
         },
         {
             category: "Design & Visual Media",
-            skills: [
-                "Figma",
-                "Canva",
-                "Adobe Creative Cloud",
-                "Photoshop",
-                "Premiere Pro",
-                "After Effects",
-                "Illustrator",
-                "Paint.NET",
-                "Audacity",
-                "Blender",
-                "DJI Ecosystem"
-            ],
+            skills: ["Figma", "Canva", "Adobe Creative Cloud", "Photoshop", "Premiere Pro", "After Effects", "Illustrator", "Paint.NET", "Audacity", "Blender", "DJI Ecosystem"],
         },
         {
             category: "Digital Fabrication & Prototyping",
-            skills: [
-                "Fusion 360 (CAD / CAM)",
-                "SolidWorks (CAD & FEA)",
-                "Autodesk Inventor",
-                "Onshape",
-                "Meshmixer",
-                "FDM & SLA 3D Printing",
-                "PrusaSlicer",
-                "Cura",
-                "Laser Cutting",
-                "CNC Milling & Turning",
-                "Arduino",
-                "PCB Soldering",
-                "Circuitry",
-                "Surface Post-Processing"
-            ],
+            skills: ["Fusion 360 (CAD / CAM)", "SolidWorks (CAD & FEA)", "Autodesk Inventor", "Onshape", "Meshmixer", "FDM & SLA 3D Printing", "PrusaSlicer", "Cura", "Laser Cutting", "CNC Milling & Turning", "Arduino", "PCB Soldering", "Circuitry", "Surface Post-Processing"],
         },
         {
             category: "Creative & Practical Arts",
-            skills: [
-                "Sewing",
-                "Embroidery",
-                "Apparel Design",
-                "Creative Prototyping",
-                "Automotive Painting & Finishing",
-                "DIY Repair",
-                "Carpentry",
-                "Dance"
-            ],
+            skills: ["Sewing", "Embroidery", "Apparel Design", "Creative Prototyping", "Automotive Painting & Finishing", "DIY Repair", "Carpentry", "Dance"],
         },
     ];
 
     useEffect(() => {
         const handleScroll = () => {
-            // Show button after scrolling down 400px
             setShowTopBtn(window.scrollY > 400);
         };
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // --- INTERSECTION OBSERVER LOGIC ---
-    useEffect(() => {
-        const options = {
-            // This margin ensures the label flips exactly as the section header passes the nav
-            rootMargin: '-10% 0px -85% 0px',
-            threshold: 0
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    const newSection = entry.target.id.toUpperCase();
-
-                    // We use a functional state update to compare against the LATEST state
-                    // without needing 'activeSection' in the dependency array.
-                    setActiveSection((prev) => {
-                        if (newSection !== prev) {
-                            setFade(false);
-                            setTimeout(() => {
-                                setFade(true);
-                                // This second update actually changes the text
-                                setActiveSection(newSection);
-                            }, 200);
-                        }
-                        return prev; // Don't change it yet, wait for the timeout
-                    });
-                }
-            });
-        }, options);
-
-        const sections = ["about", "portfolio", "experience", "skills", "contact"];
-        sections.forEach((id) => {
-            const el = document.getElementById(id);
-            if (el) observer.observe(el);
-        });
-
-        return () => observer.disconnect();
-    }, []); // Keep this empty [] - React is happy now.
-
     return (
-        <div className="text-white min-h-screen px-6 py-12 font-sans">
-
+        <div className="text-white min-h-screen px-6 py-12 font-sans relative">
             <div className="fixed inset-0 -z-10">
                 <Background />
             </div>
-            {/* HEADER - Keep the background color but it's not sticky */}
-            <div className="bg-[#0f172a] -mx-6 px-6 pt-6 -mt-12">
-                <header className="pb-8">
-                    <h2 className="text-lg text-white/40 tracking-[0.3em] mb-2 font-bold uppercase">
-                        PRODUCT DESIGNER
-                    </h2>
-                    <h1 className="text-7xl font-black text-[#E8DDB5] leading-none tracking-tight">
-                        BRIAN WU
-                    </h1>
-                    <p className="mt-4 text-white/60 text-lg tracking-tight">
-                        now this is awesome.
-                    </p>
-                </header>
-            </div>
 
-            {/* STICKY NAV - This must be a direct child of the scroll container to stick */}
-            <nav className="sticky top-0 z-50 bg-[#0f172a]/80 backdrop-blur-md -mx-6 px-6 py-5 mb-12 border-b border-white/5 overflow-hidden">
-                <div className={`transition-all duration-300 transform ${fade ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
-                    <span className="text-xl font-bold tracking-[0.2em] text-[#f0e0a1]">
-                        {activeSection}
-                    </span>
-                </div>
-            </nav>
+            {/* HEADER - Transparent background now */}
+            <header className="pb-16 pt-4">
+                <h2 className="text-lg text-white/40 tracking-[0.3em] mb-2 font-bold uppercase">
+                    PRODUCT DESIGNER
+                </h2>
+                <h1 className="text-7xl font-black text-[#E8DDB5] -ml-1 tracking-tighter leading-none">
+                    BRIAN WU
+                </h1>
+                <p className="mt-4 text-white/60 text-lg tracking-tight">
+                    now this is awesome.
+                </p>
+            </header>
 
             {/* CONTENT */}
-            <main className="space-y-12">
+            <main className="space-y-24">
 
                 {/* ABOUT */}
-                <section id="about" className="scroll-mt-28">
+                <section id="about">
+                    <h2 className="text-2xl mb-8 text-white uppercase tracking-widest">ABOUT</h2>
                     <div className="w-full h-80 relative rounded-2xl overflow-hidden mb-8 shadow-2xl border border-white/5">
                         <Image src="/icons/headshot.jpg" alt="Brian" fill className="object-cover" priority />
                     </div>
@@ -269,13 +158,8 @@ export default function MobileView() {
                             rel="noopener noreferrer"
                             className="relative overflow-hidden px-8 py-4 rounded-full bg-[#2b366d]/10 border border-white/10 shadow-xl transition-all active:scale-95 active:bg-[#2b366d]/60 group"
                         >
-                            {/* Subtle inner glow to give it that "bubble" depth */}
                             <span className="absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent pointer-events-none" />
-
-                            {/* Shimmer effect stays but now matches the bubble container */}
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-active:animate-[shimmer_1.5s_infinite] pointer-events-none" />
-
-                            {/* Text matches your Impact italic branding */}
                             <span className="relative z-10 font-bold tracking-[0.2em] uppercase text-md">
                                 View Resume
                             </span>
@@ -284,7 +168,7 @@ export default function MobileView() {
                 </section>
 
                 {/* PORTFOLIO */}
-                <section id="portfolio" className="scroll-mt-28">
+                <section id="portfolio">
                     <h2 className="text-2xl mb-8 text-white uppercase tracking-widest">SOME OF MY WORKS</h2>
                     <div className="space-y-10">
                         {projects.map((proj, i) => (
@@ -310,7 +194,7 @@ export default function MobileView() {
                 </section>
 
                 {/* EXPERIENCE */}
-                <section id="experience" className="scroll-mt-28">
+                <section id="experience">
                     <h2 className="text-2xl mb-8 text-white uppercase tracking-widest">Experience</h2>
                     <div className="space-y-12">
                         {experiences.map((exp, i) => (
@@ -325,7 +209,7 @@ export default function MobileView() {
                 </section>
 
                 {/* SKILLS */}
-                <section id="skills" className="scroll-mt-28">
+                <section id="skills">
                     <h2 className="text-2xl mb-8 text-white uppercase tracking-widest">Skills</h2>
                     <div className="space-y-8">
                         {skills.map((cat, i) => (
@@ -333,16 +217,9 @@ export default function MobileView() {
                                 <h3 className="text-sm font-bold mb-4">{cat.category}</h3>
                                 <div className="flex flex-wrap gap-2">
                                     {cat.skills.map((s, idx) => (
-                                        <span
-                                            key={idx}
-                                            className="relative overflow-hidden px-4 py-1.5 rounded-full text-[11px] font-medium opacity-60 bg-[#2b366d]/40 border border-white/10 shadow-sm transition-all active:bg-[#2b366d]/60"
-                                        >
-                                            {/* Subtle inner glow to give it that "bubble" depth */}
+                                        <span key={idx} className="relative overflow-hidden px-4 py-1.5 rounded-full text-[11px] font-medium opacity-60 bg-[#2b366d]/40 border border-white/10 shadow-sm transition-all active:bg-[#2b366d]/60">
                                             <span className="absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent pointer-events-none" />
-
-                                            <span className="relative z-10 uppercase tracking-wider">
-                                                {s}
-                                            </span>
+                                            <span className="relative z-10 uppercase tracking-wider">{s}</span>
                                         </span>
                                     ))}
                                 </div>
@@ -351,66 +228,39 @@ export default function MobileView() {
                     </div>
                 </section>
 
-                <section id="contact" className="scroll-mt-32 pb-24">
-                    {/* Background matches the unified format: solid base + subtle top glow */}
+                {/* CONTACT */}
+                <section id="contact" className="pb-24">
                     <div className="relative bg-[#0f172a] p-8 rounded-3xl border border-white/10 text-center overflow-hidden">
-
-                        {/* Subtle Background Glow bubble */}
                         <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-64 h-64 bg-[#2b366d]/30 rounded-full blur-[80px] pointer-events-none" />
-
                         <div className="relative z-10">
-                            <h2 className="text-3xl font-black mb-2 uppercase tracking-tighter text-[#E8DDB5]">
-                                Get in Touch!
-                            </h2>
-                            <p className="opacity-60 mb-8 text-sm italic">
-                                Let's get that #1 victory royale together.
-                            </p>
-
-                            {/* Original Grid Layout */}
+                            <h2 className="text-3xl font-black mb-2 uppercase tracking-tighter text-[#E8DDB5]">Get in Touch!</h2>
+                            <p className="opacity-60 mb-8 text-sm italic">Let's get that #1 victory royale together.</p>
                             <div className="grid grid-cols-2 gap-3">
                                 <SocialBtn href="mailto:bwu32@terpmail.umd.edu" icon={<Mail size={20} />} label="bwu32" />
                                 <SocialBtn href="https://instagram.com/kachowoo" icon={<Instagram size={20} />} label="kachowoo" />
                                 <SocialBtn href="https://linkedin.com/in/brianpwu" icon={<Linkedin size={20} />} label="brianpwu" />
                                 <SocialBtn href="https://github.com/bwu32" icon={<Github size={20} />} label="bwu32" />
                             </div>
-
-                            <p className="mt-12 text-[10px] text-white opacity-60 uppercase tracking-[0.5em] font-bold">
-                                BRIAN WU © 2026
-                            </p>
+                            <p className="mt-12 text-[10px] text-white opacity-60 uppercase tracking-[0.5em] font-bold">BRIAN WU © 2026</p>
                         </div>
                     </div>
                 </section>
-                <button
-                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                    className={`fixed bottom-6 right-6 z-[60] p-2 rounded-full border border-white/20 shadow-2xl transition-all duration-500 backdrop-blur-sm group active:scale-90 ${showTopBtn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
-                        }`}
-                    aria-label="Scroll to top"
-                >
-                    {/* Inner Bubble Glow */}
-                    <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white/[0.1] to-transparent pointer-events-none" />
-
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#E8DDB5" // Using your signature cream color
-                        strokeWidth="3"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="relative z-10 transform group-active:-translate-y-1 transition-transform"
-                    >
-                        <path d="m17 11-5-5-5 5" />
-                        <path d="m17 18l-5-5-5 5" />
-                    </svg>
-                </button>
             </main>
+
+            {/* Scroll to Top Button (Remains identical) */}
+            <button
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className={`fixed bottom-6 right-6 z-[60] p-2 rounded-full border border-white/20 shadow-2xl transition-all duration-500 backdrop-blur-sm group active:scale-90 ${showTopBtn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}
+            >
+                <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white/[0.1] to-transparent pointer-events-none" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E8DDB5" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="relative z-10 transform group-active:-translate-y-1 transition-transform">
+                    <path d="m17 11-5-5-5 5" /><path d="m17 18l-5-5-5 5" />
+                </svg>
+            </button>
         </div>
     );
 }
 
-// Fixed SocialBtn Component
 function SocialBtn({ href, icon, label }: { href: string; icon: React.ReactNode; label: string }) {
     return (
         <a
@@ -418,12 +268,9 @@ function SocialBtn({ href, icon, label }: { href: string; icon: React.ReactNode;
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-3 p-4 bg-white/[0.03] rounded-2xl border border-white/5 active:bg-[#2b366d]/60 active:scale-95 transition-all"
-        // relative overflow-hidden px-4 py-1.5 rounded-full text-[11px] font-medium opacity-60 bg-[#2b366d]/40 border border-white/10 shadow-sm transition-all active:bg-[#2b366d]/60
         >
             <span className="text-white opacity-60">{icon}</span>
-            <span className="text-xs font-medium uppercase tracking-wider text-white">
-                {label}
-            </span>
+            <span className="text-xs font-medium uppercase tracking-wider text-white">{label}</span>
         </a>
     );
 }
