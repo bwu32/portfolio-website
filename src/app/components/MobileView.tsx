@@ -220,7 +220,7 @@ export default function MobileView() {
                     <h2 className="text-lg text-white/40 tracking-[0.3em] mb-2 font-bold uppercase">
                         PRODUCT DESIGNER
                     </h2>
-                    <h1 className="text-8xl font-['Impact'] text-[#E8DDB5] leading-none tracking-tight">
+                    <h1 className="text-7xl font-black text-[#E8DDB5] leading-none tracking-tight">
                         BRIAN WU
                     </h1>
                     <p className="mt-4 text-white/60 text-lg tracking-tight">
