@@ -327,6 +327,27 @@ export default function PortfolioContent() {
             )}
 
             <CursorGlow />
+            <button
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="fixed bottom-8 right-8 p-2 transition-all duration-300 group text-white opacity-60 hover:opacity-100 hover:text-[#E8DDB5] hover:scale-110"
+                aria-label="Scroll to top"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="transform group-hover:-translate-y-1 transition-transform"
+                >
+                    <path d="m17 11-5-5-5 5" />
+                    <path d="m17 18l-5-5-5 5" />
+                </svg>
+            </button>
         </main>
     );
 }

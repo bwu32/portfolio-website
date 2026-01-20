@@ -181,7 +181,7 @@ export default function RightColumn() {
                             >
                                 computer engineering
                             </a>{" "}
-                            @ university of maryland, college park. i plan to graduate Spring 2026.
+                            @ university of maryland, college park. i plan to graduate spring 2026.
                         </p>
 
                         <p className="text-lg leading-relaxed mb-4">
