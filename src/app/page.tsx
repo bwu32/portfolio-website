@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Loader from "@/app/components/Loader";
 import Background from "@/app/components/Background";
 import LeftColumn from "@/app/components/LeftColumn";
 import RightColumn from "@/app/components/RightColumn";
+import MobileView from "@/app/components/MobileView"; // Import your new component
 import CursorGlow from "./components/CursorGlow";
 
 export default function Home() {
@@ -32,10 +32,17 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex min-h-screen">
+    <main className="min-h-screen">
       <Background />
+      
+      {/* 1. MOBILE VIEW: Shows only on small screens */}
+      <div className="block md:hidden relative z-10">
+        <MobileView />
+      </div>
+
+      {/* 2. DESKTOP VIEW: Shows only on medium (768px) screens and up */}
       <div 
-        className="flex w-full z-10 relative"
+        className="hidden md:flex w-full z-10 relative"
         style={{
           '--left-col-width': '26.67vw',
           '--right-col-width': '53.33vw',
