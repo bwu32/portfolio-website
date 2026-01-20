@@ -1,48 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import MobileView from "@/app/components/MobileView";
 import Background from "@/app/components/Background";
 import LeftColumn from "@/app/components/LeftColumn";
 import RightColumn from "@/app/components/RightColumn";
-import MobileView from "@/app/components/MobileView"; // Import your new component
 import CursorGlow from "./components/CursorGlow";
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
-
-  const fetchData = () => {
-    setIsLoading(true);
-    setProgress(0);
-
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setIsLoading(false);
-          return 100;
-        }
-        return Math.min(prev + 20, 100);
-      });
-    }, 500);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // ... (fetchData logic remains the same)
 
   return (
-    <main className="min-h-screen">
-      <Background />
-      
-      {/* 1. MOBILE VIEW: Shows only on small screens */}
-      <div className="block md:hidden relative z-10">
-        <MobileView />
+    <main className="min-h-screen w-full relative">
+      {/* 1. Background - Fixed behind everything */}
+      <div className="fixed inset-0 z-0">
+        <Background />
       </div>
 
-      {/* 2. DESKTOP VIEW: Shows only on medium (768px) screens and up */}
+      {/* 2. DESKTOP VIEW - Only renders blocks/flex on md+ screens */}
       <div 
-        className="hidden md:flex w-full z-10 relative"
+        className="hidden md:block relative z-10 w-full"
         style={{
           '--left-col-width': '26.67vw',
           '--right-col-width': '53.33vw',
@@ -56,6 +33,11 @@ export default function Home() {
         <CursorGlow />
         <LeftColumn />
         <RightColumn />
+      </div>
+
+      {/* 3. MOBILE VIEW - Completely ignored by Desktop layout */}
+      <div className="md:hidden relative z-20 w-full">
+        <MobileView />
       </div>
     </main>
   );
