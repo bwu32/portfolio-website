@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useMemo, useEffect, useRef } from "react"; // Added useRef
+import { useState, useMemo, useEffect, useRef } from "react";
 import { ArrowUpRight, Search, ChevronDown, RotateCcw } from "lucide-react";
 import ReactMarkdown from 'react-markdown';
 import CursorGlow from "@/app/components/CursorGlow";
@@ -33,27 +33,21 @@ export default function PortfolioContent() {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [showFilterDropdown, setShowFilterDropdown] = useState(false);
 
-    // Ref for the dropdown container
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         async function loadProjects() {
             try {
-                // 1. Fetch the dynamic list of slugs from your new API
                 const listResponse = await fetch('/api/projects');
                 const projectFiles: string[] = await listResponse.json();
 
                 if (!Array.isArray(projectFiles)) return;
 
-                // 2. Map through the slugs just like before
                 const loadedProjects = await Promise.all(
                     projectFiles.map(async (slug) => {
                         try {
                             const response = await fetch(`/icons/projects/${slug}.md`);
                             const text = await response.text();
-
-                            // ... (rest of your existing frontmatter parsing logic)
-
                             const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
                             const match = text.match(frontmatterRegex);
 
@@ -100,10 +94,8 @@ export default function PortfolioContent() {
         loadProjects();
     }, []);
 
-    // Handle Logic for Programmatic "CUSTOM" Display Mode
     useEffect(() => {
         const isFiltering = selectedCategories.length > 0 || searchQuery.length > 0;
-
         if (isFiltering) {
             setDisplayMode('custom');
         } else if (!isFiltering && displayMode === 'custom') {
@@ -111,23 +103,18 @@ export default function PortfolioContent() {
         }
     }, [selectedCategories, searchQuery]);
 
-    // Click Outside Listener
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
                 setShowFilterDropdown(false);
             }
         }
-
         if (showFilterDropdown) {
             document.addEventListener("mousedown", handleClickOutside);
         } else {
             document.removeEventListener("mousedown", handleClickOutside);
         }
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
+        return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [showFilterDropdown]);
 
     const clearAllFilters = () => {
@@ -136,22 +123,31 @@ export default function PortfolioContent() {
         setDisplayMode('all');
     };
 
-    const allCategories = useMemo(() => {
-        const categories = new Set<string>();
-        projects.forEach(p => p.category.forEach(cat => categories.add(cat)));
-        return Array.from(categories).sort();
+    const categoryCounts = useMemo(() => {
+        const counts: Record<string, number> = {};
+        projects.forEach(p => {
+            p.category.forEach(cat => {
+                counts[cat] = (counts[cat] || 0) + 1;
+            });
+        });
+        return counts;
     }, [projects]);
+
+    const allCategories = useMemo(() => {
+        return Object.keys(categoryCounts).sort();
+    }, [categoryCounts]);
 
     const filteredAndSortedProjects = useMemo(() => {
         return projects
             .filter(project => {
                 const matchesDisplay = displayMode === 'all' || displayMode === 'custom' || project.displayMode === displayMode;
 
-                // Enhanced search to include title, category, AND builtWith tags
+                const searchLower = searchQuery.toLowerCase();
                 const matchesSearch =
-                    project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    project.category.some(cat => cat.toLowerCase().includes(searchQuery.toLowerCase())) ||
-                    project.builtWith.some(tech => tech.toLowerCase().includes(searchQuery.toLowerCase()));
+                    project.title.toLowerCase().includes(searchLower) ||
+                    project.madeAt.toLowerCase().includes(searchLower) ||
+                    project.category.some(cat => cat.toLowerCase().includes(searchLower)) ||
+                    project.builtWith.some(tech => tech.toLowerCase().includes(searchLower));
 
                 const matchesCategory = selectedCategories.length === 0 ||
                     selectedCategories.some(cat => project.category.includes(cat));
@@ -170,13 +166,17 @@ export default function PortfolioContent() {
                 <span className="tracking-wide">BRIAN WU</span>
             </Link>
 
-            <h1 className="text-7xl text-[#E8DDB5] font-['Impact'] uppercase">ALL PROJECTS</h1>
+            <div className="flex items-baseline gap-4">
+                <h1 className="text-7xl text-[#E8DDB5] font-['Impact'] uppercase">ALL PROJECTS</h1>
+                <span className="text-2xl text-[#E8DDB5] opacity-60">
+                    [{filteredAndSortedProjects.length}]
+                </span>
+            </div>
 
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mt-4 mb-12">
-                <p className="text-lg text-white opacity-50 max-w-[300px] leading-relaxed">now this is awesome. //wip</p>
+                <p className="text-lg text-white opacity-50 max-w-[300px] leading-relaxed">now this is awesome.</p>
 
                 <div className="flex flex-wrap items-center gap-3 md:ml-auto">
-
                     {(selectedCategories.length > 0 || searchQuery !== "" || displayMode !== 'all') && (
                         <button
                             onClick={clearAllFilters}
@@ -201,7 +201,6 @@ export default function PortfolioContent() {
                         <ChevronDown className="w-3 h-3 text-white/40 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                     </div>
 
-                    {/* Category Filter - Wrapped in ref for click-away logic */}
                     <div className="relative" ref={dropdownRef}>
                         <button
                             onClick={() => setShowFilterDropdown(!showFilterDropdown)}
@@ -218,9 +217,10 @@ export default function PortfolioContent() {
                                     <button
                                         key={cat}
                                         onClick={() => setSelectedCategories(prev => prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat])}
-                                        className={`w-full text-left px-3 py-2 rounded text-[10px] uppercase tracking-tighter mb-1 transition-colors ${selectedCategories.includes(cat) ? "bg-[#5F72BF] text-white" : "text-white/60 hover:bg-white/5"}`}
+                                        className={`w-full text-left px-3 py-2 rounded text-xs uppercase tracking-tighter mb-1 transition-colors ${selectedCategories.includes(cat) ? "bg-[#5F72BF] text-white" : "text-white/60 hover:bg-white/5"}`}
                                     >
                                         {cat}
+                                        <span className="ml-1.5 opacity-60">[{categoryCounts[cat]}]</span>
                                     </button>
                                 ))}
                             </div>
@@ -240,7 +240,6 @@ export default function PortfolioContent() {
                 </div>
             </div>
 
-            {/* ...rest of the component remains the same */}
             <div className="sticky top-0 z-20 py-4 grid grid-cols-12 gap-4 text-white text-sm font-medium opacity-100 border-b border-white border-opacity-20 -mx-2 px-2">
                 <div className="col-span-1">Year</div>
                 <div className="col-span-3">Project</div>
@@ -250,48 +249,51 @@ export default function PortfolioContent() {
             </div>
 
             <div>
-                {filteredAndSortedProjects.map((project, index) => (
-                    <div
-                        key={project.slug}
-                        onMouseEnter={() => setHoveredIndex(index)}
-                        onMouseLeave={() => setHoveredIndex(null)}
-                        onClick={() => setSelectedProject(index)}
-                        className={`relative cursor-pointer transition-all duration-300 grid grid-cols-12 gap-4 py-6 border-b border-white border-opacity-20 group -mx-2 px-2 ${hoveredIndex !== null && hoveredIndex !== index ? "opacity-50" : "opacity-100"}`}
-                    >
-                        <div className="absolute inset-y-0 left-0 right-0 bg-gradient-to-r from-[#5F72BF] to-transparent opacity-0 group-hover:opacity-10 transition-opacity duration-300 pointer-events-none" />
-
-                        <div className="col-span-1 text-white opacity-60 text-sm">{new Date(project.date).getFullYear()}</div>
-                        <div className="col-span-3 text-white text-base group-hover:text-[#E8DDB5] transition-colors">{project.title}</div>
-                        <div className="col-span-2 text-white opacity-60 text-sm">{project.madeAt}</div>
-                        <div className="col-span-3 flex flex-wrap gap-2">
-                            {project.builtWith.map((tech, idx) => (
-                                <span key={idx} className="text-xs px-3 py-1 rounded-full bg-[#2b366d] text-white text-opacity-60 group-hover:text-opacity-100 group-hover:text-[#E8DDB5]">
-                                    {tech}
-                                </span>
-                            ))}
+                {filteredAndSortedProjects.length > 0 ? (
+                    filteredAndSortedProjects.map((project, index) => (
+                        <div
+                            key={project.slug}
+                            onMouseEnter={() => setHoveredIndex(index)}
+                            onMouseLeave={() => setHoveredIndex(null)}
+                            onClick={() => setSelectedProject(index)}
+                            className={`relative cursor-pointer transition-all duration-300 grid grid-cols-12 gap-4 py-6 border-b border-white border-opacity-20 group -mx-2 px-2 ${hoveredIndex !== null && hoveredIndex !== index ? "opacity-50" : "opacity-100"}`}
+                        >
+                            <div className="absolute inset-y-0 left-0 right-0 bg-gradient-to-r from-[#5F72BF] to-transparent opacity-0 group-hover:opacity-10 transition-opacity duration-300 pointer-events-none" />
+                            <div className="col-span-1 text-white opacity-60 text-sm">{new Date(project.date).getFullYear()}</div>
+                            <div className="col-span-3 text-white text-base group-hover:text-[#E8DDB5] transition-colors">{project.title}</div>
+                            <div className="col-span-2 text-white opacity-60 text-sm">{project.madeAt}</div>
+                            <div className="col-span-3 flex flex-wrap gap-2">
+                                {project.builtWith.map((tech, idx) => (
+                                    <span key={idx} className="text-xs px-3 py-1 rounded-full bg-[#2b366d] text-white text-opacity-60 group-hover:text-opacity-100 group-hover:text-[#E8DDB5]">
+                                        {tech}
+                                    </span>
+                                ))}
+                            </div>
+                            <div className="relative z-10 col-span-3 flex items-start">
+                                <a
+                                    href={project.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="text-white opacity-50 hover:opacity-100 transition-opacity text-sm flex items-start gap-1 leading-tight"
+                                >
+                                    <span className="leading-tight">{project.link.includes('http') ? new URL(project.link).hostname.replace('www.', '') : project.link}</span>
+                                    <ArrowUpRight className="w-3 h-3 flex-shrink-0 mt-0.5" />
+                                </a>
+                            </div>
                         </div>
-                        <div className="relative z-10 col-span-3 flex items-start">
-                            <a
-                                href={project.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={(e) => e.stopPropagation()}
-                                className="text-white opacity-50 hover:opacity-100 transition-opacity text-sm flex items-start gap-1 leading-tight"
-                            >
-                                <span className="leading-tight">{project.link.includes('http') ? new URL(project.link).hostname.replace('www.', '') : project.link}</span>
-                                <ArrowUpRight className="w-3 h-3 flex-shrink-0 mt-0.5" />
-                            </a>
-                        </div>
+                    ))
+                ) : (
+                    <div className="py-12 text-center">
+                        <p className="text-white/60 uppercase tracking-[0.2em] text-[16px]">No projects found :(</p>
                     </div>
-                ))}
+                )}
             </div>
 
-            {/* popup modal */}
             {selectedProject !== null && filteredAndSortedProjects[selectedProject] && (
                 <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-8" onClick={() => setSelectedProject(null)}>
                     <div className="bg-[#1a1f3a] rounded-lg max-w-6xl w-full max-h-[85vh] overflow-y-auto relative p-8 flex gap-8" onClick={e => e.stopPropagation()}>
                         <button className="absolute top-6 right-6 text-white text-3xl opacity-60 hover:opacity-100 z-50" onClick={() => setSelectedProject(null)}>✕</button>
-
                         <div className="w-2/5 flex-shrink-0 space-y-6">
                             <a href={filteredAndSortedProjects[selectedProject].link} target="_blank" className="flex items-center gap-3 group/title w-fit">
                                 <h2 className="text-4xl text-[#E8DDB5] font-['Impact'] group-hover/title:text-white transition-colors">
@@ -308,7 +310,6 @@ export default function PortfolioContent() {
                                 ))}
                             </div>
                         </div>
-
                         <div className="flex-1 text-white space-y-6 overflow-y-auto pr-4">
                             <ReactMarkdown
                                 components={{
