@@ -31,54 +31,46 @@ export default function NavLink({
   const [showDropdown, setShowDropdown] = useState(false)
   const [isAtBottom, setIsAtBottom] = useState(false)
 
-  useEffect(() => {
+ useEffect(() => {
     const handleScroll = () => {
-      // Check if we're at the bottom of the page
-      const isBottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 10
-      setIsAtBottom(isBottom)
+        const isBottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 10;
+        setIsAtBottom(isBottom);
 
-      if (isMoreLink) {
-        // For MORE link, activate when at bottom or dropdown is shown
-        setIsCurrent(isBottom || showDropdown)
-        // Auto-show dropdown when at bottom
-        if (isBottom) {
-          setShowDropdown(true)
+        if (isMoreLink) {
+            setIsCurrent(isBottom || showDropdown);
+            if (isBottom) setShowDropdown(true);
+            return;
         }
-        return
-      }
 
-      // Regular section detection logic for other nav items
-      const sections = document.querySelectorAll("section")
-      let activeFound = false
+        // FIX: Target only desktop sections by excluding hidden ones or 
+        // specifically targeting those inside the right column
+        const sections = document.querySelectorAll("section");
+        let activeFound = false;
 
-      sections.forEach((section) => {
-        const rect = section.getBoundingClientRect()
-        const offset = 100
-        if (rect.top <= offset && rect.bottom >= offset) {
-          if (href === `#${section.id}`) {
-            setIsCurrent(true)
-            activeFound = true
-          }
+        sections.forEach((section) => {
+            // Check if the section is actually visible (not part of the hidden MobileView)
+            if (section.offsetParent === null) return; 
+
+            const rect = section.getBoundingClientRect();
+            const offset = 200; // Adjusted for better detection
+            
+            if (rect.top <= offset && rect.bottom >= offset) {
+                if (href === `#${section.id}`) {
+                    setIsCurrent(true);
+                    activeFound = true;
+                }
+            }
+        });
+
+        if (!activeFound) {
+            setIsCurrent(false);
         }
-      })
+    };
 
-      if (!activeFound) {
-        const lastSection = sections[sections.length - 1]
-        const lastRect = lastSection.getBoundingClientRect()
-        const isLastLink = href === `#${lastSection.id}`
-      
-        if (isLastLink && lastRect.top <= 100) {
-          setIsCurrent(true)
-        } else {
-          setIsCurrent(false)
-        }
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    handleScroll() // Check on mount
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [href, isMoreLink, showDropdown])
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+}, [href, isMoreLink, showDropdown]);
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault()
