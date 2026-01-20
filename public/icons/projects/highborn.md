@@ -1,6 +1,7 @@
 ---
 date: "01/15/2025"
-title: "The Highborn"
+title: "The Highborn Lightsaber"
+type: "professional"
 madeAt: "ThePachStore"
 category: ["Product Design", "Commission"]
 image: "/icons/projects/lightsaber.jpg"

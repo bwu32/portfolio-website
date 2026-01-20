@@ -50,21 +50,21 @@ export default function RightColumn() {
         {
             title: "S.Q.U.I.D. Submersible Vehicle",
             description: "An automated pipeline that will detect whenever you achieve that #1 Victory Royale to generate and post celebratory/bragging LinkedIn posts.",
-            image: "/icons/projects/submarine.jpg",
+            image: "/icons/showcase/submarine.jpg",
             link: "https://docs.google.com/document/d/1_NqtkaeeCIUAikc76VfbriEUctMEloEBvPrhvJfcN-A/edit?usp=sharing",
             tech: ["Fusion 360 (CAD / CAM)", "Bambu Lab Slicer", "CNC Milling & Turning", "PCB Soldering", "Graphic Design"]
         },
         {
             title: "Fortnite LinkedIn Auto Poster",
             description: "An automated pipeline that will detect whenever you achieve that #1 Victory Royale to generate and post celebratory/bragging LinkedIn posts.",
-            image: "/icons/projects/linkedinautoposter.png",
+            image: "/icons/showcase/linkedinautoposter.png",
             link: "https://github.com/bwu32/fortnitelinkedinautoposter",
             tech: ["Python", "OpenCV", "Tesseract OCR", "OpenAI API", "LinkedIn API", "Selenium"]
         },
         {
             title: "The Highborn Lightsaber",
             description: "A custom lightsaber design that was designed and manufactured in collaboration with ThePachStore. Mass produced with 3000+ units sold worldwide.",
-            image: "/icons/projects/lightsaber.jpg",
+            image: "/icons/showcase/lightsaber.jpg",
             link: "https://www.thepachstore.com/products/wf-highborn-custom-saber-2021",
             tech: ["Fusion 360 (CAD / CAM)", "3D Printing", "CNC Milling & Turning", "PCB Soldering"]
         },
@@ -316,7 +316,7 @@ export default function RightColumn() {
             </section>
 
             <section id="experience" className="mb-6 p-12 scroll-mt-12">
-                <h2 className="text-2xl mb-8 text-white">EXPERIENCE</h2>
+                <h2 className="text-2xl mb-8 text-white">EXPERIENCE (wip)</h2>
                 <div className="space-y-4">
                     {experiences.map((exp, index) => (
                         <a

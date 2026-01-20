@@ -1,6 +1,7 @@
 ---
 date: "08/20/2024"
 title: "Collegiate Wushu Tournament Medal"
+type: "artwork"
 madeAt: "UMD Wushu Club"
 category: ["Product Design", "Personal"]
 image: "/icons/projects/medal.jpg"
