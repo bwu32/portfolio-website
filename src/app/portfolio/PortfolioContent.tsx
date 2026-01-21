@@ -196,7 +196,7 @@ export default function PortfolioContent() {
                             {displayMode === 'custom' && <option value="custom">CUSTOM</option>}
                             <option value="all">DISPLAY: ALL</option>
                             <option value="professional">Professional</option>
-                            <option value="artwork">Artwork</option>
+                            <option value="artwork">Personal</option>
                         </select>
                         <ChevronDown className="w-3 h-3 text-white/40 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                     </div>

@@ -13,20 +13,20 @@ export default function RightColumn() {
 
     const experiences = [
         {
-            period: "2025 — 2026",
+            period: "2025 — PRESENT",
+            title: "Research & Design Assistant",
+            company: "Professor Romel Gomez",
+            link: "https://ece.umd.edu/clark/faculty/399/Romel-Gomez",
+            description:
+                "Collaborated with a professor on interdisciplinary research and engineering projects spanning mechanical and electromechanical systems. Designed an autonomous catch-and-release landing platform for drones using linear actuators and magnetic deployment. Developed a zero-tolerance, angle-agnostic docking system featuring a rotating core and custom magnetic drone legs to ensure reliable capture and interlock."
+        },
+        {
+            period: "2024 — 2025",
             title: "Design Intern",
             company: "New Dim Sum Kingdom",
             link: "https://www.newdimsumkingdom.com/",
             description:
-                "number one victory royale yeah fortnite we're bout to get down get down 10 kills on the board right now just wiped out tomato town my friend just got downed i revived him now we're heading southbound",
-        },
-        {
-            period: "2024 — PRESENT",
-            title: "Social Media Manager",
-            company: "Bethel College Fellowship",
-            link: "https://instagram.com/bethelcollegefellowship",
-            description:
-                "the snow glows white on the mountain tonight not a footprint to be seen a kingdom of isolation and it looks like im the queen the wind is howling like this swirling storm inside couldn't keep it in heaven knows i tried",
+                "Created graphics and runs social media page to effectively promote and advertise the restaurant’s deals and updates as they occur. Worked directly with managers and owners to facilitate best interests of the restaurant through the social media page.",
         },
         {
             period: "2023 — 2024",
@@ -34,39 +34,71 @@ export default function RightColumn() {
             company: "Taiwanese American Student Association",
             link: "https://umcptasa.com",
             description:
-                "number one victory royale yeah fortnite we're bout to get down get down 10 kills on the board right now just wiped out tomato town my friend just got downed i revived him now we're heading southbound",
+                "Elevated the visual identity of social media platforms through collaborative design and publishing of 10+ graphics per month across cultural, social, and informational content, reaching 2,000+ students. Served on a 27-member board to plan and execute campus events promoting Taiwanese culture.",
         },
         {
             period: "2020 — 2021",
-            title: "Lightsaber Design Intern",
+            title: "Lightsaber Designer Intern",
             company: "ThePachStore",
             link: "https://thepachstore.com",
             description:
-                "number one victory royale yeah fortnite we're bout to get down get down 10 kills on the board right now just wiped out tomato town my friend just got downed i revived him now we're heading southbound now we're in the pleasant park streets look at the map go to the marked sheets",
+                "Collaborated with ThePachStore’s design team, gaining hands-on insight into electronics production and the full product development pipeline. Led the design of The Highborn lightsaber model for mass production, resulting in 3,000+ units sold worldwide.",
         },
     ]
 
     const projects = [
         {
             title: "S.Q.U.I.D. Submersible Vehicle",
-            description: "An automated pipeline that will detect whenever you achieve that #1 Victory Royale to generate and post celebratory/bragging LinkedIn posts.",
+            description: "Designed structural and mechanical systems for a watertight autonomous submersible vehicle. Engineered modular electronics housing and sealing system using custom-machined components while serving as primary structural lead. ",
             image: "/icons/showcase/submarine.jpg",
             link: "https://docs.google.com/document/d/1_NqtkaeeCIUAikc76VfbriEUctMEloEBvPrhvJfcN-A/edit?usp=sharing",
-            tech: ["Fusion 360 (CAD / CAM)", "Bambu Lab Slicer", "CNC Milling & Turning", "PCB Soldering", "Graphic Design"]
+            tech: [
+                "Fusion 360 (CAD / CAM)",
+                "CNC Milling & Turning",
+                "FDM & SLA 3D Printing",
+                "PCB Soldering",
+                "Circuitry",
+                "Arduino",
+                "Mechanical Design",
+                "Watertight Sealing",
+                "Rapid Prototyping"
+            ]
         },
         {
             title: "Fortnite LinkedIn Auto Poster",
-            description: "An automated pipeline that will detect whenever you achieve that #1 Victory Royale to generate and post celebratory/bragging LinkedIn posts.",
+            description: "An automated pipeline built using a hybrid computer vision and OCR pipeline to detect whenever you achieve that #1 Victory Royale to generate and post celebratory/bragging LinkedIn posts via Selenium and OpenAI API.",
             image: "/icons/showcase/linkedinautoposter.png",
             link: "https://github.com/bwu32/fortnitelinkedinautoposter",
-            tech: ["Python", "OpenCV", "Tesseract OCR", "OpenAI API", "LinkedIn API", "Selenium"]
+            tech: [
+                "Python",
+                "Computer Vision",
+                "OCR",
+                "OpenAI API",
+                "Selenium",
+                "Web Automation",
+                "AI Prompting",
+                "Real-Time Detection",
+                "Software Architecture"
+            ]
+
         },
         {
-            title: "The Highborn Lightsaber",
-            description: "A custom lightsaber design that was designed and manufactured in collaboration with ThePachStore. Mass produced with 3000+ units sold worldwide.",
-            image: "/icons/showcase/lightsaber.jpg",
+            title: "CAN Bus Security Simulation",
+            description: "Built a real-time CAN Bus security framework with multithreaded ECUs and layered cryptographic defenses, paired with a React/WebSocket dashboard for live attack monitoring, achieving 100% attack detection under 2ms latency.",
+            image: "/icons/showcase/canbus.png",
             link: "https://www.thepachstore.com/products/wf-highborn-custom-saber-2021",
-            tech: ["Fusion 360 (CAD / CAM)", "3D Printing", "CNC Milling & Turning", "PCB Soldering"]
+            tech: [
+                "Python",
+                "Multithreading",
+                "Cryptography (AES, HMAC)",
+                "CAN Bus Network",
+                "Intrusion Detection Systems",
+                "Rate Limiting",
+                "React",
+                "WebSockets",
+                "Full-Stack",
+            ]
+
         },
     ];
 
@@ -316,7 +348,7 @@ export default function RightColumn() {
             </section>
 
             <section id="experience" className="mb-6 p-12 scroll-mt-12">
-                <h2 className="text-2xl mb-8 text-white">EXPERIENCE (wip)</h2>
+                <h2 className="text-2xl mb-8 text-white">EXPERIENCE</h2>
                 <div className="space-y-4">
                     {experiences.map((exp, index) => (
                         <a
