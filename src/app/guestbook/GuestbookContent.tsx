@@ -9,16 +9,22 @@ import { ArrowUpRight } from "lucide-react";
 // Mock data
 const GUESTBOOK_ENTRIES = [
   {
-    name: "david hong",
-    website: "",
-    message: "sigma",
-    date: "2026-01-20"
-  },
-  {
     name: "ivyisaplant",
     website: "she has a website i swear",
     message: "meow",
     date: "2026-01-19"
+  },
+  {
+    name: "Raymond Truong",
+    website: "",
+    message: "i am recoil ray for a reason",
+    date: "2026-01-20"
+  },
+  {
+    name: "david hong",
+    website: "",
+    message: "sigma",
+    date: "2026-01-20"
   },
 ];
 
