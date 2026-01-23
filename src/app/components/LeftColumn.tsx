@@ -4,7 +4,7 @@ import { useState, useEffect, } from "react";
 
 function SubItem({ text }: { text: string }) {
     return (
-        <div className="text-[9px] tracking-[0.25em] text-white/30 uppercase font-bold pl-4 hover:text-[#E8DDB5] transition-colors duration-300 cursor-default">
+        <div className="text-[9px] tracking-[0.25em] text-white/30 uppercase font-bold pl-4 hover:text-white transition-colors duration-300 cursor-default">
             {text}
         </div>
     );
