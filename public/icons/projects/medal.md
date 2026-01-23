@@ -1,23 +1,21 @@
 ---
 date: "08/20/2024"
 title: "Collegiate Wushu Tournament Medal"
-type: "artwork"
+type: "professional"
 madeAt: "UMD Wushu Club"
 category: ["Product Design", "Personal"]
-image: "/icons/projects/medal.jpg"
 builtWith: ["Fusion 360", "3D Printing", "Metalworking"]
 link: "http://collegiatewushu.org/home.php"
 ---
 
-# Collegiate Wushu Tournament Medal
+# TITLE in yellow
 
-Custom commemorative medal design for the annual Collegiate Wushu Championship tournament, celebrating athletic achievement and traditional Chinese martial arts.
+Description in white
 
-## EXAMPLE TITLE
+## subheading in yellow
 
-### subtitle
+`yellow text for highlighting, inherits formatting`
 
-#### heading
+**bold, inherits formatting**
 
-- **yellow**: test
-- Bulletpoint
+- Bulletpoint, inherits formatting

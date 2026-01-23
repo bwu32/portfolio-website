@@ -48,7 +48,7 @@ export default function RightColumn() {
 
     const projects = [
         {
-            title: "S.Q.U.I.D. Submersible Vehicle",
+            title: "S.Q.U.I.D. Autonomous Submersible Vehicle",
             description: "Designed structural and mechanical systems for a watertight autonomous submersible vehicle. Engineered modular electronics housing and sealing system using custom-machined components while serving as primary structural lead. ",
             image: "/icons/showcase/submarine.jpg",
             link: "https://docs.google.com/document/d/1_NqtkaeeCIUAikc76VfbriEUctMEloEBvPrhvJfcN-A/edit?usp=sharing",
@@ -59,9 +59,10 @@ export default function RightColumn() {
                 "PCB Soldering",
                 "Circuitry",
                 "Arduino",
-                "Mechanical Design",
+                "Raspberry Pi",
+                "Rapid Prototyping",
                 "Watertight Sealing",
-                "Rapid Prototyping"
+                "Plastic/Polymer Processing"
             ]
         },
         {

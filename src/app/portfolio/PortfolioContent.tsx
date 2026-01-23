@@ -190,21 +190,21 @@ export default function PortfolioContent() {
     const currentImg = gallery[currentImageIndex] || gallery[0] || { src: '', caption: '' };
 
     const [showScrollTop, setShowScrollTop] = useState(false);
-  
-      // back to top button
-      useEffect(() => {
-          const handleScroll = () => {
-              // Appears after scrolling down one full window height
-              if (window.scrollY > window.innerHeight) {
-                  setShowScrollTop(true);
-              } else {
-                  setShowScrollTop(false);
-              }
-          };
-  
-          window.addEventListener("scroll", handleScroll);
-          return () => window.removeEventListener("scroll", handleScroll);
-      }, []);
+
+    // back to top button
+    useEffect(() => {
+        const handleScroll = () => {
+            // Appears after scrolling down one full window height
+            if (window.scrollY > window.innerHeight) {
+                setShowScrollTop(true);
+            } else {
+                setShowScrollTop(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     return (
         <main className="min-h-screen py-12 px-6 md:px-[240px]">
@@ -387,12 +387,64 @@ export default function PortfolioContent() {
 
                             {/* Scrollable Text Area */}
                             <div ref={modalContentRef} className="flex-1 overflow-y-auto p-8 pt-4 custom-scrollbar pr-12">
-                                <ReactMarkdown components={{
-                                    h1: ({ children }) => <h1 className="text-3xl font-['Impact'] text-[#E8DDB5] mb-4 uppercase">{children}</h1>,
-                                    p: ({ children }) => <p className="text-white/70 leading-relaxed mb-6">{children}</p>,
-                                }}>{activeProject.content || ''}</ReactMarkdown>
+                                <ReactMarkdown
+                                    components={{
+                                        // # TITLE (Maintained: Impact + Yellow)
+                                        h1: ({ children }) => (
+                                            <h1 className="text-3xl font-['Impact'] text-[#E8DDB5] mb-6 uppercase tracking-tight">
+                                                {children}
+                                            </h1>
+                                        ),
+                                        // ## subheading (Maintained: Bold + Yellow)
+                                        h2: ({ children }) => (
+                                            <h2 className="text-xl font-bold text-[#E8DDB5] mt-8 mb-4 uppercase tracking-wide">
+                                                {children}
+                                            </h2>
+                                        ),
+                                        // Description / Standard Text
+                                        p: ({ children }) => (
+                                            <p className="text-white/80 leading-relaxed mb-6 font-sans">
+                                                {children}
+                                            </p>
+                                        ),
+                                        // *italic text* - Just italics
+                                        em: ({ children }) => (
+                                            <em className="italic">
+                                                {children}
+                                            </em>
+                                        ),
+                                        // **bold text** - Just bold
+                                        strong: ({ children }) => (
+                                            <strong className="font-bold text-white">
+                                                {children}
+                                            </strong>
+                                        ),
+                                        // __text__ - Turns text yellow (Markdown usually maps __ to strong, 
+                                        // but we can use the `code` tag or `del` for a unique yellow trigger)
+                                        // Let's use `code` (backticks `text`) for the yellow override:
+                                        code: ({ children }) => (
+                                            <span className="text-[#E8DDB5] font-inherit">
+                                                {children}
+                                            </span>
+                                        ),
+                                        // Bulletpoint List
+                                        ul: ({ children }) => (
+                                            <ul className="list-disc list-outside ml-5 mb-6 space-y-2 text-white/80">
+                                                {children}
+                                            </ul>
+                                        ),
+                                        // Bulletpoint item - Same font/style as standard text (p)
+                                        li: ({ children }) => (
+                                            <li className="pl-2 font-sans leading-relaxed">
+                                                {children}
+                                            </li>
+                                        ),
+                                    }}
+                                >
+                                    {activeProject.content || ''}
+                                </ReactMarkdown>
 
-                                {/* Spacer to ensure text doesn't get hidden behind the floating button */}
+                                {/* Spacer */}
                                 <div className="h-12" />
                             </div>
 
