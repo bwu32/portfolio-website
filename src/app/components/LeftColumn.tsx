@@ -1,7 +1,47 @@
 import Image from "next/image"
 import NavLink from "./NavLink"
+import { useState, useEffect, } from "react";
+
+function SubItem({ text }: { text: string }) {
+    return (
+        <div className="text-[9px] tracking-[0.25em] text-white/30 uppercase font-bold pl-4 hover:text-[#E8DDB5] transition-colors duration-300 cursor-default">
+            {text}
+        </div>
+    );
+}
+
+
 
 export default function LeftColumn() {
+
+    const [activeSection, setActiveSection] = useState<string>("about");
+
+    useEffect(() => {
+        const observerOptions = {
+            root: null,
+            // This margin ensures the section is considered "active" 
+            // when it occupies the top-middle of the viewport
+            rootMargin: "-20% 0px -70% 0px",
+            threshold: 0,
+        };
+
+        const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    setActiveSection(entry.target.id);
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(handleIntersect, observerOptions);
+
+        // Target all sections in your page
+        const sections = document.querySelectorAll("section[id]");
+        sections.forEach((section) => observer.observe(section));
+
+        return () => observer.disconnect();
+    }, []);
+
     return (
         <div
             className="h-screen p-12 flex flex-col justify-between fixed"
@@ -24,16 +64,35 @@ export default function LeftColumn() {
                 </div>
 
                 <nav className="space-y-2">
-                    <NavLink
-                        href="#about"
-                        icon="/icons/snowflake.png"
-                        text="ABOUT"
-                        isActive={true}
-                    />
+                    <NavLink href="#about" icon="/icons/snowflake.png" text="ABOUT" />
                     <NavLink href="#portfolio" icon="/icons/cloudburst.png" text="PORTFOLIO" />
                     <NavLink href="#experience" icon="/icons/updraft.png" text="EXPERIENCE" />
                     <NavLink href="#skills" icon="/icons/tailwind.png" text="SKILLS" />
-                    <NavLink href="#more" icon="/icons/bladestorm.png" text="MORE" />
+
+                    {/* MORE Section Wrapper */}
+                    <div className="flex flex-col">
+                        <NavLink
+                            href="#more"
+                            icon="/icons/bladestorm.png"
+                            text="MORE"
+                            // Assuming your NavLink or parent logic determines this:
+                            isActive={activeSection === 'more'}
+                        />
+
+                        {/* Dropdown: Controlled by the same 'activeSection' logic */}
+                        <div className={`
+            grid transition-all duration-500 ease-in-out pl-10
+            ${activeSection === 'more'
+                                ? "grid-rows-[1fr] opacity-100 mt-3 translate-y-0"
+                                : "grid-rows-[0fr] opacity-0 mt-0 -translate-y-2 pointer-events-none"}
+        `}>
+                            <div className="overflow-hidden flex flex-col gap-3 border-l border-white/30 ml-1">
+                                <SubItem text="GUESTBOOK" />
+                                <SubItem text="VICTORY ROYALES" />
+                                <SubItem text="LEGO COLLECTION" />
+                            </div>
+                        </div>
+                    </div>
                 </nav>
             </div>
 

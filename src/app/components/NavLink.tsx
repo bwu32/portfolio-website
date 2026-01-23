@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import Image from "next/image"
-import Link from "next/link"
 import { ChevronDown } from "lucide-react"
 
 interface NavLinkProps {
@@ -13,75 +12,63 @@ interface NavLinkProps {
   isMoreLink?: boolean
   dropdownItems?: Array<{
     name: string
-    href: string
+    href: string // Kept in interface for compatibility, but ignored for clicking
     description?: string
   }>
 }
 
-export default function NavLink({ 
-  href, 
-  icon, 
-  text, 
-  isActive = false, 
+export default function NavLink({
+  href,
+  icon,
+  text,
+  isActive = false,
   isMoreLink = false,
   dropdownItems = []
 }: NavLinkProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [isCurrent, setIsCurrent] = useState(isActive)
   const [showDropdown, setShowDropdown] = useState(false)
-  const [isAtBottom, setIsAtBottom] = useState(false)
 
- useEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
-        const isBottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 10;
-        setIsAtBottom(isBottom);
+      // Detect if we are at the very bottom of the page
+      const isBottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 10;
 
-        if (isMoreLink) {
-            setIsCurrent(isBottom || showDropdown);
-            if (isBottom) setShowDropdown(true);
-            return;
+      const sections = document.querySelectorAll("section");
+      let activeFound = false;
+
+      sections.forEach((section) => {
+        if (section.offsetParent === null) return;
+
+        const rect = section.getBoundingClientRect();
+        const offset = 200;
+
+        if (rect.top <= offset && rect.bottom >= offset) {
+          if (href === `#${section.id}`) {
+            activeFound = true;
+          }
         }
+      });
 
-        // FIX: Target only desktop sections by excluding hidden ones or 
-        // specifically targeting those inside the right column
-        const sections = document.querySelectorAll("section");
-        let activeFound = false;
+      // Final active state determination
+      const active = activeFound || (isMoreLink && isBottom);
+      setIsCurrent(active);
 
-        sections.forEach((section) => {
-            // Check if the section is actually visible (not part of the hidden MobileView)
-            if (section.offsetParent === null) return; 
-
-            const rect = section.getBoundingClientRect();
-            const offset = 200; // Adjusted for better detection
-            
-            if (rect.top <= offset && rect.bottom >= offset) {
-                if (href === `#${section.id}`) {
-                    setIsCurrent(true);
-                    activeFound = true;
-                }
-            }
-        });
-
-        if (!activeFound) {
-            setIsCurrent(false);
-        }
+      // SYNC DROPDOWN: Open when section is active, close when it's not
+      if (isMoreLink) {
+        setShowDropdown(active);
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-}, [href, isMoreLink, showDropdown]);
+  }, [href, isMoreLink]);
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault()
-    
-    if (isMoreLink) {
-      // Toggle dropdown for MORE link
-      setShowDropdown(!showDropdown)
-      return
-    }
 
-    // Regular scroll behavior for other nav items
+    // Regular scroll behavior for all items (including MORE)
     const section = document.querySelector(href)
     if (section) {
       const sectionTop = section.getBoundingClientRect().top + window.pageYOffset
@@ -106,7 +93,6 @@ export default function NavLink({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Icon */}
         <Image
           src={icon || "/placeholder.svg"}
           alt={text}
@@ -115,49 +101,42 @@ export default function NavLink({
           className={`transition-opacity duration-300 ${getOpacityClass()}`}
         />
         <div className="flex items-center flex-1">
-          {/* Line */}
           <div
-            className={`h-[1px] bg-white transition-all duration-300 ${getOpacityClass()} ${isHovered || isCurrent ? "w-12" : "w-6"
-              }`}
+            className={`h-[1px] bg-white transition-all duration-300 ${getOpacityClass()} ${isHovered || isCurrent ? "w-12" : "w-6"}`}
           />
-          {/* Text */}
           <span
-            className={`ml-4 transition-all duration-300 font-medium ${isCurrent ? "opacity-100" : isHovered ? "opacity-70" : "opacity-50"
-              }`}
+            className={`ml-4 transition-all duration-300 font-medium ${isCurrent ? "opacity-100" : isHovered ? "opacity-70" : "opacity-50"}`}
           >
             {text}
           </span>
-          {/* Dropdown arrow for MORE link */}
           {isMoreLink && (
-            <ChevronDown 
-              className={`ml-2 w-4 h-4 transition-all duration-300 ${
-                showDropdown ? "rotate-180" : ""
-              } ${getOpacityClass()}`}
+            <ChevronDown
+              className={`ml-2 w-4 h-4 transition-all duration-300 ${showDropdown ? "rotate-180" : ""
+                } ${getOpacityClass()}`}
             />
           )}
         </div>
       </button>
 
-      {/* Dropdown Menu */}
+      {/* Dropdown Menu - Triggered by showDropdown (which is synced to active state) */}
       {isMoreLink && (
         <div className={`
-          overflow-hidden transition-all duration-300 ease-out
-          ${showDropdown ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}
+          overflow-hidden transition-all duration-500 ease-in-out
+          ${showDropdown ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0 mt-0"}
         `}>
-          <div className="mt-4 ml-10 space-y-2 border-l border-white border-opacity-20 pl-4">
+          <div className="ml-10 space-y-4 border-l border-white border-opacity-10 pl-4 py-2">
             {dropdownItems.map((item, index) => (
-              <Link
+              <div
                 key={index}
-                href={item.href}
-                className="block group/dropdown py-2 px-3 rounded-md transition-all duration-200 hover:bg-white hover:bg-opacity-10"
+                className="cursor-default"
               >
-                <div className="text-white opacity-60 group-hover/dropdown:opacity-100 transition-opacity">
-                  <div className="font-medium text-sm">{item.name}</div>
+                <div className="text-white opacity-30 transition-opacity">
+                  <div className="font-bold text-[10px] tracking-[0.2em] uppercase">{item.name}</div>
                   {item.description && (
-                    <div className="text-xs opacity-70 mt-1">{item.description}</div>
+                    <div className="text-[9px] opacity-70 mt-1 tracking-wider">{item.description}</div>
                   )}
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         </div>
