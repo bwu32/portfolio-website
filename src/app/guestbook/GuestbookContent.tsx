@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo } from "react"; // Added useMemo
 import Background from "@/app/components/Background";
+import { useState, useEffect } from "react";
 import CursorGlow from "@/app/components/CursorGlow";
 import { ArrowUpRight } from "lucide-react";
 
@@ -26,12 +27,36 @@ const GUESTBOOK_ENTRIES = [
     message: "sigma",
     date: "2026-01-20"
   },
+  {
+    name: "pocket",
+    website: "",
+    message: "≽^-⩊-^≼",
+    date: "2026-01-21"
+  },
 ];
 
 export default function GuestbookContent() {
   // Auto-sort entries by date (Descending: Newest first)
+
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  
+      // back to top button
+      useEffect(() => {
+          const handleScroll = () => {
+              // Appears after scrolling down one full window height
+              if (window.scrollY > window.innerHeight) {
+                  setShowScrollTop(true);
+              } else {
+                  setShowScrollTop(false);
+              }
+          };
+  
+          window.addEventListener("scroll", handleScroll);
+          return () => window.removeEventListener("scroll", handleScroll);
+      }, []);
+
   const sortedEntries = useMemo(() => {
-    return [...GUESTBOOK_ENTRIES].sort((a, b) => 
+    return [...GUESTBOOK_ENTRIES].sort((a, b) =>
       new Date(b.date).getTime() - new Date(a.date).getTime()
     );
   }, []);
@@ -75,7 +100,7 @@ export default function GuestbookContent() {
       </div>
 
       <p className="text-lg text-white opacity-50 max-w-[500px] leading-relaxed mb-12">
-        now this is awesome. come sign my guestbook! 
+        now this is awesome. come sign my guestbook!
       </p>
 
       {/* Table Header */}
@@ -128,14 +153,30 @@ export default function GuestbookContent() {
 
       {/* Scroll to Top */}
       <button
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="fixed bottom-8 right-8 p-2 transition-all duration-300 group text-white opacity-60 hover:opacity-100 hover:text-[#E8DDB5] hover:scale-110"
-        aria-label="Scroll to top"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="transform group-hover:-translate-y-1 transition-transform">
-          <path d="m17 11-5-5-5 5" /><path d="m17 18l-5-5-5 5" />
-        </svg>
-      </button>
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className={`fixed bottom-8 right-8 p-2 transition-all duration-500 z-50 group text-white hover:text-[#E8DDB5] hover:scale-110 
+        ${showScrollTop
+                        ? "opacity-60 translate-y-0 pointer-events-auto"
+                        : "opacity-0 translate-y-10 pointer-events-none"
+                    } hover:opacity-100`}
+                aria-label="Scroll to top"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="transform group-hover:-translate-y-1 transition-transform"
+                >
+                    <path d="m17 11-5-5-5 5" />
+                    <path d="m17 18l-5-5-5 5" />
+                </svg>
+            </button>
     </main>
   );
 }
