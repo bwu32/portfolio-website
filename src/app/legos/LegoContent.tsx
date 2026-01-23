@@ -46,6 +46,23 @@ export default function LegoContent() {
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [selectedIndex, legoSets.length]);
 
+    const [showScrollTop, setShowScrollTop] = useState(false);
+
+    // back to top button
+    useEffect(() => {
+        const handleScroll = () => {
+            // Appears after scrolling down one full window height
+            if (window.scrollY > window.innerHeight) {
+                setShowScrollTop(true);
+            } else {
+                setShowScrollTop(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
     return (
         <main
             className="min-h-screen py-12"
@@ -150,7 +167,11 @@ export default function LegoContent() {
             <CursorGlow />
             <button
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="fixed bottom-8 right-8 p-2 transition-all duration-300 group text-white opacity-60 hover:opacity-100 hover:text-[#E8DDB5] hover:scale-110"
+                className={`fixed bottom-8 right-8 p-2 transition-all duration-500 z-50 group text-white hover:text-[#E8DDB5] hover:scale-110 
+        ${showScrollTop
+                        ? "opacity-60 translate-y-0 pointer-events-auto"
+                        : "opacity-0 translate-y-10 pointer-events-none"
+                    } hover:opacity-100`}
                 aria-label="Scroll to top"
             >
                 <svg

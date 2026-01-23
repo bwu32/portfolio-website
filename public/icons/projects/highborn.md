@@ -17,6 +17,6 @@ images: [
 ]
 ---
 
-# The Highborn: A Custom Lightsaber Design
+# hello
 
 A custom lightsaber design that was designed and manufactured in collaboration with ThePachStore. This project achieved mass production with over 3000+ units sold worldwide.
