@@ -295,20 +295,14 @@ export default function PortfolioContent() {
             {/* MODAL */}
             {activeProject && (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 md:p-8 bg-black/40 backdrop-blur-[2px]" onClick={() => { setSelectedProject(null); setCurrentImageIndex(0); }}>
-                    <div className="relative w-full max-w-7xl h-fit max-h-[85vh] flex flex-col md:flex-row shadow-2xl rounded-xl border border-white/10 bg-[#1a1f3a] overflow-hidden" onClick={e => e.stopPropagation()}>
+                    <div className="relative w-full max-w-7xl h-fit flex flex-col md:flex-row shadow-2xl rounded-xl border border-white/10 bg-[#1a1f3a] overflow-hidden" onClick={e => e.stopPropagation()}>
 
-                        {/* LEFT SIDE: Media & Metadata */}
-                        <div className="w-full md:w-[40%] p-8 flex flex-col gap-6 border-r border-white/10 bg-black/20 overflow-y-auto">
+                        {/* LEFT SIDE: The "Height Master" (No overflow-y-auto here) */}
+                        <div className="w-full md:w-[40%] p-8 flex flex-col gap-6 border-r border-white/10 bg-black/20">
                             <div className="space-y-3">
                                 <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-black/40 border border-white/5 group">
                                     <Image src={currentImg.src} alt="" fill className="object-contain" unoptimized priority />
-                                    {gallery.length > 1 && (
-                                        <>
-                                            <button onClick={() => setCurrentImageIndex(prev => (prev - 1 + gallery.length) % gallery.length)} className="absolute left-2 top-1/2 -translate-y-1/2 p-1 bg-black/50 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity z-10"><ChevronLeft className="w-5 h-5" /></button>
-                                            <button onClick={() => setCurrentImageIndex(prev => (prev + 1) % gallery.length)} className="absolute right-2 top-1/2 -translate-y-1/2 p-1 bg-black/50 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity z-10"><ChevronRight className="w-5 h-5" /></button>
-                                        </>
-                                    )}
-                                    <div onClick={() => setIsFullGalleryOpen(true)} className="absolute inset-0 cursor-pointer" />
+                                    {/* ... Gallery Nav Buttons ... */}
                                 </div>
                                 <p className="text-[11px] text-[#E8DDB5] opacity-60 tracking-[0.2em] uppercase italic">{currentImg.caption}</p>
                             </div>
@@ -356,106 +350,99 @@ export default function PortfolioContent() {
                         </div>
 
                         {/* RIGHT SIDE: Content */}
-                        <div className="flex-1 flex flex-col min-h-0 relative">
-                            {/* Close Button */}
-                            <button
-                                className="absolute top-6 right-6 text-white/40 hover:text-white z-30 transition-transform"
-                                onClick={() => setSelectedProject(null)}
-                            >
-                                <X className="w-6 h-6" />
-                            </button>
+                        <div className="relative flex-1 bg-[#1a1f3a]">
+                            {/* This absolute wrapper forces the right side to match the 
+        height of the left side while allowing internal scrolling.
+    */}
+                            <div className="absolute inset-0 flex flex-col min-h-full">
 
-                            {/* Header */}
-                            <div className="p-8 pb-4">
-                                <a
-                                    href={activeProject.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="group inline-block"
-                                >
-                                    <div className="flex items-start gap-3">
-                                        <h2 className="text-4xl text-[#E8DDB5] font-['Impact'] uppercase leading-none group-hover:text-white transition-colors">
-                                            {activeProject.title}
-                                        </h2>
-                                        <ArrowUpRight className="w-6 h-6 text-[#E8DDB5] opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
-                                    </div>
-                                    <p className="text-white/40 font-medium tracking-[0.3em] text-[11px] uppercase mt-2 group-hover:text-white/60 transition-colors">
-                                        {activeProject.madeAt}
-                                    </p>
-                                </a>
-                            </div>
-
-                            {/* Scrollable Text Area */}
-                            <div ref={modalContentRef} className="flex-1 overflow-y-auto p-8 pt-4 custom-scrollbar pr-12">
-                                <ReactMarkdown
-                                    components={{
-                                        // # TITLE (Maintained: Impact + Yellow)
-                                        h1: ({ children }) => (
-                                            <h1 className="text-3xl font-['Impact'] text-[#E8DDB5] mb-6 uppercase tracking-tight">
-                                                {children}
-                                            </h1>
-                                        ),
-                                        // ## subheading (Maintained: Bold + Yellow)
-                                        h2: ({ children }) => (
-                                            <h2 className="text-xl font-bold text-[#E8DDB5] mt-8 mb-4 uppercase tracking-wide">
-                                                {children}
-                                            </h2>
-                                        ),
-                                        // Description / Standard Text
-                                        p: ({ children }) => (
-                                            <p className="text-white/80 leading-relaxed mb-6 font-sans">
-                                                {children}
-                                            </p>
-                                        ),
-                                        // *italic text* - Just italics
-                                        em: ({ children }) => (
-                                            <em className="italic">
-                                                {children}
-                                            </em>
-                                        ),
-                                        // **bold text** - Just bold
-                                        strong: ({ children }) => (
-                                            <strong className="font-bold text-white">
-                                                {children}
-                                            </strong>
-                                        ),
-                                        // __text__ - Turns text yellow (Markdown usually maps __ to strong, 
-                                        // but we can use the `code` tag or `del` for a unique yellow trigger)
-                                        // Let's use `code` (backticks `text`) for the yellow override:
-                                        code: ({ children }) => (
-                                            <span className="text-[#E8DDB5] font-inherit">
-                                                {children}
-                                            </span>
-                                        ),
-                                        // Bulletpoint List
-                                        ul: ({ children }) => (
-                                            <ul className="list-disc list-outside ml-5 mb-6 space-y-2 text-white/80">
-                                                {children}
-                                            </ul>
-                                        ),
-                                        // Bulletpoint item - Same font/style as standard text (p)
-                                        li: ({ children }) => (
-                                            <li className="pl-2 font-sans leading-relaxed">
-                                                {children}
-                                            </li>
-                                        ),
-                                    }}
-                                >
-                                    {activeProject.content || ''}
-                                </ReactMarkdown>
-
-                                {/* Spacer */}
-                                <div className="h-12" />
-                            </div>
-
-                            {/* Fixed Button: Now anchored to the bottom-right of the physical modal box */}
-                            <div className="absolute bottom-6 right-8 z-30">
+                                {/* Close Button */}
                                 <button
-                                    onClick={() => modalContentRef.current?.scrollTo({ top: 0, behavior: 'smooth' })}
-                                    className="sticky bottom-0 float-right group text-white opacity-60 hover:opacity-100 hover:text-[#E8DDB5]"
+                                    className="absolute top-6 right-6 text-white/40 hover:text-white z-30 transition-transform hover:scale-110"
+                                    onClick={() => setSelectedProject(null)}
                                 >
-                                    <ChevronUpIcon className="transform group-hover:-translate-y-1 transition-transform" />
+                                    <X className="w-6 h-6" />
                                 </button>
+
+                                {/* Header Section */}
+                                <div className="p-8 pb-4">
+                                    <a
+                                        href={activeProject.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="group inline-block"
+                                    >
+                                        <div className="flex items-start gap-3">
+                                            <h2 className="text-4xl text-[#E8DDB5] font-['Impact'] uppercase leading-none group-hover:text-white transition-colors">
+                                                {activeProject.title}
+                                            </h2>
+                                            <ArrowUpRight className="w-6 h-6 text-[#E8DDB5] opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
+                                        </div>
+                                        <p className="text-white/40 font-medium tracking-[0.3em] text-[11px] uppercase mt-2 group-hover:text-white/60 transition-colors">
+                                            {activeProject.madeAt}
+                                        </p>
+                                    </a>
+                                </div>
+
+                                {/* Scrollable Text Area */}
+                                <div
+                                    ref={modalContentRef}
+                                    className="flex-1 overflow-y-auto p-8 pt-4 custom-scrollbar pr-12"
+                                >
+                                    <ReactMarkdown
+                                        components={{
+                                            h1: ({ children }) => (
+                                                <h1 className="text-3xl font-['Impact'] text-[#E8DDB5] mb-6 uppercase tracking-tight">
+                                                    {children}
+                                                </h1>
+                                            ),
+                                            h2: ({ children }) => (
+                                                <h2 className="text-xl font-bold text-[#E8DDB5] mt-8 mb-4 uppercase tracking-wide">
+                                                    {children}
+                                                </h2>
+                                            ),
+                                            p: ({ children }) => (
+                                                <p className="text-white/80 leading-relaxed mb-6 font-sans">
+                                                    {children}
+                                                </p>
+                                            ),
+                                            em: ({ children }) => (
+                                                <em className="italic">{children}</em>
+                                            ),
+                                            strong: ({ children }) => (
+                                                <strong className="font-bold text-white">{children}</strong>
+                                            ),
+                                            code: ({ children }) => (
+                                                <span className="text-[#E8DDB5] font-inherit">{children}</span>
+                                            ),
+                                            ul: ({ children }) => (
+                                                <ul className="list-disc list-outside ml-5 mb-6 space-y-2 text-white/80">
+                                                    {children}
+                                                </ul>
+                                            ),
+                                            li: ({ children }) => (
+                                                <li className="pl-2 font-sans leading-relaxed">
+                                                    {children}
+                                                </li>
+                                            ),
+                                        }}
+                                    >
+                                        {activeProject.content || ''}
+                                    </ReactMarkdown>
+
+                                    {/* Bottom Spacer to ensure text isn't cut off by the fixed button */}
+                                    <div className="h-20" />
+                                </div>
+
+                                {/* Fixed Scroll-to-Top Button */}
+                                <div className="absolute bottom-6 right-8 z-30">
+                                    <button
+                                        onClick={() => modalContentRef.current?.scrollTo({ top: 0, behavior: 'smooth' })}
+                                        className="group p-2 text-white opacity-60 hover:opacity-100 hover:text-[#E8DDB5] transition-all"
+                                    >
+                                        <ChevronUpIcon className="w-6 h-6 transform group-hover:-translate-y-1 transition-transform" />
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -35,3 +35,33 @@ body {
   background-color: var(--navy-bg);
   color: var(--text-cream);
 }
+
+/* Apply to the whole page and all scrollable elements */
+::-webkit-scrollbar {
+  width: 8px; /* Slightly wider for the main page, or keep at 6px for slim look */
+  height: 8px; /* For horizontal scrollbars */
+}
+
+/* The background track */
+::-webkit-scrollbar-track {
+  background: #141830; /* Slightly darker than your modal to create depth */
+}
+
+/* The draggable handle */
+::-webkit-scrollbar-thumb {
+  background: #2b366d; /* Your signature dark blue */
+  border-radius: 10px;
+  border: 2px solid #141830; /* Creates a "floating" effect by matching the track color */
+  transition: all 0.3s ease;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #3d4b8a; /* Lighter blue on hover */
+}
+
+/* Firefox Support (Universal) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2b366d #0f1225;
+}

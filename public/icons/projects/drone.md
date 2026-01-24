@@ -16,7 +16,6 @@ The platform utilizes a **`rotating landing pad`** driven by a custom ring-and-s
 
 - **Zero-Tolerance Docking:** Engineered custom drone landing gear with magnetic interfaces that lock into the rotating core upon contact.
 - **Precision Fabrication:** Developed proprietary mechanical connection points to ensure structural integrity while minimizing reliance on adhesives.
-- **Material Optimization:** Integrated a thin **`Plexiglass`** surface to provide structural rigidity without sacrificing magnetic flux density.
 
 ## Prototyping & Iteration
 
@@ -26,3 +25,4 @@ The project underwent extensive **`rapid prototyping`** to refine the gear toler
 - **Digital Fabrication:** Produced multiple functional prototypes using **`FDM and SLA 3D printing`**, iterating on the spur gear tooth profile for smooth engagement with the aluminum bearing ring.
 - **Assembly:** Final assembly utilized a standardized **`M4 hardware`** architecture for ease of maintenance and modularity.
 
+wip, more tba

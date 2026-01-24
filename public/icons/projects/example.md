@@ -1,10 +1,10 @@
 ---
-date: "MM/DD/YYYY"
+date: "12/30/2005"
 title: "Title"
 type: "professional OR artwork, pick one tag"
 madeAt: "Organization"
-category: ["EXAMPLE", "EXAMPLE"]
-builtWith: ["skills", "skills", "skills"]
+category: ["EXAMPLE", "EXAMPLE2"]
+builtWith: ["skills1", "skills2", "skills3"]
 link: "LINK"
 ---
 
