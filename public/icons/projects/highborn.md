@@ -3,7 +3,7 @@ date: "02/20/2021"
 title: "The Highborn Lightsaber"
 type: "professional"
 madeAt: "ThePachStore"
-category: ["Product Design", "Personal", "High School"]
+category: ["Product Design", "Personal", "Electronics"]
 builtWith: ["Fusion 360 (CAD / CAM)", "FDM & SLA 3D Printing", "CNC Milling & Turning", "PCB Soldering", "Circuitry"]
 link: "https://www.thepachstore.com/products/wf-highborn-custom-saber-2021"
 ---

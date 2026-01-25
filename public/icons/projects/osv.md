@@ -3,7 +3,7 @@ date: "10/6/2022"
 title: "Over Surface Vehicle Project: Lightning Mikequeen"
 type: "professional"
 madeAt: "UMD ENES100"
-category: ["Robotics", "Academic", "Engineering"]
+category: ["Robotics", "Academic", "Engineering", "Electronics"]
 builtWith: ["Fusion 360 (CAD / CAM)", "Arduino", "FDM & SLA 3D Printing", "Circuitry", "PCB Soldering", "Adobe Illustrator", "Canva", "Laser Cutting"]
 link: "https://docs.google.com/presentation/d/1ugDpPFy-XzaoUg1R_kzQcx0XVL12JpujeI3ZRqU6OSE/edit?usp=sharing"
 ---
