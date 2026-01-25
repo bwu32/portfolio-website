@@ -162,21 +162,49 @@ export default function PortfolioContent() {
     // Nav & Escape
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
+            // PRIORITY 1: Close Filter Dropdown if open
+            if (e.key === 'Escape' && showFilterDropdown) {
+                setShowFilterDropdown(false);
+                return;
+            }
+
+            // Keep your existing project logic below
             if (selectedProject === null) return;
+
             if (e.key === 'Escape') {
                 if (isFullGalleryOpen) setIsFullGalleryOpen(false);
                 else { setSelectedProject(null); setCurrentImageIndex(0); }
                 return;
             }
+
             const activeProject = filteredAndSortedProjects[selectedProject];
             const currentGallery = activeProject?.images || [];
             if (currentGallery.length <= 1) return;
             if (e.key === 'ArrowRight') setCurrentImageIndex(prev => (prev + 1) % currentGallery.length);
             if (e.key === 'ArrowLeft') setCurrentImageIndex(prev => (prev - 1 + currentGallery.length) % currentGallery.length);
         };
+
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [selectedProject, isFullGalleryOpen, filteredAndSortedProjects]);
+        // Add showFilterDropdown to dependencies
+    }, [selectedProject, isFullGalleryOpen, filteredAndSortedProjects, showFilterDropdown]);
+
+    // Click Outside Filter Dropdown
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                showFilterDropdown &&
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target as Node)
+            ) {
+                setShowFilterDropdown(false);
+            }
+        };
+
+        // Use mousedown for a snappier response
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [showFilterDropdown]);
 
     const activeProject = selectedProject !== null ? filteredAndSortedProjects[selectedProject] : null;
 
@@ -270,26 +298,50 @@ export default function PortfolioContent() {
             </div>
 
             {/* List */}
-            <div>
-                {filteredAndSortedProjects.map((project, index) => (
-                    <div key={project.slug} onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)} onClick={() => setSelectedProject(index)} className={`relative cursor-pointer transition-all duration-300 grid grid-cols-12 gap-4 py-6 border-b border-white border-opacity-20 group -mx-2 px-2 ${hoveredIndex !== null && hoveredIndex !== index ? "opacity-50" : "opacity-100"}`}>
-                        <div className="absolute inset-y-0 left-0 right-0 bg-gradient-to-r from-[#5F72BF] to-transparent opacity-0 group-hover:opacity-10 pointer-events-none" />
-                        <div className="col-span-1 text-white opacity-60 text-sm">{new Date(project.date).getFullYear()}</div>
-                        <div className="col-span-3 text-white text-base group-hover:text-[#E8DDB5]">{project.title}</div>
-                        <div className="col-span-2 text-white opacity-60 text-sm">{project.madeAt}</div>
-                        <div className="col-span-3 flex flex-wrap gap-2">
-                            {project.builtWith.map((tech, idx) => (
-                                <span key={idx} className="text-xs px-3 py-1 rounded-full bg-[#2b366d] text-white/60 group-hover:text-[#E8DDB5]">{tech}</span>
-                            ))}
+            {/* List */}
+            <div className="mt-2">
+                {filteredAndSortedProjects.length > 0 ? (
+                    filteredAndSortedProjects.map((project, index) => (
+                        <div
+                            key={project.slug}
+                            onMouseEnter={() => setHoveredIndex(index)}
+                            onMouseLeave={() => setHoveredIndex(null)}
+                            onClick={() => setSelectedProject(index)}
+                            className={`relative cursor-pointer transition-all duration-300 grid grid-cols-12 gap-4 py-6 border-b border-white border-opacity-20 group -mx-2 px-2 ${hoveredIndex !== null && hoveredIndex !== index ? "opacity-50" : "opacity-100"}`}
+                        >
+                            <div className="absolute inset-y-0 left-0 right-0 bg-gradient-to-r from-[#5F72BF] to-transparent opacity-0 group-hover:opacity-10 pointer-events-none" />
+                            <div className="col-span-1 text-white opacity-60 text-sm">{new Date(project.date).getFullYear()}</div>
+                            <div className="col-span-3 text-white text-base group-hover:text-[#E8DDB5]">{project.title}</div>
+                            <div className="col-span-2 text-white opacity-60 text-sm">{project.madeAt}</div>
+                            <div className="col-span-3 flex flex-wrap gap-2">
+                                {project.builtWith.map((tech, idx) => (
+                                    <span key={idx} className="text-xs px-3 py-1 rounded-full bg-[#2b366d] text-white/60 group-hover:text-[#E8DDB5]">{tech}</span>
+                                ))}
+                            </div>
+                            <div className="col-span-3 flex items-start">
+                                <a href={project.link} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="text-white/50 hover:text-white text-sm flex items-start gap-1">
+                                    <span>{project.link.includes('http') ? new URL(project.link).hostname.replace('www.', '') : project.link}</span>
+                                    <ArrowUpRight className="w-3 h-3 mt-0.5" />
+                                </a>
+                            </div>
                         </div>
-                        <div className="col-span-3 flex items-start">
-                            <a href={project.link} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="text-white/50 hover:text-white text-sm flex items-start gap-1">
-                                <span>{project.link.includes('http') ? new URL(project.link).hostname.replace('www.', '') : project.link}</span>
-                                <ArrowUpRight className="w-3 h-3 mt-0.5" />
-                            </a>
-                        </div>
+                    ))
+                ) : (
+                    /* Empty State */
+                    <div className="flex flex-col items-center justify-center py-32 animate-in fade-in duration-700">
+                        <Search className="w-12 h-12 text-white/10 mb-6" />
+                        <h3 className="text-xl text-white/60 font-bold tracking-widest mb-2">no projects found :(</h3>
+                        <p className="text-white/40 text-sm mb-8 text-center max-w-xs">
+                            there are no matches for "{searchQuery}".
+                        </p>
+                        <button
+                            onClick={() => { setSearchQuery(""); setSelectedCategories([]); setDisplayMode('all'); }}
+                            className="flex items-center gap-2 px-6 py-3 bg-[#2b366d] hover:bg-[#3d4ba3] text-white text-[10px] font-bold uppercase tracking-[0.2em] rounded-full transition-all border border-white/10"
+                        >
+                            <RotateCcw className="w-3 h-3" /> Reset All Filters?
+                        </button>
                     </div>
-                ))}
+                )}
             </div>
 
             {/* MODAL */}
@@ -300,20 +352,70 @@ export default function PortfolioContent() {
                         {/* LEFT SIDE: The "Height Master" (No overflow-y-auto here) */}
                         <div className="w-full md:w-[40%] p-8 flex flex-col gap-6 border-r border-white/10 bg-black/20">
                             <div className="space-y-3">
+                                {/* Main Image Container */}
                                 <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-black/40 border border-white/5 group">
-                                    <Image src={currentImg.src} alt="" fill className="object-contain" unoptimized priority />
-                                    {/* ... Gallery Nav Buttons ... */}
+                                    {/* CLICKABLE IMAGE: Triggers Lightbox */}
+                                    <button
+                                        onClick={() => setIsFullGalleryOpen(true)}
+                                        className="relative w-full h-full"
+                                    >
+                                        <Image
+                                            src={currentImg.src}
+                                            alt=""
+                                            fill
+                                            className="object-contain transition-transform duration-500"
+                                            unoptimized
+                                            priority
+                                        />
+                                    </button>
+
+                                    {/* NAVIGATION ARROWS: Only show if there's more than 1 image */}
+                                    {gallery.length > 1 && (
+                                        <>
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setCurrentImageIndex(prev => (prev - 1 + gallery.length) % gallery.length);
+                                                }}
+                                                className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/60 rounded-full text-white opacity-0 group-hover:opacity-100 transition-all hover:bg-black/90 z-20"
+                                            >
+                                                <ChevronLeft className="w-5 h-5" />
+                                            </button>
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setCurrentImageIndex(prev => (prev + 1) % gallery.length);
+                                                }}
+                                                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/60 rounded-full text-white opacity-0 group-hover:opacity-100 transition-all hover:bg-black/90 z-20"
+                                            >
+                                                <ChevronRight className="w-5 h-5" />
+                                            </button>
+                                        </>
+                                    )}
                                 </div>
-                                <p className="text-[11px] text-[#E8DDB5] opacity-60 tracking-[0.2em] uppercase italic">{currentImg.caption}</p>
+
+                                <p className="text-[11px] text-[#E8DDB5] opacity-60 tracking-[0.2em] uppercase italic">
+                                    {currentImg.caption}
+                                </p>
                             </div>
 
+                            {/* THUMBNAILS GRID (Updated your map to slice properly) */}
                             <div className="grid grid-cols-4 gap-2">
                                 {gallery.slice(0, 3).map((img, i) => (
-                                    <button key={i} onClick={() => setCurrentImageIndex(i)} className={`relative aspect-square rounded-md overflow-hidden border-2 transition-all ${currentImageIndex === i ? 'border-[#E8DDB5]' : 'border-transparent opacity-40'}`}>
+                                    <button
+                                        key={i}
+                                        onClick={() => setCurrentImageIndex(i)}
+                                        className={`relative aspect-square rounded-md overflow-hidden border-2 transition-all ${currentImageIndex === i ? 'border-[#E8DDB5]' : 'border-transparent opacity-40 hover:opacity-100'}`}
+                                    >
                                         <Image src={img.src} alt="" fill className="object-cover" unoptimized />
                                     </button>
                                 ))}
-                                <button onClick={() => setIsFullGalleryOpen(true)} className="relative aspect-square rounded-md overflow-hidden flex flex-col items-center justify-center border border-white/10 group bg-black">
+
+                                {/* VIEW ALL / MORE button */}
+                                <button
+                                    onClick={() => setIsFullGalleryOpen(true)}
+                                    className="relative aspect-square rounded-md overflow-hidden flex flex-col items-center justify-center border border-white/10 group bg-black"
+                                >
                                     <Image
                                         src={gallery[3]?.src || gallery[0]?.src || ""}
                                         alt=""
@@ -328,7 +430,7 @@ export default function PortfolioContent() {
                                 </button>
                             </div>
 
-                            {/* Tags Meta */}
+                            {/* Tags Meta (Remains the same as your snippet) */}
                             <div className="space-y-6 pt-4 border-t border-white/5">
                                 <div>
                                     <h4 className="text-[10px] uppercase tracking-[0.2em] text-white/30 mb-3">Categories</h4>
@@ -351,9 +453,6 @@ export default function PortfolioContent() {
 
                         {/* RIGHT SIDE: Content */}
                         <div className="relative flex-1 bg-[#1a1f3a]">
-                            {/* This absolute wrapper forces the right side to match the 
-        height of the left side while allowing internal scrolling.
-    */}
                             <div className="absolute inset-0 flex flex-col min-h-full">
 
                                 {/* Close Button */}
