@@ -5,7 +5,7 @@ type: "professional"
 madeAt: "UMD ECE Department"
 category: ["Research", "Robotics", "Electromechanical", "Mechatronics"]
 builtWith: ["Fusion 360 (CAD / CAM)", "SolidWorks (CAD & FEA)", "FDM & SLA 3D Printing", "Arduino", "Circuitry", "Mechanical Engineering"]
-link: "LINK"
+link: "https://drive.google.com/file/d/1Ufrjav-M70JQztB9P1kt9H98bUv0hNvJ/view?usp=sharing"
 ---
 
 Collaborated with Professor Romel Gomez to engineer a mobile, zero-tolerance landing platform designed for integration with a robotic quadruped. The system enables precise capture and secure magnetic interlock of a drone from any landing angle, facilitating autonomous deployment and retrieval in dynamic environments.
