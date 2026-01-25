@@ -8,11 +8,13 @@ builtWith: ["Python", "OpenCV", "Tesseract OCR", "Selenium", "OpenAI API", "AI P
 link: "https://github.com/bwu32/fortnitelinkedinautoposter"
 ---
 
+**Note: `This project is still WIP!!!`**
+
 I built a tool that bridges the gap between gaming achievements and "professional" networking. Using a hybrid of Computer Vision and OCR, this Python-based bot monitors a live Fortnite stream, detects a "Victory Royale" in real-time, and automatically crafts and posts a humble-brag to LinkedIn using GPT-4.
 
 ## How it Works (The Pipeline)
 
-The goal was a "set it and forget it" system that celebrates the grind while I'm still in the lobby.
+The goal was a to create a super awesome app that will handle everything for you unless you set extra settings that require attention.
 
 - **Real-Time Detection:** Implemented a detection engine using `OpenCV` and `Tesseract OCR`. The system constantly scrapes screen frames, looking for specific color histograms and text patterns associated with the "Victory Royale" banner.
 - **The "Brain":** Once a win is confirmed, the app triggers the `OpenAI API`. I engineered several "personality profiles"—ranging from "Corporate Sycophant" to "Grindset Guru"—to generate hilarious, AI-generated captions that spin a Fortnite win into a lesson about leadership and synergy.
