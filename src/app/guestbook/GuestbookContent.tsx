@@ -29,9 +29,15 @@ const GUESTBOOK_ENTRIES = [
   },
   {
     name: "pocket",
-    website: "",
+    website: "https://www.nytimes.com/crosswords",
     message: "≽^-⩊-^≼",
     date: "2026-01-21"
+  },
+  {
+    name: "Vincent Pham",
+    website: "vincentpham.space",
+    message: "I signed this at 11 PM on January 22nd, 2026",
+    date: "2026-01-22"
   },
 ];
 
@@ -39,21 +45,21 @@ export default function GuestbookContent() {
   // Auto-sort entries by date (Descending: Newest first)
 
   const [showScrollTop, setShowScrollTop] = useState(false);
-  
-      // back to top button
-      useEffect(() => {
-          const handleScroll = () => {
-              // Appears after scrolling down one full window height
-              if (window.scrollY > window.innerHeight) {
-                  setShowScrollTop(true);
-              } else {
-                  setShowScrollTop(false);
-              }
-          };
-  
-          window.addEventListener("scroll", handleScroll);
-          return () => window.removeEventListener("scroll", handleScroll);
-      }, []);
+
+  // back to top button
+  useEffect(() => {
+    const handleScroll = () => {
+      // Appears after scrolling down one full window height
+      if (window.scrollY > window.innerHeight) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const sortedEntries = useMemo(() => {
     return [...GUESTBOOK_ENTRIES].sort((a, b) =>
@@ -141,11 +147,19 @@ export default function GuestbookContent() {
             </div>
 
             <div className="col-span-2 text-white opacity-40 text-sm">
-              {new Date(entry.date).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-              })}
+              {(() => {
+                // Create the date object
+                const date = new Date(entry.date);
+
+                // Add the timezone offset to keep it on the intended day
+                // or simply use UTC methods to avoid the shift:
+                return date.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                  timeZone: 'UTC' // <--- THIS IS THE KEY
+                });
+              })()}
             </div>
           </div>
         ))}
@@ -153,30 +167,30 @@ export default function GuestbookContent() {
 
       {/* Scroll to Top */}
       <button
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className={`fixed bottom-8 right-8 p-2 transition-all duration-500 z-50 group text-white hover:text-[#E8DDB5] hover:scale-110 
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className={`fixed bottom-8 right-8 p-2 transition-all duration-500 z-50 group text-white hover:text-[#E8DDB5] hover:scale-110 
         ${showScrollTop
-                        ? "opacity-60 translate-y-0 pointer-events-auto"
-                        : "opacity-0 translate-y-10 pointer-events-none"
-                    } hover:opacity-100`}
-                aria-label="Scroll to top"
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="transform group-hover:-translate-y-1 transition-transform"
-                >
-                    <path d="m17 11-5-5-5 5" />
-                    <path d="m17 18l-5-5-5 5" />
-                </svg>
-            </button>
+            ? "opacity-60 translate-y-0 pointer-events-auto"
+            : "opacity-0 translate-y-10 pointer-events-none"
+          } hover:opacity-100`}
+        aria-label="Scroll to top"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="transform group-hover:-translate-y-1 transition-transform"
+        >
+          <path d="m17 11-5-5-5 5" />
+          <path d="m17 18l-5-5-5 5" />
+        </svg>
+      </button>
     </main>
   );
 }

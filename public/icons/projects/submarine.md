@@ -1,6 +1,6 @@
 ---
 date: "12/15/2025"
-title: "S.Q.U.I.D. Autonomous Submersible"
+title: "S.Q.U.I.D. Autonomous Submersible Vehicle"
 type: "professional"
 madeAt: "UMD ENEE408V"
 category: ["Robotics", "Academic", "Engineering"]
