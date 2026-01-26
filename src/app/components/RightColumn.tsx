@@ -122,7 +122,7 @@ export default function RightColumn() {
                 "Google Workspace",
                 "MS Teams",
                 "Windows",
-                "Zoom"
+                "Zoom",
             ],
         },
         {
@@ -428,6 +428,13 @@ export default function RightColumn() {
                         </div>
                     ))}
                 </div>
+                <a
+                    href="/mediums"
+                    className="inline-flex items-center gap-2 mt-6 opacity-60 text-white hover:opacity-100 transition-opacity font-medium"
+                >
+                    view creative mediums
+                    <ArrowUpRight className="w-4 h-4" />
+                </a>
             </section>
 
             <section id="more" className="mb-6 p-12 scroll-mt-12">
