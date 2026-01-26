@@ -79,7 +79,7 @@ export default function GuestbookContent() {
       </Link>
 
       {/* Title and Action Button Row */}
-      <div className="flex items-center justify-between gap-6 mb-12">
+      <div className="flex items-center justify-between gap-6 mb-0">
         <div className="flex items-baseline gap-4">
           <h1 className="text-7xl text-[#E8DDB5] font-['Impact'] uppercase -ml-1 leading-none">
             GUESTBOOK
@@ -105,7 +105,7 @@ export default function GuestbookContent() {
         </a>
       </div>
 
-      <p className="text-lg text-white opacity-50 max-w-[500px] leading-relaxed mb-12">
+      <p className="text-lg mt-4 text-white opacity-50 max-w-[500px] leading-relaxed mb-12">
         now this is awesome. come sign my guestbook!
       </p>
 
