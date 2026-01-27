@@ -8,7 +8,6 @@ import RightColumn from "@/app/components/RightColumn";
 import CursorGlow from "./components/CursorGlow";
 
 export default function Home() {
-  // ... (fetchData logic remains the same)
 
   return (
     <main className="min-h-screen w-full relative">
