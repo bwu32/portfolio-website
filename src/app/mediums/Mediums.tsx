@@ -37,44 +37,72 @@ export default function Mediums() {
             dateInUse: "Jan 2020"
         },
         {
+            image: "/icons/mediums/cr10.png",
+            title: "CR-10 v3",
+            description: "I was excited to use this new 3d printer because it had a much bigger build volume than all of my previous printers, but was sorely disappointed by its uneven heat bed temps and the fact that everything in the hot end was proprietary. Made disassembling / relearning it a total hassle. I don't use it much anymore.",
+            category: "3D Printer",
+            dateInUse: "Sep 2021"
+        },
+        {
             image: "/icons/mediums/singer.png",
             title: "Singer Heavy Duty 34S",
-            description: "hi",
+            description: "Inspired to make a spiderman suit, I first taught myself how to sew in my freshman year of college on the makerspace sewing machine. I got my own one year for Christmas. I have since switched over to other forms of apparel i.e dresses, bags, tops, jeans. I love sewing and enjoy learning how to make new things!",
             category: "Sewing Machine",
             dateInUse: "Dec 2024"
         },
         {
             image: "/icons/mediums/cricut.png",
             title: "Cricut Maker 3",
-            description: "hi",
+            description: "I was graciously given this machine from a friend for now, and I have been using it to cut out stickers, heat transfer vinyl designs for apparel, and more. It is very easy to use and super convenient now that I have one at my disposal.",
             category: "Cutting Machine",
             dateInUse: "Jun 2025"
         },
         {
+            image: "/icons/mediums/airbrush.webp",
+            title: "Airbrush",
+            description: "I am still not very well-versed with airbrushes, but I recently obtained a set of airbrush paints. This is a safer and healthier alternative to aerosol spray cans which is what I've been primarily using for my props. Looking forward to learning more precision painting skills!",
+            category: "Airbrush Kit",
+            dateInUse: "Jun 2024"
+        },
+        {
             image: "/icons/mediums/fusion360.png",
-            title: "Fusion 360",
-            description: "hi",
-            category: "Modeling Software",
+            title: "Autodesk Fusion 360",
+            description: "I first learned about autodesk programs back in 2018 with Inventor. However, when COVID hit I resorted to Fusion due to its cloud-based aspect. I was able to design a bunch of different things out of boredom in quarantine, and I built up my skills in both parametric CAD and organic modeling.",
+            category: "CAD Modeling Program",
             dateInUse: "Mar 2020"
         },
         {
             image: "/icons/mediums/canva.png",
             title: "Canva",
-            description: "hi",
-            category: "Graphic Design",
+            description: "I was first introduced to this program in college when I needed to do collaborative design work. It's now one of my primary graphic design mediums due to how simple and easy it is to access and design with. Everything is cloud based which is nice.",
+            category: "Graphic Design Program",
             dateInUse: "Sep 2022"
         },
         {
             image: "/icons/mediums/paintnet.png",
             title: "Paint.NET",
-            description: "hi",
-            category: "Graphic Design",
+            description: "I've been using this program ever since I was a kid, designing minecraft skins / pixel art. I still use this as my primary visual medium when I don't need to collaborate with anyone since it's fast, efficient, and local. It's quite an old program though, so I only use it for rastor images.",
+            category: "Graphic Design Program",
             dateInUse: "Jul 2017"
+        },
+        {
+            image: "/icons/mediums/premiere.png",
+            title: "Premiere Pro",
+            description: "I first began editing vlog style videos, and have since moved on to short films. I have been able to make pretty snazzy edits without any external software, and really enjoy video editing in my spare time. Check out my short films in my portfolio!",
+            category: "Video Editing Program",
+            dateInUse: "Jun 2023"
+        },
+        {
+            image: "/icons/mediums/adobe.png",
+            title: "Adobe Creative Cloud",
+            description: "Since my school has adobe creative cloud for free, I've had the opportunity to take advantage of all adobe products. I've learned specifics such as Illustrator and Photoshop. I want to learn After Effects!",
+            category: "Design Program",
+            dateInUse: "Sep 2022"
         },
         {
             image: "/icons/mediums/wpm.png",
             title: "124+ WPM",
-            description: "hi",
+            description: "Fun fact: I failed type to learn 4. I only use five fingers when typing! I just got used to this interesting way of typing, but since I work on computers most of the time, I was able to get pretty fast.",
             category: "Typing Speed",
             dateInUse: "birth"
         },
@@ -119,7 +147,7 @@ export default function Mediums() {
             <div>
                 <h1 className="text-7xl text-[#E8DDB5] font-['Impact'] uppercase">MEDIUMS</h1>
                 <p className="text-lg text-white mt-4 mb-12 opacity-50 max-w-[800px] leading-relaxed">
-                    now this is awesome. come see what mediums i use when i create!
+                    #creativeswissarmyknife. come see what mediums i use when i create!
                 </p>
             </div>
 
@@ -144,6 +172,11 @@ export default function Mediums() {
                                 src={item.image}
                                 alt={item.title}
                                 className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                                style={{
+                                        // The first shadow is for depth, the second is the white glow
+                                        filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.5))',
+                                        // boxShadow: '0 0 40px 5px rgba(255, 255, 255, 0.1)'
+                                    }}
                             />
                             {/* Hover Overlay */}
                             <div className="absolute inset-0 bg-gradient-to-t from-[#2b366d]/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -209,12 +242,16 @@ export default function Mediums() {
                             transition={{ duration: 0.3, ease: "easeOut" }}
                             onClick={(e) => e.stopPropagation()}
                         >
-                            {/* Image Section: Left Side */}
-                            <div className="w-full md:w-3/5 bg-black/20 flex justify-center items-center p-6">
+                            <div className="w-full md:w-3/5 bg-black/20 flex justify-center items-center p-12">
                                 <img
                                     src={items[selectedIndex].image}
                                     alt={items[selectedIndex].title}
-                                    className="max-h-[75vh] w-auto rounded-md object-contain shadow-lg"
+                                    className="max-h-[75vh] w-auto rounded-md object-contain transition-all duration-700"
+                                    style={{
+                                        // The first shadow is for depth, the second is the white glow
+                                        filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.5))',
+                                        // boxShadow: '0 0 40px 5px rgba(255, 255, 255, 0.1)'
+                                    }}
                                 />
                             </div>
 

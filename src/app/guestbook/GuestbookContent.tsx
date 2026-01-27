@@ -39,6 +39,12 @@ const GUESTBOOK_ENTRIES = [
     message: "I signed this at 11 PM on January 22nd, 2026",
     date: "2026-01-22"
   },
+  {
+    name: "andrew",
+    website: "atcupps.github.io",
+    message: "Have a good summer!",
+    date: "2026-01-25"
+  },
 ];
 
 export default function GuestbookContent() {
