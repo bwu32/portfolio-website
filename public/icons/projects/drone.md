@@ -3,7 +3,7 @@ date: "12/2/2025"
 title: "Autonomous Drone Docking & Retrieval System"
 type: "professional"
 madeAt: "UMD ECE Department"
-category: ["Research", "Product Design", "Engineering", "Electronics"]
+category: ["Research", "Product Design", "Engineering", "Electronics", "Robotics"]
 builtWith: ["Fusion 360 (CAD / CAM)", "SolidWorks (CAD & FEA)", "FDM & SLA 3D Printing", "Arduino", "Circuitry", "Mechanical Engineering"]
 link: "https://drive.google.com/file/d/1Ufrjav-M70JQztB9P1kt9H98bUv0hNvJ/view?usp=sharing"
 ---

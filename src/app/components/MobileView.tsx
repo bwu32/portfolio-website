@@ -154,7 +154,7 @@ export default function MobileView() {
                 <h2 className="text-lg text-white/40 tracking-[0.3em] mb-2 font-bold uppercase">
                     PRODUCT DESIGNER
                 </h2>
-                <h1 className="text-7xl font-black text-[#E8DDB5] -ml-1 tracking-tighter leading-none">
+                <h1 className="text-7xl font-black text-[#E8DDB5] -ml-1 tracking-tight leading-none">
                     BRIAN WU
                 </h1>
                 <p className="mt-4 text-white/60 text-lg tracking-tight">
@@ -226,6 +226,19 @@ export default function MobileView() {
                                 </div>
                             </a>
                         ))}
+                    </div>
+                    <div className="pt-12 flex justify-center">
+                        <a
+                            href="/portfolio"
+                            rel="noopener noreferrer"
+                            className="relative overflow-hidden px-8 py-4 rounded-full bg-[#2b366d]/10 border border-white/10 shadow-xl transition-all active:scale-95 active:bg-[#2b366d]/60 group"
+                        >
+                            <span className="absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent pointer-events-none" />
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-active:animate-[shimmer_1.5s_infinite] pointer-events-none" />
+                            <span className="relative z-10 font-bold tracking-[0.2em] uppercase text-md">
+                                View Project Archive
+                            </span>
+                        </a>
                     </div>
                 </section>
 
