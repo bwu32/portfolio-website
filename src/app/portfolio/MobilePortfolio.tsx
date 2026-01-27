@@ -138,7 +138,7 @@ export default function MobilePortfolio() {
                                 <span className="text-white/60 text-[10px] font-bold uppercase tracking-[0.3em] mb-3">
                                     {new Date(proj.date).getFullYear()} — {proj.madeAt || "Independent"}
                                 </span>
-                                <h3 className="text-4xl font-['Impact'] text-[#E8DDB5] uppercase tracking-tight leading-[0.9] group-active:text-white transition-colors">
+                                <h3 className="text-3xl font-bold text-[#E8DDB5] uppercase tracking-tight leading-[0.9] group-active:text-white transition-colors">
                                     {proj.title}
                                 </h3>
                             </div>
