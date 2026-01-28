@@ -3,7 +3,7 @@ date: "12/04/2025"
 title: "Fortnite LinkedIn Auto-Poster"
 type: "professional"
 madeAt: "Personal"
-category: ["AI", "Software"]
+category: ["AI / Machine Learning", "Software"]
 builtWith: ["Python", "OpenCV", "Tesseract OCR", "Selenium", "OpenAI API", "AI Prompting", "Software Architecture", "Real-Time Detection", "Web Automation"]
 link: "https://github.com/bwu32/fortnitelinkedinautoposter"
 ---
