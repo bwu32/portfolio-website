@@ -51,7 +51,7 @@ export default function RightColumn() {
             title: "S.Q.U.I.D. Autonomous Submersible Vehicle",
             description: "Designed structural and mechanical systems for a watertight autonomous submersible vehicle. Engineered modular electronics housing and sealing system using custom-machined components while serving as primary structural lead. ",
             image: "/icons/showcase/submarine.jpg",
-            link: "https://docs.google.com/document/d/1_NqtkaeeCIUAikc76VfbriEUctMEloEBvPrhvJfcN-A/edit?usp=sharing",
+            link: "/submarine_paper.pdf",
             tech: [
                 "Fusion 360 (CAD / CAM)",
                 "CNC Milling & Turning",
@@ -87,7 +87,7 @@ export default function RightColumn() {
             title: "CAN Bus Security Simulation",
             description: "Built a real-time CAN Bus security framework with multithreaded ECUs and layered cryptographic defenses, paired with a React/WebSocket dashboard for live attack monitoring, achieving 100% attack detection under 2ms latency.",
             image: "/icons/showcase/canbus.png",
-            link: "https://www.thepachstore.com/products/wf-highborn-custom-saber-2021",
+            link: "/canbus_paper.pdf",
             tech: [
                 "Python",
                 "Multithreading",

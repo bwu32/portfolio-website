@@ -5,7 +5,7 @@ type: "professional"
 madeAt: "UMD ENEE408V"
 category: ["Robotics", "Academic", "Engineering"]
 builtWith: ["Fusion 360 (CAD / CAM)", "CNC Milling & Turning", "FDM & SLA 3D Printing", "PCB Soldering", "Circuitry", "Arduino", "Raspberry Pi", "Rapid Prototyping", "Watertight Sealing", "Plastic/Polymer Processing"]
-link: "https://docs.google.com/document/d/1_NqtkaeeCIUAikc76VfbriEUctMEloEBvPrhvJfcN-A/edit?usp=sharing"
+link: "/submarine_paper.pdf"
 ---
 
 For my ENEE408V capstone, I led the structural and mechanical design for an autonomous underwater vehicle (AUV) designed for depth regulation and obstacle avoidance. This project required balancing high-level processing via Raspberry Pi with real-time actuation through Arduino, all while maintaining a rigorous watertight sealing strategy.
