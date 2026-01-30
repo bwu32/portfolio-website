@@ -45,6 +45,12 @@ const GUESTBOOK_ENTRIES = [
     message: "Have a good summer!",
     date: "2026-01-25"
   },
+  {
+    name: "Ryan Stein",
+    website: "fortniteautoposter.net",
+    message: "FORTNITE LINKEDIN AUTOPOSTER > ",
+    date: "2026-01-25"
+  },
 ];
 
 export default function GuestbookContent() {
