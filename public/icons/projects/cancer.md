@@ -3,7 +3,7 @@ date: "12/15/2025"
 title: "scRNA-seq Hierarchical Classification Pipeline"
 type: "professional"
 madeAt: "UMD ENEE436"
-category: ["AI / Machine Learning", "Academic"]
+category: ["AI / Machine Learning", "Simulation", "Research", "Academic"]
 builtWith: ["Python", "Scikit-Learn", "AdaBoost", "Ensemble Learning", "Pandas", "Matplotlib"]
 link: "/ml_paper.pdf"
 ---

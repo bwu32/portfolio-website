@@ -1,6 +1,5 @@
 import Image from "next/image"
 import { ArrowUpRight } from "lucide-react"
-import Link from "next/link";
 import { useState } from "react";
 
 export default function RightColumn() {
@@ -32,7 +31,7 @@ export default function RightColumn() {
             period: "2023 — 2024",
             title: "Graphic Designer",
             company: "Taiwanese American Student Association",
-            link: "https://umcptasa.com",
+            link: "https://www.instagram.com/umcptasa/",
             description:
                 "Elevated the visual identity of social media platforms through collaborative design and publishing of 10+ graphics per month across cultural, social, and informational content, reaching 2,000+ students. Served on a 27-member board to plan and execute campus events promoting Taiwanese culture.",
         },

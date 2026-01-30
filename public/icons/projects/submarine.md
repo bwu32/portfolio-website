@@ -3,7 +3,7 @@ date: "12/15/2025"
 title: "S.Q.U.I.D. Autonomous Submersible Vehicle"
 type: "professional"
 madeAt: "UMD ENEE408V"
-category: ["Robotics", "Academic", "Engineering"]
+category: ["Robotics", "Academic", "Engineering", "Capstone"]
 builtWith: ["Fusion 360 (CAD / CAM)", "CNC Milling & Turning", "FDM & SLA 3D Printing", "PCB Soldering", "Circuitry", "Arduino", "Raspberry Pi", "Rapid Prototyping", "Watertight Sealing", "Plastic/Polymer Processing"]
 link: "/submarine_paper.pdf"
 ---
