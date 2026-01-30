@@ -3,7 +3,7 @@ date: "12/10/2025"
 title: "CAN Bus Security Framework"
 type: "professional"
 madeAt: "UMD ENEE457"
-category: ["Cybersecurity", "Academic", "Software", "Full Stack"]
+category: ["Cybersecurity", "Academic", "Software","Simulation", "Research", "Full Stack"]
 builtWith: ["Python", "React", "Websocket", "AES Encryption", "HMAC", "Node.js", "Multi-threading"]
 link: "/canbus_paper.pdf"
 ---

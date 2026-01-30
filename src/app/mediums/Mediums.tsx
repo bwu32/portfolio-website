@@ -13,7 +13,6 @@ export default function Mediums() {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
     const [showScrollTop, setShowScrollTop] = useState(false);
 
-    // Hardcoded items - Add your creative mediums here
     const items = [
         {
             image: "/icons/mediums/bambulab.png",

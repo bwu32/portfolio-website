@@ -46,7 +46,7 @@ export default function MobileView() {
             period: "2023 — 2024",
             title: "Graphic Designer",
             company: "Taiwanese American Student Association",
-            link: "https://umcptasa.com",
+            link: "https://www.instagram.com/umcptasa/",
             description:
                 "Elevated the visual identity of social media platforms through collaborative design and publishing of 10+ graphics per month across cultural, social, and informational content, reaching 2,000+ students. Served on a 27-member board to plan and execute campus events promoting Taiwanese culture.",
         },
@@ -62,10 +62,10 @@ export default function MobileView() {
 
     const projects = [
         {
-            title: "S.Q.U.I.D. Submersible Vehicle",
+            title: "S.Q.U.I.D. Autonomous Submersible Vehicle",
             description: "Designed structural and mechanical systems for a watertight autonomous submersible vehicle. Engineered modular electronics housing and sealing system using custom-machined components while serving as primary structural lead. ",
             image: "/icons/showcase/submarine.jpg",
-            link: "https://docs.google.com/document/d/1_NqtkaeeCIUAikc76VfbriEUctMEloEBvPrhvJfcN-A/edit?usp=sharing",
+            link: "/submarine_paper.pdf",
             tech: [
                 "Fusion 360 (CAD / CAM)",
                 "CNC Milling & Turning",
@@ -73,9 +73,10 @@ export default function MobileView() {
                 "PCB Soldering",
                 "Circuitry",
                 "Arduino",
-                "Mechanical Design",
+                "Raspberry Pi",
+                "Rapid Prototyping",
                 "Watertight Sealing",
-                "Rapid Prototyping"
+                "Plastic/Polymer Processing"
             ]
         },
         {
@@ -100,7 +101,7 @@ export default function MobileView() {
             title: "CAN Bus Security Simulation",
             description: "Built a real-time CAN Bus security framework with multithreaded ECUs and layered cryptographic defenses, paired with a React/WebSocket dashboard for live attack monitoring, achieving 100% attack detection under 2ms latency.",
             image: "/icons/showcase/canbus.png",
-            link: "https://www.thepachstore.com/products/wf-highborn-custom-saber-2021",
+            link: "/canbus_paper.pdf",
             tech: [
                 "Python",
                 "Multithreading",
@@ -119,19 +120,72 @@ export default function MobileView() {
     const skills = [
         {
             category: "AI & Software Development",
-            skills: ["AI Prompting", "Google Notebook LM", "Node.js", "React", "HTML", "CSS", "MATLAB", "Excel", "Java", "C", "Rust", "OCaml", "Google Workspace", "MS Teams", "Windows", "Zoom"],
+            skills: [
+                "AI Prompting",
+                "Google Notebook LM",
+                "Node.js",
+                "React",
+                "HTML",
+                "CSS",
+                "MATLAB",
+                "Excel",
+                "Java",
+                "C",
+                "Rust",
+                "OCaml",
+                "Google Workspace",
+                "MS Teams",
+                "Windows",
+                "Zoom",
+            ],
         },
         {
             category: "Design & Visual Media",
-            skills: ["Figma", "Canva", "Adobe Creative Cloud", "Photoshop", "Premiere Pro", "After Effects", "Illustrator", "Paint.NET", "Audacity", "Blender", "DJI Ecosystem"],
+            skills: [
+                "Figma",
+                "Canva",
+                "Adobe Creative Cloud",
+                "Photoshop",
+                "Premiere Pro",
+                "After Effects",
+                "Illustrator",
+                "Paint.NET",
+                "Audacity",
+                "Blender",
+                "DJI Ecosystem"
+            ],
         },
         {
             category: "Digital Fabrication & Prototyping",
-            skills: ["Fusion 360 (CAD / CAM)", "SolidWorks (CAD & FEA)", "Autodesk Inventor", "Onshape", "Meshmixer", "FDM & SLA 3D Printing", "PrusaSlicer", "Cura", "Laser Cutting", "CNC Milling & Turning", "Arduino", "PCB Soldering", "Circuitry", "Surface Post-Processing"],
+            skills: [
+                "Fusion 360 (CAD / CAM)",
+                "SolidWorks (CAD & FEA)",
+                "Autodesk Inventor",
+                "Onshape",
+                "Meshmixer",
+                "FDM & SLA 3D Printing",
+                "PrusaSlicer",
+                "Cura",
+                "Laser Cutting",
+                "CNC Milling & Turning",
+                "Arduino",
+                "PCB Soldering",
+                "Circuitry",
+                "Surface Post-Processing"
+            ],
         },
         {
             category: "Creative & Practical Arts",
-            skills: ["Sewing", "Embroidery", "Apparel Design", "Creative Prototyping", "Automotive Painting & Finishing", "DIY Repair", "Carpentry", "Dance"],
+            skills: [
+                "Sewing",
+                "Embroidery",
+                "Apparel Design",
+                "Creative Prototyping",
+                "Automotive Painting & Finishing",
+                "DIY Repair",
+                "Carpentry",
+                "Dance"
+            ],
         },
     ];
 

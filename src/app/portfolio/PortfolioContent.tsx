@@ -262,7 +262,7 @@ export default function PortfolioContent() {
                             {displayMode === 'custom' && <option value="custom">CUSTOM</option>}
                             <option value="all">DISPLAY: ALL</option>
                             <option value="professional">Professional</option>
-                            <option value="artwork">Personal</option>
+                            <option value="artwork">Creative</option>
                         </select>
                         <ChevronDown className="w-3 h-3 text-white/40 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                     </div>
@@ -272,12 +272,28 @@ export default function PortfolioContent() {
                             <ChevronDown className="w-3 h-3" />
                         </button>
                         {showFilterDropdown && (
-                            <div className="absolute top-full mt-2 right-0 w-56 bg-[#1a1f3a] border border-white/10 rounded-lg shadow-2xl z-40 p-2">
-                                {allCategories.map(cat => (
-                                    <button key={cat} onClick={() => setSelectedCategories(prev => prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat])} className={`w-full text-left px-3 py-2 rounded text-xs uppercase mb-1 transition-colors ${selectedCategories.includes(cat) ? "bg-[#5F72BF] text-white" : "text-white/60 hover:bg-white/5"}`}>
-                                        {cat} <span className="ml-1.5 opacity-60">[{categoryCounts[cat]}]</span>
-                                    </button>
-                                ))}
+                            <div className={`absolute top-full mt-2 right-0 w-56 bg-[#1a1f3a] border border-white/10 rounded-lg shadow-2xl z-40 p-2 
+        ${allCategories.length > 6 ? "w-[400px]" : "w-56"}`}
+                            >
+                                {/* Grid Container: Changes from 1 to 2 columns if categories > 6 */}
+                                <div className={`grid gap-1 ${allCategories.length > 6 ? "grid-cols-2" : "grid-cols-1"}`}>
+                                    {allCategories.map(cat => (
+                                        <button
+                                            key={cat}
+                                            onClick={() => setSelectedCategories(prev =>
+                                                prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
+                                            )}
+                                            className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-[10px] uppercase tracking-wider transition-all
+                        ${selectedCategories.includes(cat)
+                                                    ? "bg-[#5F72BF] text-white"
+                                                    : "text-white/60 hover:bg-white/5 border border-transparent hover:border-white/10"
+                                                }`}
+                                        >
+                                            <span className="truncate">{cat}</span>
+                                            <span className="ml-2 opacity-80 font-mono">[{categoryCounts[cat]}]</span>
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
                         )}
                     </div>
