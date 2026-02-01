@@ -3,7 +3,7 @@ date: "04/26/2025"
 title: "26th Annual Collegiate Wushu Tournament Medal"
 type: "artwork"
 madeAt: "UMD TerpWushu Club"
-category: ["Product Design", "Commission", "Graphic Design"]
+category: ["Product Design", "Commission", "Graphic Design", "Digital Fabrication"]
 builtWith: ["Fusion 360 (CAD / CAM)", "Adobe Illustrator", "Creative Prototyping", "Digital Fabrication"]
 link: "http://collegiatewushu.org/home.php"
 ---

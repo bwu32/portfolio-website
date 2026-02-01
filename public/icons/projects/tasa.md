@@ -3,7 +3,7 @@ date: "05/01/2024"
 title: "TASA Brand Media"
 type: "artwork"
 madeAt: "Taiwanese American Student Association (TASA)"
-category: ["Graphic Design", "Product Design", "Commission", "Merchandise"]
+category: ["Graphic Design", "Product Design", "Commission", "Merchandise", "Digital Fabrication"]
 builtWith: ["Adobe Illustrator", "Adobe Photoshop", "Canva", "Fusion 360 (CAD / CAM)", "Cricut"]
 link: "https://www.instagram.com/umcptasa/"
 ---
