@@ -10,6 +10,7 @@ import {
 import ReactMarkdown from 'react-markdown';
 import CursorGlow from "@/app/components/CursorGlow";
 import Background from "@/app/components/Background";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Project {
     date: string;
@@ -313,7 +314,6 @@ export default function PortfolioContent() {
                 <div className="col-span-3">Link</div>
             </div>
 
-            {/* List */}
             {/* List */}
             <div className="mt-2">
                 {filteredAndSortedProjects.length > 0 ? (
