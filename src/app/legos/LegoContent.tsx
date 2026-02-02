@@ -47,11 +47,11 @@ export default function LegoContent() {
         { image: "/icons/legos/zane.png", date: "Jan 1 2021", description: "Zane's Titan Mech" },
         { image: "/icons/legos/bonsai.webp", date: "Jan 1 2021", description: "Bonsai Tree" },
         { image: "/icons/legos/flowerbouquet.png", date: "Jan 1 2021", description: "Flower Bouquet" },
-        { image: "/icons/legos/legacybladecycle.jpg", date: "Jan 1 2021", description: "Kai's Blade Cycle" },
-        { image: "/icons/legos/boulderblaster.png", date: "Jan 1 2021", description: "Legacy Boulder Blaster" },
-        { image: "/icons/legos/overlord.webp", date: "Jan 1 2021", description: "Legacy Overlord Dragon" },
         { image: "/icons/legos/xwing.jpg", date: "Jan 1 2021", description: "Luke Skywalker's X-Wing Fighter" },
         { image: "/icons/legos/x1ninjacharger.jpg", date: "Jan 1 2021", description: "X-1 Ninja Charger" },
+        { image: "/icons/legos/boulderblaster.png", date: "Jan 1 2021", description: "Legacy Boulder Blaster" },
+        { image: "/icons/legos/overlord.webp", date: "Jan 1 2021", description: "Legacy Overlord Dragon" },
+        { image: "/icons/legos/legacybladecycle.jpg", date: "Jan 1 2019", description: "Kai's Blade Cycle" },
         { image: "/icons/legos/jaystormfighter.jpg", date: "Jan 1 2019", description: "Jay's Storm Fighter" }
     ];
 
