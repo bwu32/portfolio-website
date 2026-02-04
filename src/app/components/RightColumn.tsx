@@ -337,13 +337,12 @@ export default function RightColumn() {
                         </a>
                     ))}
                 </div>
-
                 <a
                     href="/portfolio"
-                    className="inline-flex items-center gap-2 mt-6 opacity-60 text-white hover:opacity-100 transition-opacity font-medium"
+                    className="group inline-flex items-center gap-2 mt-2 opacity-60 text-white hover:opacity-100 transition-opacity font-medium"
                 >
                     view full project archive
-                    <ArrowUpRight className="w-4 h-4" />
+                    <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" />
                 </a>
             </section>
 
@@ -387,15 +386,32 @@ export default function RightColumn() {
                     ))}
                 </div>
 
-                <a
-                    href="/bwu_resume.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 mt-6 opacity-60 text-white hover:opacity-100 transition-opacity"
-                >
-                    view full resume
-                    <ArrowUpRight className="w-4 h-4" />
-                </a>
+                <div className="flex items-center gap-6 mt-6">
+    {/* Resume 1 */}
+    <a
+        href="/bwu_resume.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group inline-flex items-center gap-2 opacity-60 text-white hover:opacity-100 transition-opacity font-medium"
+    >
+        view full resume
+        <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" />
+    </a>
+
+    {/* Subtle Leaning Divider */}
+    <div className="h-4 w-[1px] bg-white/20 rotate-[15deg] mx-2" />
+
+    {/* Resume 2 */}
+    <a
+        href="/bwu_design_resume.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group inline-flex items-center gap-2 opacity-60 text-white hover:opacity-100 transition-opacity font-medium"
+    >
+        view design resume
+        <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" />
+    </a>
+</div>
             </section>
 
             <section id="skills" className="mb-6 p-12 scroll-mt-12">
@@ -429,10 +445,10 @@ export default function RightColumn() {
                 </div>
                 <a
                     href="/mediums"
-                    className="inline-flex items-center gap-2 mt-6 opacity-60 text-white hover:opacity-100 transition-opacity font-medium"
+                    className="group inline-flex items-center gap-2 mt-6 opacity-60 text-white hover:opacity-100 transition-opacity font-medium"
                 >
                     view creative mediums
-                    <ArrowUpRight className="w-4 h-4" />
+                    <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" />
                 </a>
             </section>
 
