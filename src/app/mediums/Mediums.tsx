@@ -105,6 +105,13 @@ export default function Mediums() {
             category: "Typing Speed",
             dateInUse: "birth"
         },
+        {
+            image: "/icons/mediums/favcolor.png",
+            title: "#8adbff",
+            description: "Whenever people ask me what my favorite color is, I tell them the hex code. It's a beautiful pastel blue!",
+            category: "Color Swatch",
+            dateInUse: "Nov 2016"
+        },
         // Add more items here following the same structure
     ];
 
