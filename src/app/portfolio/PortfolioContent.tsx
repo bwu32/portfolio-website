@@ -464,6 +464,9 @@ export default function PortfolioContent() {
                                         ))}
                                     </div>
                                 </div>
+                                <div>
+                                    <h4 className="text-[10px] uppercase tracking-[0.2em] text-white/30">Last Updated {activeProject.date}</h4>
+                                </div>
                             </div>
                         </div>
 
