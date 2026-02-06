@@ -29,5 +29,6 @@ I sewed both Haoris in the two nights immediately preceding the convention—one
 
 - **Sleeve Geometry:** Haori sleeves are deceptively complex. Figuring out how they attach to the body while maintaining that iconic "boxy" drape was a challenge, especially when working under pressure.
 - **Material Choice:** This project taught me the importance of fabric weight. The stiffness of the brocade vs. the softness of the poplin changed how each character felt and moved.
+- **Dye is Hard:** I folded my haori sleeves pieces because they were way too big when I was dyeing them. Unfortunately, this resulted in the dye not soaking evenly into my pieces resulting in an almost boxy, sectioned appearance for the gradient. I also spilled/splashed dye on parts that were supposed to be clear, resulting in stains on the back and a bit of the front. Once it dried it ultimately didn't matter too much because it just contributed to the design. In the future I will be sure to fold it less times.
 
 `The Retrospective:` Despite the shortened sleeves on the black model and the modified colors on the blue, wearing our 2020 designs in 2025 was incredibly rewarding. I’m already planning a "V2" where I can custom-dye the indigo ombre and hand-embroider the fireflies to truly match the original vision.
