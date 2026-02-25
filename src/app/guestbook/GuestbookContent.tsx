@@ -51,6 +51,18 @@ const GUESTBOOK_ENTRIES = [
     message: "FORTNITE LINKEDIN AUTOPOSTER > ",
     date: "2026-01-25"
   },
+   {
+    name: "gabrielle elise hester",
+    website: "gabriellehester.com",
+    message: "pee pee poo poo",
+    date: "2026-02-16"
+  },
+   {
+    name: "Anna Dai",
+    website: "linkedin.com/in/anna-dai-375709263/",
+    message: "worthy is the lamb!!",
+    date: "2026-02-18"
+  },
 ];
 
 export default function GuestbookContent() {
