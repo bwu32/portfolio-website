@@ -32,8 +32,17 @@ export default function MobilePortfolio() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isFullGalleryOpen, setIsFullGalleryOpen] = useState(false);
     const [gallery, setGallery] = useState<GalleryImage[]>([]);
+    const [sheetDragY, setSheetDragY] = useState(0);
+    const [slideDir, setSlideDir] = useState<'next' | 'prev' | null>(null);
+
     const touchStartX = useRef<number>(0);
     const lightboxThumbRefs = useRef<(HTMLButtonElement | null)[]>([]);
+    const sheetRef = useRef<HTMLDivElement>(null);
+    const sheetScrollRef = useRef<HTMLDivElement>(null);
+    const sheetTouchStartY = useRef<number>(0);
+    const sheetTouchStartX = useRef<number>(0);
+    const sheetCurrentDragY = useRef<number>(0);
+    const sheetIsDragging = useRef<boolean>(false);
 
     // Load projects from markdown
     useEffect(() => {
@@ -99,6 +108,7 @@ export default function MobilePortfolio() {
             : `/icons/projects/${selectedProject.image}`;
         setGallery([{ src: heroSrc, caption: "OVERVIEW" }]);
         setCurrentImageIndex(0);
+        setSlideDir(null);
 
         fetch(`/api/projects/${selectedProject.slug}`)
             .then(r => r.json())
@@ -138,13 +148,62 @@ export default function MobilePortfolio() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    // Sheet drag-down to dismiss
+    useEffect(() => {
+        if (!selectedProject || !sheetRef.current) return;
+        const sheet = sheetRef.current;
+
+        const onTouchStart = (e: TouchEvent) => {
+            sheetTouchStartY.current = e.touches[0].clientY;
+            sheetTouchStartX.current = e.touches[0].clientX;
+        };
+
+        const onTouchMove = (e: TouchEvent) => {
+            const deltaY = e.touches[0].clientY - sheetTouchStartY.current;
+            const deltaX = e.touches[0].clientX - sheetTouchStartX.current;
+            const scrollTop = sheetScrollRef.current?.scrollTop ?? 0;
+
+            if (scrollTop === 0 && deltaY > 0 && deltaY > Math.abs(deltaX)) {
+                e.preventDefault();
+                sheetIsDragging.current = true;
+                sheetCurrentDragY.current = deltaY;
+                setSheetDragY(deltaY);
+            }
+        };
+
+        const onTouchEnd = () => {
+            if (sheetIsDragging.current) {
+                const dragY = sheetCurrentDragY.current;
+                sheetIsDragging.current = false;
+                sheetCurrentDragY.current = 0;
+                if (dragY > 120) {
+                    setSheetDragY(0);
+                    closeModal();
+                } else {
+                    setSheetDragY(0);
+                }
+            }
+        };
+
+        sheet.addEventListener('touchstart', onTouchStart, { passive: true });
+        sheet.addEventListener('touchmove', onTouchMove, { passive: false });
+        sheet.addEventListener('touchend', onTouchEnd, { passive: true });
+
+        return () => {
+            sheet.removeEventListener('touchstart', onTouchStart);
+            sheet.removeEventListener('touchmove', onTouchMove);
+            sheet.removeEventListener('touchend', onTouchEnd);
+        };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedProject]);
+
     const handleTouchStart = (e: React.TouchEvent) => {
         touchStartX.current = e.touches[0].clientX;
     };
-    const handleTouchEnd = (e: React.TouchEvent, length: number) => {
+    const handleTouchEnd = (e: React.TouchEvent) => {
         const delta = e.changedTouches[0].clientX - touchStartX.current;
-        if (Math.abs(delta) < 50) return;
-        setCurrentImageIndex(prev => delta < 0 ? (prev + 1) % length : (prev - 1 + length) % length);
+        if (Math.abs(delta) < 50 || gallery.length <= 1) return;
+        navigateGallery(delta < 0 ? 'next' : 'prev');
     };
 
     const closeModal = () => {
@@ -152,6 +211,22 @@ export default function MobilePortfolio() {
         setCurrentImageIndex(0);
         setIsFullGalleryOpen(false);
         setGallery([]);
+        setSlideDir(null);
+        setSheetDragY(0);
+    };
+
+    const navigateGallery = (dir: 'prev' | 'next') => {
+        setSlideDir(dir);
+        setCurrentImageIndex(prev =>
+            dir === 'next' ? (prev + 1) % gallery.length : (prev - 1 + gallery.length) % gallery.length
+        );
+    };
+
+    const navigateToIndex = (newIdx: number) => {
+        if (newIdx === currentImageIndex) return;
+        const delta = (newIdx - currentImageIndex + gallery.length) % gallery.length;
+        setSlideDir(delta <= gallery.length / 2 ? 'next' : 'prev');
+        setCurrentImageIndex(newIdx);
     };
 
     const currentImg = gallery[currentImageIndex] || { src: '', caption: '' };
@@ -163,6 +238,16 @@ export default function MobilePortfolio() {
 
     return (
         <div className="text-white min-h-screen px-6 py-12 font-sans relative">
+            <style>{`
+                @keyframes slideFromRight {
+                    from { transform: translateX(40px); opacity: 0.4; }
+                    to   { transform: translateX(0);    opacity: 1;   }
+                }
+                @keyframes slideFromLeft {
+                    from { transform: translateX(-40px); opacity: 0.4; }
+                    to   { transform: translateX(0);     opacity: 1;   }
+                }
+            `}</style>
             <div className="fixed inset-0 -z-10"><Background /></div>
 
             {/* NAVIGATION */}
@@ -256,9 +341,16 @@ export default function MobilePortfolio() {
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={closeModal} />
 
                     {/* Bottom Sheet */}
-                    <div className="relative h-[92vh] flex flex-col rounded-t-3xl bg-[#1a1f3a] border-t border-white/10 overflow-hidden">
+                    <div
+                        ref={sheetRef}
+                        className="relative h-[92vh] flex flex-col rounded-t-3xl bg-[#1a1f3a] border-t border-white/10 overflow-hidden"
+                        style={{
+                            transform: `translateY(${sheetDragY}px)`,
+                            transition: sheetIsDragging.current ? 'none' : 'transform 0.3s ease-out',
+                        }}
+                    >
                         {/* Drag handle + close */}
-                        <div className="flex-shrink-0 flex items-center justify-center pt-3 pb-1 relative">
+                        <div className="flex-shrink-0 flex items-center justify-center pt-5 pb-4 relative">
                             <div className="w-10 h-1 rounded-full bg-white/20" />
                             <button
                                 onClick={closeModal}
@@ -269,37 +361,50 @@ export default function MobilePortfolio() {
                         </div>
 
                         {/* Scrollable content */}
-                        <div className="flex-1 overflow-y-auto">
+                        <div ref={sheetScrollRef} className="flex-1 overflow-y-auto">
 
                             {/* Gallery image */}
-                            <div className="relative w-full aspect-video bg-black/40 group">
+                            <div className="relative w-full aspect-video bg-black/40 group overflow-hidden">
                                 <button
                                     className="relative w-full h-full block"
                                     onTouchStart={handleTouchStart}
-                                    onTouchEnd={e => handleTouchEnd(e, gallery.length)}
+                                    onTouchEnd={handleTouchEnd}
                                     onClick={() => setIsFullGalleryOpen(true)}
                                 >
-                                    {currentImg.src && (
-                                        <Image
-                                            src={currentImg.src}
-                                            alt=""
-                                            fill
-                                            className="object-contain"
-                                            unoptimized
-                                            priority
-                                        />
-                                    )}
+                                    <div
+                                        key={currentImageIndex}
+                                        style={{
+                                            position: 'absolute',
+                                            inset: 0,
+                                            animation: slideDir === 'next'
+                                                ? 'slideFromRight 0.25s ease-out'
+                                                : slideDir === 'prev'
+                                                ? 'slideFromLeft 0.25s ease-out'
+                                                : 'none',
+                                        }}
+                                    >
+                                        {currentImg.src && (
+                                            <Image
+                                                src={currentImg.src}
+                                                alt=""
+                                                fill
+                                                className="object-contain"
+                                                unoptimized
+                                                priority
+                                            />
+                                        )}
+                                    </div>
                                 </button>
                                 {gallery.length > 1 && (
                                     <>
                                         <button
-                                            onClick={e => { e.stopPropagation(); setCurrentImageIndex(prev => (prev - 1 + gallery.length) % gallery.length); }}
+                                            onClick={e => { e.stopPropagation(); navigateGallery('prev'); }}
                                             className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-black/60 rounded-full z-20 active:bg-black/90 transition-colors"
                                         >
                                             <ChevronLeft className="w-5 h-5" />
                                         </button>
                                         <button
-                                            onClick={e => { e.stopPropagation(); setCurrentImageIndex(prev => (prev + 1) % gallery.length); }}
+                                            onClick={e => { e.stopPropagation(); navigateGallery('next'); }}
                                             className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/60 rounded-full z-20 active:bg-black/90 transition-colors"
                                         >
                                             <ChevronRight className="w-5 h-5" />
@@ -322,7 +427,7 @@ export default function MobilePortfolio() {
                                             return (
                                                 <button
                                                     key={i}
-                                                    onClick={() => isViewAll ? setIsFullGalleryOpen(true) : setCurrentImageIndex(galleryIdx)}
+                                                    onClick={() => isViewAll ? setIsFullGalleryOpen(true) : navigateToIndex(galleryIdx)}
                                                     className={`relative aspect-square rounded-md overflow-hidden border-2 transition-all ${isViewAll ? 'border-transparent bg-black' : currentImageIndex === galleryIdx ? 'border-[#E8DDB5]' : 'border-transparent opacity-40'}`}
                                                 >
                                                     <Image src={img.src} alt="" fill className={`object-cover${isViewAll ? ' blur-[4px]' : ''}`} unoptimized />
@@ -419,22 +524,32 @@ export default function MobilePortfolio() {
                     </p>
 
                     <div
-                        className="relative w-full flex items-center justify-center px-12 max-h-[60vh] flex-1"
+                        className="relative w-full flex items-center justify-center px-12 max-h-[60vh] flex-1 overflow-hidden"
                         onClick={e => e.stopPropagation()}
                         onTouchStart={handleTouchStart}
-                        onTouchEnd={e => handleTouchEnd(e, gallery.length)}
+                        onTouchEnd={handleTouchEnd}
                     >
                         <button
-                            onClick={() => setCurrentImageIndex(prev => (prev - 1 + gallery.length) % gallery.length)}
+                            onClick={() => navigateGallery('prev')}
                             className="absolute left-2 p-3 text-white/40 active:text-white transition-colors z-10"
                         >
                             <ChevronLeft className="w-8 h-8" />
                         </button>
-                        <div className="relative w-full h-full">
+                        <div
+                            key={currentImageIndex}
+                            className="relative w-full h-full"
+                            style={{
+                                animation: slideDir === 'next'
+                                    ? 'slideFromRight 0.25s ease-out'
+                                    : slideDir === 'prev'
+                                    ? 'slideFromLeft 0.25s ease-out'
+                                    : 'none',
+                            }}
+                        >
                             <Image src={currentImg.src} alt="" fill className="object-contain" unoptimized />
                         </div>
                         <button
-                            onClick={() => setCurrentImageIndex(prev => (prev + 1) % gallery.length)}
+                            onClick={() => navigateGallery('next')}
                             className="absolute right-2 p-3 text-white/40 active:text-white transition-colors z-10"
                         >
                             <ChevronRight className="w-8 h-8" />
@@ -450,7 +565,7 @@ export default function MobilePortfolio() {
                             <button
                                 key={i}
                                 ref={el => { lightboxThumbRefs.current[i] = el; }}
-                                onClick={() => setCurrentImageIndex(i)}
+                                onClick={() => navigateToIndex(i)}
                                 className={`relative w-16 aspect-video flex-shrink-0 rounded border-2 transition-all ${currentImageIndex === i ? 'border-[#E8DDB5] scale-105' : 'border-transparent opacity-30'}`}
                             >
                                 <Image src={img.src} alt="" fill className="object-cover" unoptimized />
