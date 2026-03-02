@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import MobileView from "@/app/components/MobileView";
 import Background from "@/app/components/Background";
 import LeftColumn from "@/app/components/LeftColumn";
@@ -8,6 +8,7 @@ import RightColumn from "@/app/components/RightColumn";
 import CursorGlow from "./components/CursorGlow";
 
 export default function Home() {
+  const [moreHoveredIndex, setMoreHoveredIndex] = useState<number | null>(null);
 
   return (
     <main className="min-h-screen w-full relative">
@@ -17,7 +18,7 @@ export default function Home() {
       </div>
 
       {/* 2. DESKTOP VIEW - Only renders blocks/flex on md+ screens */}
-      <div 
+      <div
         className="hidden md:block relative z-10 w-full"
         style={{
           '--left-col-width': '26.67vw',
@@ -30,8 +31,8 @@ export default function Home() {
         } as React.CSSProperties}
       >
         <CursorGlow />
-        <LeftColumn />
-        <RightColumn />
+        <LeftColumn moreHoveredIndex={moreHoveredIndex} onMoreHover={setMoreHoveredIndex} />
+        <RightColumn moreHoveredIndex={moreHoveredIndex} onMoreHover={setMoreHoveredIndex} />
       </div>
 
       {/* 3. MOBILE VIEW - Completely ignored by Desktop layout */}

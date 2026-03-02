@@ -23,12 +23,13 @@ The Entertainment committee is the heart of the MAC culture show and late-night 
 
 - **Design Philosophy:** Used **Paint.NET** for initial raster layouts and texture work before finalizing the vectors. The look is meant to be "staff-exclusive," leaning into a modern, street-wear aesthetic that fits the energy of the performers and tech crew. Definitely made it more essentials and stussy vibes.
 
-## Chi Hang Family Merch (DIY Special)
+## Chi Hang Family Merch & Sandman Family Merch
 
 In VSA culture, "families" are the core social units. I collaborated directly with the **Chi Hang** family leader to create a design that felt personal and unique to their group.
 
 - **DIY Production:** Unlike the mass-produced items, these were a labor of love. I used a **Cricut** to cut custom **Heat Transfer Vinyl (HTV)** and hand-pressed each garment using an iron. 
-- **Collaboration:** This project was less about a "client" and more about a creative partnership, iterating on the design until it perfectly captured the "Chi Hang" family identity.
+- **Collaboration:** My friends turned my house into a sweatshop and we labored for 6+ hours to successfully heat transfer the design onto every single shirt.
+
 
 ## Manufacturing & Workflow
 
