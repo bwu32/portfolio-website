@@ -196,29 +196,29 @@ export default function MobileView() {
                             please note that mobile view does not show complete features of my awesome website. viewing on pc is <span className="text-white">highly recommended</span>.
                         </p>
                     </div>
-                    <div className="pt-12 grid grid-cols-2 gap-3">
+                    <div className="pt-8 flex flex-col gap-4">
                         <a
                             href="/bwu_resume.pdf"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="relative overflow-hidden px-4 py-4 rounded-full bg-[#2b366d]/10 border border-white/10 shadow-xl transition-all active:scale-95 active:bg-[#2b366d]/60 group text-center"
+                            className="relative overflow-hidden px-8 py-4 rounded-full bg-[#2b366d]/10 border border-white/10 shadow-xl transition-all active:scale-95 active:bg-[#2b366d]/60 group text-center"
                         >
                             <span className="absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent pointer-events-none" />
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-active:animate-[shimmer_1.5s_infinite] pointer-events-none" />
                             <span className="relative z-10 font-bold tracking-[0.2em] uppercase text-md">
-                                View Resume
+                                View Full Resume
                             </span>
                         </a>
                         <a
                             href="/bwu_design_resume.pdf"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="relative overflow-hidden px-4 py-4 rounded-full bg-[#2b366d]/10 border border-white/10 shadow-xl transition-all active:scale-95 active:bg-[#2b366d]/60 group text-center"
+                            className="relative overflow-hidden px-8 py-4 rounded-full bg-[#2b366d]/10 border border-white/10 shadow-xl transition-all active:scale-95 active:bg-[#2b366d]/60 group text-center"
                         >
                             <span className="absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent pointer-events-none" />
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-active:animate-[shimmer_1.5s_infinite] pointer-events-none" />
                             <span className="relative z-10 font-bold tracking-[0.2em] uppercase text-md">
-                                Design Resume
+                                View Design Resume
                             </span>
                         </a>
                     </div>
@@ -275,32 +275,6 @@ export default function MobileView() {
                                 <p className="text-sm text-white/50 leading-relaxed">{exp.description}</p>
                             </div>
                         ))}
-                    </div>
-                    <div className="pt-8 flex flex-col gap-4">
-                        <a
-                            href="/bwu_resume.pdf"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="relative overflow-hidden px-8 py-4 rounded-full bg-[#2b366d]/10 border border-white/10 shadow-xl transition-all active:scale-95 active:bg-[#2b366d]/60 group text-center"
-                        >
-                            <span className="absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent pointer-events-none" />
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-active:animate-[shimmer_1.5s_infinite] pointer-events-none" />
-                            <span className="relative z-10 font-bold tracking-[0.2em] uppercase text-md">
-                                View Full Resume
-                            </span>
-                        </a>
-                        <a
-                            href="/bwu_design_resume.pdf"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="relative overflow-hidden px-8 py-4 rounded-full bg-[#2b366d]/10 border border-white/10 shadow-xl transition-all active:scale-95 active:bg-[#2b366d]/60 group text-center"
-                        >
-                            <span className="absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent pointer-events-none" />
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-active:animate-[shimmer_1.5s_infinite] pointer-events-none" />
-                            <span className="relative z-10 font-bold tracking-[0.2em] uppercase text-md">
-                                View Design Resume
-                            </span>
-                        </a>
                     </div>
                 </section>
 
