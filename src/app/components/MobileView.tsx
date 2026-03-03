@@ -296,18 +296,6 @@ export default function MobileView() {
                             </div>
                         ))}
                     </div>
-                    <div className="pt-8 flex justify-center">
-                        <a
-                            href="/mediums"
-                            className="relative overflow-hidden px-8 py-4 rounded-full bg-[#2b366d]/10 border border-white/10 shadow-xl transition-all active:scale-95 active:bg-[#2b366d]/60 group"
-                        >
-                            <span className="absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent pointer-events-none" />
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-active:animate-[shimmer_1.5s_infinite] pointer-events-none" />
-                            <span className="relative z-10 font-bold tracking-[0.2em] uppercase text-md">
-                                View Creative Mediums
-                            </span>
-                        </a>
-                    </div>
                 </section>
 
                 {/* CONTACT */}
