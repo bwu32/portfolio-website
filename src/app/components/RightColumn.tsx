@@ -2,13 +2,14 @@ import Image from "next/image"
 import { ArrowUpRight } from "lucide-react"
 import { useState } from "react";
 
-export default function RightColumn() {
-
+export default function RightColumn({ moreHoveredIndex, onMoreHover }: {
+    moreHoveredIndex: number | null;
+    onMoreHover: (i: number | null) => void;
+}) {
     // for my containers
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const [expHoveredIndex, setExpHoveredIndex] = useState<number | null>(null);
     const [projHoveredIndex, setProjHoveredIndex] = useState<number | null>(null);
-    const [moreHoveredIndex, setMoreHoveredIndex] = useState<number | null>(null);
 
     const experiences = [
         {
@@ -306,10 +307,10 @@ export default function RightColumn() {
                                         {/* Title and Description - mb-auto pushes tags to the bottom if block is tall */}
                                         <div className="mb-4">
                                             <div className="flex items-start justify-between mb-2">
-                                                <h3 className="text-lg text-white font-medium transition-all duration-300 group-hover/proj:text-[#f0e0a1]">
+                                                <h3 className="text-lg text-white font-medium transition-all duration-300 group-hover/proj:text-[#E8DDB5]">
                                                     {project.title}
                                                 </h3>
-                                                <ArrowUpRight className="w-4 h-4 opacity-50 text-white transition-all group-hover/proj:text-[#f0e0a1] flex-shrink-0 ml-2" />
+                                                <ArrowUpRight className="w-4 h-4 opacity-50 text-white transition-all group-hover/proj:text-[#E8DDB5] flex-shrink-0 ml-2" />
                                             </div>
 
                                             <p className="text-white transition-opacity duration-300 group-hover/proj:opacity-100 opacity-60 text-sm leading-relaxed">
@@ -324,7 +325,7 @@ export default function RightColumn() {
                                                     key={idx}
                                                     className="relative rounded-full px-4 py-1.5 text-white text-opacity-60 bg-[#2b366d] overflow-hidden group/tag"
                                                 >
-                                                    <span className="relative z-10 transition-all duration-500 ease-out group-hover/tag:text-[#f0e0a1] text-xs font-medium">
+                                                    <span className="relative z-10 transition-all duration-500 ease-out group-hover/tag:text-[#E8DDB5] text-xs font-medium">
                                                         {tech}
                                                     </span>
                                                     <div className="absolute inset-0 bg-gradient-to-r from-[#5F72BF] to-[#2b366d] -translate-x-full group-hover/tag:translate-x-0 transition-transform duration-500 ease-out opacity-50" />
@@ -371,10 +372,10 @@ export default function RightColumn() {
                                     <div className="flex items-start justify-between mb-2">
                                         <div className="opacity-50 text-white text-sm">{exp.period}</div>
                                         <div className="flex items-center gap-2">
-                                            <h3 className="text-lg text-white font-medium transition-all duration-300 group-hover/exp:text-[#f0e0a1]">
+                                            <h3 className="text-lg text-white font-medium transition-all duration-300 group-hover/exp:text-[#E8DDB5]">
                                                 {exp.title} - {exp.company}
                                             </h3>
-                                            <ArrowUpRight className="w-4 h-4 opacity-50 text-white transition-all group-hover/exp:text-[#f0e0a1]" />
+                                            <ArrowUpRight className="w-4 h-4 opacity-50 text-white transition-all group-hover/exp:text-[#E8DDB5]" />
                                         </div>
                                     </div>
                                     <p className="text-white transition-opacity duration-300 group-hover/exp:opacity-100 opacity-60">
@@ -470,40 +471,42 @@ export default function RightColumn() {
 
                     {/* Cool Stuff Boxes */}
                     <div className="space-y-4 mb-8">
-                        {coolStuff.map((item, index) => (
+                        {coolStuff.map((item, index) => {
+                            const active = moreHoveredIndex === index;
+                            return (
                             <a
                                 key={index}
                                 href={item.link}
                                 rel="noopener noreferrer"
                                 className="block"
-                                onMouseEnter={() => setMoreHoveredIndex(index)}
-                                onMouseLeave={() => setMoreHoveredIndex(null)}
+                                onMouseEnter={() => onMoreHover(index)}
+                                onMouseLeave={() => onMoreHover(null)}
                             >
                                 <div
-                                    className={`relative rounded-lg p-6 group/more cursor-pointer overflow-hidden transition-all duration-300 ease-out 
-                            ${typeof moreHoveredIndex === "number" && moreHoveredIndex !== index ? "opacity-50" : "opacity-100"}`}
+                                    className={`relative rounded-lg p-6 cursor-pointer overflow-hidden transition-all duration-300 ease-out
+                            ${typeof moreHoveredIndex === "number" && !active ? "opacity-50" : "opacity-100"}`}
                                 >
                                     <div className="absolute inset-0 bg-[#2b366d] opacity-30 transition-all duration-300">
-                                        <div className="absolute inset-0 bg-gradient-to-r from-[#5F72BF] to-[#2b366d] 
-                                -translate-x-full group-hover/more:translate-x-0 transition-transform duration-500 ease-out" />
+                                        <div className={`absolute inset-0 bg-gradient-to-r from-[#5F72BF] to-[#2b366d] transition-transform duration-500 ease-out ${active ? "translate-x-0" : "-translate-x-full"}`} />
                                     </div>
 
                                     <div className="relative z-10">
                                         <div className="flex items-start justify-between">
                                             <div>
-                                                <h3 className="text-lg text-white font-medium transition-all duration-300 group-hover/more:text-[#f0e0a1] mb-2">
+                                                <h3 className={`text-lg font-medium transition-all duration-300 mb-2 ${active ? "text-[#E8DDB5]" : "text-white"}`}>
                                                     {item.title}
                                                 </h3>
-                                                <p className="text-white transition-opacity duration-300 group-hover/more:opacity-100 opacity-60">
+                                                <p className={`text-white transition-opacity duration-300 ${active ? "opacity-100" : "opacity-60"}`}>
                                                     {item.description}
                                                 </p>
                                             </div>
-                                            <ArrowUpRight className="w-4 h-4 opacity-50 text-white transition-all group-hover/more:text-[#f0e0a1] flex-shrink-0 ml-3" />
+                                            <ArrowUpRight className={`w-4 h-4 flex-shrink-0 ml-3 transition-all ${active ? "text-[#E8DDB5] opacity-100" : "text-white opacity-50"}`} />
                                         </div>
                                     </div>
                                 </div>
                             </a>
-                        ))}
+                            );
+                        })}
                     </div>
 
                     {/* Credits positioned to align with left sidebar icons */}

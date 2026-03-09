@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -296,8 +295,8 @@ export default function Mediums() {
             {/* Back to Top */}
             <button
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className={`fixed bottom-8 right-8 p-2 transition-all duration-500 z-50 group text-white hover:text-[#E8DDB5] 
-                    ${showScrollTop ? "opacity-60 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"}`}
+                className={`fixed bottom-8 right-8 p-2 transition-all duration-500 z-50 group text-white hover:text-[#E8DDB5] hover:scale-110 hover:opacity-100
+                    ${showScrollTop ? "opacity-60 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-10 pointer-events-none"}`}
             >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="group-hover:-translate-y-1 transition-transform">
                     <path d="m17 11-5-5-5 5" /><path d="m17 18l-5-5-5 5" />

@@ -12,6 +12,7 @@ export default function LegoContent() {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
     const legoSets = [
+        { image: "/icons/legos/delorean.png", date: "Jan 1 2026", description: "Back to the Future Time Machine" },
         { image: "/icons/legos/lightningmcqueen.png", date: "Jan 1 2026", description: "Lightning McQueen" },
         { image: "/icons/legos/mclarenw1.png", date: "Jan 1 2026", description: "McLaren W1" },
         { image: "/icons/legos/sonic.png", date: "Jan 1 2026", description: "Sonic’s Lightning Racer" },
@@ -131,13 +132,13 @@ export default function LegoContent() {
                 {legoSets.map((win, index) => (
                     <div
                         key={index}
-                        className={`relative rounded-lg overflow-hidden bg-[#2b366d] bg-opacity-30 transition-all duration-300 cursor-pointer 
+                        className={`group relative rounded-lg overflow-hidden bg-[#2b366d] bg-opacity-30 transition-all duration-300 cursor-pointer
               ${typeof hoveredIndex === "number" && hoveredIndex !== index ? "opacity-50" : "opacity-100"}`}
                         onMouseEnter={() => setHoveredIndex(index)}
                         onMouseLeave={() => setHoveredIndex(null)}
                         onClick={() => setSelectedIndex(index)}
                     >
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#5F72BF] to-[#2b366d] -translate-x-full hover:translate-x-0 transition-transform duration-500 ease-out opacity-50" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#5F72BF] to-[#2b366d] -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out opacity-30" />
 
                         <div className="relative w-full aspect-video">
                             <Image

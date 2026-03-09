@@ -39,6 +39,8 @@ export default function PortfolioContent() {
     const [showFilterDropdown, setShowFilterDropdown] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const modalContentRef = useRef<HTMLDivElement>(null);
+    const touchStartX = useRef<number>(0);
+    const lightboxThumbRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
     // 1. Memoized Category Counts (Moved up to ensure availability)
     const categoryCounts = useMemo(() => {
@@ -218,7 +220,28 @@ export default function PortfolioContent() {
 
     const currentImg = gallery[currentImageIndex] || gallery[0] || { src: '', caption: '' };
 
+    // Swipe handlers
+    const handleTouchStart = (e: React.TouchEvent) => {
+        touchStartX.current = e.touches[0].clientX;
+    };
+    const handleTouchEnd = (e: React.TouchEvent, length: number) => {
+        const delta = e.changedTouches[0].clientX - touchStartX.current;
+        if (Math.abs(delta) < 50) return;
+        setCurrentImageIndex(prev => delta < 0 ? (prev + 1) % length : (prev - 1 + length) % length);
+    };
+
+    // Lightbox thumbnail auto-scroll
+    useEffect(() => {
+        if (!isFullGalleryOpen) return;
+        lightboxThumbRefs.current[currentImageIndex]?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'nearest',
+        });
+    }, [currentImageIndex, isFullGalleryOpen]);
+
     const [showScrollTop, setShowScrollTop] = useState(false);
+    const [showModalScrollTop, setShowModalScrollTop] = useState(false);
 
     // back to top button
     useEffect(() => {
@@ -234,6 +257,15 @@ export default function PortfolioContent() {
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+
+    // Modal scroll-to-top button
+    useEffect(() => {
+        const el = modalContentRef.current;
+        if (!el) return;
+        const handleModalScroll = () => setShowModalScrollTop(el.scrollTop > el.clientHeight);
+        el.addEventListener("scroll", handleModalScroll);
+        return () => el.removeEventListener("scroll", handleModalScroll);
+    }, [activeProject]);
 
     return (
         <main className="min-h-screen py-12 px-6 md:px-[240px]">
@@ -325,7 +357,7 @@ export default function PortfolioContent() {
                             onClick={() => setSelectedProject(index)}
                             className={`relative cursor-pointer transition-all duration-300 grid grid-cols-12 gap-4 py-6 border-b border-white border-opacity-20 group -mx-2 px-2 ${hoveredIndex !== null && hoveredIndex !== index ? "opacity-50" : "opacity-100"}`}
                         >
-                            <div className="absolute inset-y-0 left-0 right-0 bg-gradient-to-r from-[#5F72BF] to-transparent opacity-0 group-hover:opacity-10 pointer-events-none" />
+                            <div className="absolute inset-y-0 left-0 right-0 bg-gradient-to-r from-[#5F72BF] to-transparent opacity-0 group-hover:opacity-10 transition-opacity duration-300 pointer-events-none" />
                             <div className="col-span-1 text-white opacity-60 text-sm">{new Date(project.date).getFullYear()}</div>
                             <div className="col-span-3 text-white text-base group-hover:text-[#E8DDB5]">{project.title}</div>
                             <div className="col-span-2 text-white opacity-60 text-sm">{project.madeAt}</div>
@@ -373,6 +405,8 @@ export default function PortfolioContent() {
                                     {/* CLICKABLE IMAGE: Triggers Lightbox */}
                                     <button
                                         onClick={() => setIsFullGalleryOpen(true)}
+                                        onTouchStart={handleTouchStart}
+                                        onTouchEnd={(e) => handleTouchEnd(e, gallery.length)}
                                         className="relative w-full h-full"
                                     >
                                         <Image
@@ -415,35 +449,30 @@ export default function PortfolioContent() {
                                 </p>
                             </div>
 
-                            {/* THUMBNAILS GRID (Updated your map to slice properly) */}
+                            {/* THUMBNAILS GRID — 4 slots looping through gallery */}
                             <div className="grid grid-cols-4 gap-2">
-                                {gallery.slice(0, 3).map((img, i) => (
-                                    <button
-                                        key={i}
-                                        onClick={() => setCurrentImageIndex(i)}
-                                        className={`relative aspect-square rounded-md overflow-hidden border-2 transition-all ${currentImageIndex === i ? 'border-[#E8DDB5]' : 'border-transparent opacity-40 hover:opacity-100'}`}
-                                    >
-                                        <Image src={img.src} alt="" fill className="object-cover" unoptimized />
-                                    </button>
-                                ))}
-
-                                {/* VIEW ALL / MORE button */}
-                                <button
-                                    onClick={() => setIsFullGalleryOpen(true)}
-                                    className="relative aspect-square rounded-md overflow-hidden flex flex-col items-center justify-center border border-white/10 group bg-black"
-                                >
-                                    <Image
-                                        src={gallery[3]?.src || gallery[0]?.src || ""}
-                                        alt=""
-                                        fill
-                                        className="object-cover blur-[4px] opacity-40 group-hover:opacity-70 transition-opacity"
-                                        unoptimized
-                                    />
-                                    <div className="absolute inset-0 bg-black/20" />
-                                    <span className="relative z-10 text-[9px] font-bold text-[#E8DDB5] drop-shadow-lg">
-                                        {gallery.length > 3 ? `+${gallery.length - 3} MORE` : 'VIEW ALL'}
+                                {[0, 1, 2, 3].map((i) => {
+                                    const galleryIdx = (currentImageIndex + i) % gallery.length;
+                                    const img = gallery[galleryIdx];
+                                    const isViewAll = i === 3;
+                                    return (
+                                        <button
+                                            key={i}
+                                            onClick={() => isViewAll ? setIsFullGalleryOpen(true) : setCurrentImageIndex(galleryIdx)}
+                                            className={`relative aspect-square rounded-md overflow-hidden border-2 transition-all ${isViewAll ? 'border-transparent group bg-black' : currentImageIndex === galleryIdx ? 'border-[#E8DDB5]' : 'border-transparent opacity-40 hover:opacity-100'}`}
+                                        >
+                                            <Image src={img.src} alt="" fill className={`object-cover${isViewAll ? ' blur-[4px] group-hover:opacity-70 transition-opacity' : ''}`} unoptimized />
+                                            {isViewAll && (
+                                                <>
+                                                    <div className="absolute inset-0 bg-black/20" />
+                                                    <span className="absolute inset-0 flex items-center justify-center text-[9px] font-bold text-[#E8DDB5] drop-shadow-lg z-10">
+                                        {gallery.length > 3 ? `VIEW +${gallery.length - 3} MORE` : 'VIEW ALL'}
                                     </span>
-                                </button>
+                                                </>
+                                            )}
+                                        </button>
+                                    );
+                                })}
                             </div>
 
                             {/* Tags Meta (Remains the same as your snippet) */}
@@ -553,7 +582,7 @@ export default function PortfolioContent() {
                                 </div>
 
                                 {/* Fixed Scroll-to-Top Button */}
-                                <div className="absolute bottom-6 right-8 z-30">
+                                <div className={`absolute bottom-6 right-8 z-30 transition-all duration-300 ${showModalScrollTop ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
                                     <button
                                         onClick={() => modalContentRef.current?.scrollTo({ top: 0, behavior: 'smooth' })}
                                         className="group p-2 text-white opacity-60 hover:opacity-100 hover:text-[#E8DDB5] transition-all"
@@ -571,7 +600,7 @@ export default function PortfolioContent() {
             {isFullGalleryOpen && activeProject && (
                 <div className="fixed inset-0 z-[100] bg-black/98 backdrop-blur-xl flex flex-col items-center justify-center p-8" onClick={() => setIsFullGalleryOpen(false)}>
                     <button className="absolute top-10 right-10 text-white/60 hover:text-white"><X className="w-10 h-10" /></button>
-                    <div className="relative w-full max-w-6xl aspect-video flex items-center justify-center" onClick={e => e.stopPropagation()}>
+                    <div className="relative w-full max-w-6xl aspect-video flex items-center justify-center" onClick={e => e.stopPropagation()} onTouchStart={handleTouchStart} onTouchEnd={(e) => handleTouchEnd(e, gallery.length)}>
                         <button onClick={() => setCurrentImageIndex(prev => (prev - 1 + gallery.length) % gallery.length)} className="absolute -left-16 p-4 text-white/40 hover:text-white"><ChevronLeft className="w-12 h-12" /></button>
                         <div className="relative w-full h-full">
                             <Image src={currentImg.src} alt="" fill className="object-contain" unoptimized />
@@ -581,7 +610,12 @@ export default function PortfolioContent() {
                     </div>
                     <div className="absolute bottom-10 flex gap-3 p-4 bg-white/5 rounded-xl border border-white/10 overflow-x-auto max-w-[85vw] no-scrollbar" onClick={e => e.stopPropagation()}>
                         {gallery.map((img, i) => (
-                            <button key={i} onClick={() => setCurrentImageIndex(i)} className={`relative w-24 aspect-video flex-shrink-0 rounded border-2 transition-all ${currentImageIndex === i ? 'border-[#E8DDB5] scale-105' : 'border-transparent opacity-30'}`}>
+                            <button
+                                key={i}
+                                ref={el => { lightboxThumbRefs.current[i] = el; }}
+                                onClick={() => setCurrentImageIndex(i)}
+                                className={`relative w-24 aspect-video flex-shrink-0 rounded border-2 transition-all ${currentImageIndex === i ? 'border-[#E8DDB5] scale-105' : 'border-transparent opacity-30'}`}
+                            >
                                 <Image src={img.src} alt="" fill className="object-cover" unoptimized />
                             </button>
                         ))}

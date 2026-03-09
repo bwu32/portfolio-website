@@ -1,20 +1,34 @@
 import Image from "next/image"
+import Link from "next/link"
 import NavLink from "./NavLink"
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-function SubItem({ text }: { text: string }) {
+function SubItem({ text, href, isHighlighted, onMouseEnter, onMouseLeave }: {
+    text: string;
+    href: string;
+    isHighlighted: boolean;
+    onMouseEnter: () => void;
+    onMouseLeave: () => void;
+}) {
     return (
-        <div className="text-[9px] tracking-[0.25em] text-white/30 uppercase font-bold pl-4 hover:text-white transition-colors duration-300 cursor-default">
+        <Link
+            href={href}
+            className={`text-[9px] tracking-[0.25em] uppercase font-bold pl-4 transition-colors duration-300 ${isHighlighted ? "text-white" : "text-white/30 hover:text-white"}`}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+        >
             {text}
-        </div>
+        </Link>
     );
 }
 
 
 
-export default function LeftColumn() {
-
+export default function LeftColumn({ moreHoveredIndex, onMoreHover }: {
+    moreHoveredIndex: number | null;
+    onMoreHover: (i: number | null) => void;
+}) {
     const [activeSection, setActiveSection] = useState<string>("about");
     const [designerClicks, setDesignerClicks] = useState(0);
     const router = useRouter();
@@ -100,9 +114,27 @@ export default function LeftColumn() {
                                 : "grid-rows-[0fr] opacity-0 mt-0 -translate-y-2 pointer-events-none"}
         `}>
                             <div className="overflow-hidden flex flex-col gap-3 border-l border-white/30 ml-1">
-                                <SubItem text="GUESTBOOK" />
-                                <SubItem text="VICTORY ROYALES" />
-                                <SubItem text="LEGO COLLECTION" />
+                                <SubItem
+                                    text="GUESTBOOK"
+                                    href="/guestbook"
+                                    isHighlighted={moreHoveredIndex === 0}
+                                    onMouseEnter={() => onMoreHover(0)}
+                                    onMouseLeave={() => onMoreHover(null)}
+                                />
+                                <SubItem
+                                    text="VICTORY ROYALES"
+                                    href="/vicroys"
+                                    isHighlighted={moreHoveredIndex === 1}
+                                    onMouseEnter={() => onMoreHover(1)}
+                                    onMouseLeave={() => onMoreHover(null)}
+                                />
+                                <SubItem
+                                    text="LEGO COLLECTION"
+                                    href="/legos"
+                                    isHighlighted={moreHoveredIndex === 2}
+                                    onMouseEnter={() => onMoreHover(2)}
+                                    onMouseLeave={() => onMoreHover(null)}
+                                />
                             </div>
                         </div>
                     </div>
