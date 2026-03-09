@@ -400,7 +400,7 @@ export default function SecretContent() {
             <div className="fixed inset-0 z-50 bg-black flex items-center justify-center" style={{ height: "100dvh" }}>
               <video
                 ref={videoRef}
-                src="/icons/secret/facetime.mov"
+                src="/icons/secret/facetime.mp4"
                 className="w-full h-full object-cover"
                 playsInline
                 autoPlay

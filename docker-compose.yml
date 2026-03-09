@@ -9,5 +9,3 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-    volumes:
-      - /home/brian/facetime.MOV:/app/public/icons/secret/facetime.MOV
