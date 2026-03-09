@@ -1,6 +1,7 @@
 "use client"
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { ArrowUpRight, Github, Linkedin, Mail, Instagram } from "lucide-react";
 import Background from "./Background";
 
@@ -23,6 +24,18 @@ interface Project {
 
 export default function MobileView() {
     const [showTopBtn, setShowTopBtn] = useState(false);
+    const [designerClicks, setDesignerClicks] = useState(0);
+    const router = useRouter();
+
+    function handleDesignerClick() {
+        const next = designerClicks + 1;
+        if (next >= 3) {
+            router.push("/secret");
+            setDesignerClicks(0);
+        } else {
+            setDesignerClicks(next);
+        }
+    }
 
     // --- DATA (Keeping your existing data arrays) ---
     const experiences = [
@@ -206,7 +219,7 @@ export default function MobileView() {
             {/* HEADER - Transparent background now */}
             <header className="pb-16 pt-4">
                 <h2 className="text-lg text-white/40 tracking-[0.3em] mb-2 font-bold uppercase">
-                    PRODUCT DESIGNER
+                    PRODUCT <span onClick={handleDesignerClick} className="cursor-default select-none">DESIGNER</span>
                 </h2>
                 <h1 className="text-7xl font-black text-[#E8DDB5] -ml-1 tracking-tight leading-none">
                     BRIAN WU

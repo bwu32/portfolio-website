@@ -1,6 +1,7 @@
 import Image from "next/image"
 import NavLink from "./NavLink"
-import { useState, useEffect, } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 function SubItem({ text }: { text: string }) {
     return (
@@ -15,6 +16,18 @@ function SubItem({ text }: { text: string }) {
 export default function LeftColumn() {
 
     const [activeSection, setActiveSection] = useState<string>("about");
+    const [designerClicks, setDesignerClicks] = useState(0);
+    const router = useRouter();
+
+    function handleDesignerClick() {
+        const next = designerClicks + 1;
+        if (next >= 3) {
+            router.push("/secret");
+            setDesignerClicks(0);
+        } else {
+            setDesignerClicks(next);
+        }
+    }
 
     useEffect(() => {
         const observerOptions = {
@@ -52,7 +65,7 @@ export default function LeftColumn() {
         >
             <div className="space-y-12">
                 <div>
-                    <h2 className="text-2xl text-white mb-2 opacity-50">PRODUCT DESIGNER
+                    <h2 className="text-2xl text-white mb-2 opacity-50">PRODUCT <span onClick={handleDesignerClick} className="cursor-default select-none">DESIGNER</span>
                         {/* <a className="ml-4 text-white text-sm">
                             (maybe)
                         </a> */}
