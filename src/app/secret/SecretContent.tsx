@@ -142,19 +142,22 @@ export default function SecretContent() {
 
   // ── FULLSCREEN HELPERS ──
   function enterFullscreen() {
-    const el = document.documentElement as any;
-    try {
-      const p = el.requestFullscreen?.() ?? el.webkitRequestFullscreen?.() ?? el.mozRequestFullScreen?.() ?? el.msRequestFullscreen?.();
-      p?.catch?.(() => {});
-    } catch { /* not supported */ }
+    const el = document.documentElement;
+    if (el.requestFullscreen) {
+      el.requestFullscreen().catch(() => {});
+    } else if ((el as any).webkitRequestFullscreen) {
+      (el as any).webkitRequestFullscreen();
+    } else if ((el as any).mozRequestFullScreen) {
+      (el as any).mozRequestFullScreen();
+    } else if ((el as any).msRequestFullscreen) {
+      (el as any).msRequestFullscreen();
+    }
   }
 
   function exitFullscreen() {
-    const doc = document as any;
-    if (doc.fullscreenElement || doc.webkitFullscreenElement) {
-      try {
-        (doc.exitFullscreen?.() ?? doc.webkitExitFullscreen?.() ?? doc.mozCancelFullScreen?.())?.catch?.(() => {});
-      } catch { /* not supported */ }
+    if (document.fullscreenElement || (document as any).webkitFullscreenElement) {
+      if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+      else if ((document as any).webkitExitFullscreen) (document as any).webkitExitFullscreen();
     }
   }
 
@@ -169,10 +172,13 @@ export default function SecretContent() {
       // Hide call screen and show camera in the same render — no gap
       setCameraPhase("fullscreen");
       setShowCall(false);
-      setTimeout(() => {
-        setCameraPhase("pip");
-        setCallAnswered(true);
-      }, 600);
+      // Wait for the fullscreen frame to paint before starting the pip transition
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          setCameraPhase("pip");
+          setCallAnswered(true);
+        }, 600);
+      });
     } else {
       setShowCall(false);
       setCallAnswered(true);
@@ -348,13 +354,15 @@ export default function SecretContent() {
               {/* SOUP OR MAN */}
               <button
                 onClick={() => {
-                  enterFullscreen();
                   setCallAnswered(false);
                   setCameraPhase(null);
                   setSlideX(0);
                   setShowCall(true);
-                  // Slight delay so fullscreen request is processed before audio starts
-                  setTimeout(() => startRing(), 80);
+                  // Request fullscreen after render, audio after fullscreen is granted
+                  requestAnimationFrame(() => {
+                    enterFullscreen();
+                    setTimeout(() => startRing(), 80);
+                  });
                 }}
                 className="w-full text-left border border-white/10 rounded-2xl p-8 bg-white/[0.02] hover:bg-white/[0.05] active:scale-[0.98] transition-all group"
               >
