@@ -14,55 +14,56 @@ export default function SecretContent() {
   const [unlocked, setUnlocked] = useState(false);
   const [shake, setShake] = useState(false);
 
-  // Call / video states
+  // Call / camera / video states
   const [showCall, setShowCall] = useState(false);
+  const [cameraPhase, setCameraPhase] = useState<"fullscreen" | "pip" | null>(null);
   const [callAnswered, setCallAnswered] = useState(false);
 
-  // Live clock
+  // Clock
   const [clockTime, setClockTime] = useState("");
 
-  // Slide to answer
+  // Slide
   const [slideX, setSlideX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const isDraggingRef = useRef(false);
   const startXRef = useRef(0);
   const pillRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Stable ref-based popstate handler to avoid stale closures
+  // Refs
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const cameraVideoRef = useRef<HTMLVideoElement>(null);
+  const cameraStreamRef = useRef<MediaStream | null>(null);
+  const ringAudioRef = useRef<HTMLAudioElement | null>(null);
+  const connectAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  // ── POPSTATE (back button) ──
   const popStateHandlerRef = useRef<() => void>(() => {});
   useEffect(() => {
     popStateHandlerRef.current = () => {
-      if (callAnswered) {
-        // Video → call screen (stay at the call-entry history state we pushed earlier)
+      if (callAnswered || cameraPhase) {
         setCallAnswered(false);
+        setCameraPhase(null);
+        stopCamera();
         setShowCall(true);
         setSlideX(0);
       } else if (showCall) {
-        // Call screen → secret content (browser already popped to base entry)
+        stopRing();
         setShowCall(false);
         exitFullscreen();
       }
-      // Otherwise let the browser navigate normally
     };
-  }, [callAnswered, showCall]);
+  }, [callAnswered, showCall, cameraPhase]);
 
-  // Register single stable popstate listener
   useEffect(() => {
     const handler = () => popStateHandlerRef.current();
     window.addEventListener("popstate", handler);
     return () => window.removeEventListener("popstate", handler);
   }, []);
 
-  // Push a history entry when entering call screen
+  // Push history when call screen opens
   useEffect(() => {
     if (showCall) window.history.pushState({ secret: "call" }, "");
   }, [showCall]);
-
-  // Push a history entry when video starts
-  useEffect(() => {
-    if (callAnswered) window.history.pushState({ secret: "video" }, "");
-  }, [callAnswered]);
 
   // Clock
   useEffect(() => {
@@ -75,38 +76,106 @@ export default function SecretContent() {
     return () => clearInterval(id);
   }, []);
 
-  // Fullscreen helpers
+  // Autoplay video when callAnswered
+  useEffect(() => {
+    if (callAnswered && videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  }, [callAnswered]);
+
+  // Sync camera stream → video element whenever cameraPhase changes
+  useEffect(() => {
+    if (cameraPhase && cameraVideoRef.current && cameraStreamRef.current) {
+      cameraVideoRef.current.srcObject = cameraStreamRef.current;
+    }
+  }, [cameraPhase]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      stopRing();
+      cameraStreamRef.current?.getTracks().forEach(t => t.stop());
+    };
+  }, []);
+
+  // ── AUDIO HELPERS ──
+  function startRing() {
+    if (ringAudioRef.current) return;
+    const audio = new Audio("/icons/secret/ring.mp3");
+    audio.loop = true;
+    audio.play().catch(() => {});
+    ringAudioRef.current = audio;
+  }
+
+  function stopRing() {
+    if (ringAudioRef.current) {
+      ringAudioRef.current.pause();
+      ringAudioRef.current.currentTime = 0;
+      ringAudioRef.current = null;
+    }
+  }
+
+  function playPickupSound() {
+    const audio = new Audio("/icons/secret/connect.mp3");
+    audio.play().catch(() => {});
+    connectAudioRef.current = audio;
+  }
+
+  // ── CAMERA HELPERS ──
+  async function startCamera(): Promise<boolean> {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" },
+        audio: false,
+      });
+      cameraStreamRef.current = stream;
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  function stopCamera() {
+    cameraStreamRef.current?.getTracks().forEach(t => t.stop());
+    cameraStreamRef.current = null;
+  }
+
+  // ── FULLSCREEN HELPERS ──
   function enterFullscreen() {
     const el = document.documentElement;
-    if (el.requestFullscreen) {
-      el.requestFullscreen().catch(() => {});
-    } else if ((el as any).webkitRequestFullscreen) {
-      (el as any).webkitRequestFullscreen();
-    }
+    if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
+    else if ((el as any).webkitRequestFullscreen) (el as any).webkitRequestFullscreen();
   }
 
   function exitFullscreen() {
     if (document.fullscreenElement || (document as any).webkitFullscreenElement) {
-      if (document.exitFullscreen) {
-        document.exitFullscreen().catch(() => {});
-      } else if ((document as any).webkitExitFullscreen) {
-        (document as any).webkitExitFullscreen();
-      }
+      if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+      else if ((document as any).webkitExitFullscreen) (document as any).webkitExitFullscreen();
     }
   }
 
-  // Autoplay video + go fullscreen
-  useEffect(() => {
-    if (callAnswered && videoRef.current) {
-      const video = videoRef.current;
-      video.play().catch(() => {});
-      // iOS Safari: webkitEnterFullscreen on the video element itself
-      if ((video as any).webkitEnterFullscreen) {
-        setTimeout(() => (video as any).webkitEnterFullscreen?.(), 100);
-      }
-    }
-  }, [callAnswered]);
+  // ── ANSWER FLOW ──
+  async function handleAnswer() {
+    stopRing();
+    playPickupSound();
+    window.history.pushState({ secret: "video" }, "");
 
+    const hasCamera = await startCamera();
+    if (hasCamera) {
+      // Hide call screen and show camera in the same render — no gap
+      setCameraPhase("fullscreen");
+      setShowCall(false);
+      setTimeout(() => {
+        setCameraPhase("pip");
+        setCallAnswered(true);
+      }, 600);
+    } else {
+      setShowCall(false);
+      setCallAnswered(true);
+    }
+  }
+
+  // ── PASSWORD ──
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (password.toLowerCase() === "fortnite") {
@@ -117,6 +186,7 @@ export default function SecretContent() {
     }
   }
 
+  // ── SLIDE TO ANSWER ──
   function handlePointerDown(e: React.PointerEvent<HTMLDivElement>) {
     isDraggingRef.current = true;
     setIsDragging(true);
@@ -128,16 +198,13 @@ export default function SecretContent() {
     if (!isDraggingRef.current) return;
     const pill = pillRef.current;
     if (!pill) return;
-    const circleSize = 56;
-    const padding = 6;
-    const maxSlide = pill.offsetWidth - circleSize - padding * 2;
+    const maxSlide = pill.offsetWidth - 56 - 12;
     const newX = Math.max(0, Math.min(e.clientX - startXRef.current, maxSlide));
     setSlideX(newX);
     if (newX >= maxSlide * 0.82) {
       isDraggingRef.current = false;
       setIsDragging(false);
-      setShowCall(false);
-      setCallAnswered(true);
+      handleAnswer();
     }
   }
 
@@ -146,6 +213,36 @@ export default function SecretContent() {
     setIsDragging(false);
     setSlideX(0);
   }
+
+  // ── CAMERA STYLE ──
+  const cameraStyle: React.CSSProperties =
+    cameraPhase === "fullscreen"
+      ? {
+          position: "fixed",
+          zIndex: 60,
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100dvh",
+          borderRadius: 0,
+          overflow: "hidden",
+          transition:
+            "top 0.85s cubic-bezier(0.4,0,0.2,1), left 0.85s cubic-bezier(0.4,0,0.2,1), width 0.85s cubic-bezier(0.4,0,0.2,1), height 0.85s cubic-bezier(0.4,0,0.2,1), border-radius 0.85s cubic-bezier(0.4,0,0.2,1)",
+        }
+      : {
+          position: "fixed",
+          zIndex: 60,
+          top: 16,
+          left: "calc(100vw - 136px)",
+          width: 120,
+          height: 160,
+          borderRadius: 8,
+          overflow: "hidden",
+          border: "2px solid rgba(255,255,255,0.22)",
+          boxShadow: "0 4px 28px rgba(0,0,0,0.65)",
+          transition:
+            "top 0.85s cubic-bezier(0.4,0,0.2,1), left 0.85s cubic-bezier(0.4,0,0.2,1), width 0.85s cubic-bezier(0.4,0,0.2,1), height 0.85s cubic-bezier(0.4,0,0.2,1), border-radius 0.85s cubic-bezier(0.4,0,0.2,1)",
+        };
 
   return (
     <main className="min-h-screen w-full relative">
@@ -246,7 +343,14 @@ export default function SecretContent() {
 
               {/* SOUP OR MAN */}
               <button
-                onClick={() => { enterFullscreen(); setCallAnswered(false); setSlideX(0); setShowCall(true); }}
+                onClick={() => {
+                  enterFullscreen();
+                  setCallAnswered(false);
+                  setCameraPhase(null);
+                  setSlideX(0);
+                  setShowCall(true);
+                  startRing();
+                }}
                 className="w-full text-left border border-white/10 rounded-2xl p-8 bg-white/[0.02] hover:bg-white/[0.05] active:scale-[0.98] transition-all group"
               >
                 <h2 className="text-2xl font-bold text-white uppercase tracking-widest mb-2 group-hover:text-[#E8DDB5] transition-colors">
@@ -259,16 +363,15 @@ export default function SecretContent() {
             <p className="mt-24 text-[10px] text-white/30 uppercase tracking-[0.5em] font-bold">BRIAN WU © 2026 — shhhh</p>
           </div>
 
-          {/* ── IPHONE CALL SCREEN OVERLAY ── */}
+          {/* ── IPHONE CALL SCREEN ── */}
           {showCall && (
             <div
               className="fixed inset-0 z-50 flex flex-col select-none"
               style={{ background: "linear-gradient(170deg, #0d1b2e 0%, #162840 50%, #0a141e 100%)", height: "100dvh" }}
             >
-              {/* Ambient blobs */}
               <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <div className="absolute -top-[10%] left-[0%] w-[65vw] h-[65vw] rounded-full bg-blue-900/30 blur-[120px]" />
-                <div className="absolute bottom-[0%] right-[-5%] w-[55vw] h-[55vw] rounded-full bg-slate-700/20 blur-[100px]" />
+                <div className="absolute -top-[10%] left-0 w-[65vw] h-[65vw] rounded-full bg-blue-900/30 blur-[120px]" />
+                <div className="absolute bottom-0 -right-[5%] w-[55vw] h-[55vw] rounded-full bg-slate-700/20 blur-[100px]" />
               </div>
 
               {/* Status bar */}
@@ -297,8 +400,6 @@ export default function SecretContent() {
               {/* Caller info */}
               <div className="relative z-10 flex flex-col items-center pt-10 px-8">
                 <p className="text-white/55 text-sm font-medium tracking-[0.22em] uppercase mb-5">incoming call</p>
-
-                {/* Avatar with green pulse ring */}
                 <div
                   className="w-[104px] h-[104px] rounded-full bg-gradient-to-br from-[#2a3d55] to-[#111e2e] border border-white/10 flex items-center justify-center mb-6 shadow-2xl"
                   style={{ animation: "callPulse 2.2s ease-in-out infinite" }}
@@ -308,7 +409,6 @@ export default function SecretContent() {
                     <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" fill="rgba(255,255,255,0.4)" />
                   </svg>
                 </div>
-
                 <h1
                   className="text-white text-[44px] font-semibold tracking-tight leading-tight text-center"
                   style={{ fontFamily: "-apple-system, 'SF Pro Display', BlinkMacSystemFont, sans-serif" }}
@@ -319,8 +419,6 @@ export default function SecretContent() {
 
               {/* Bottom controls */}
               <div className="relative z-10 mt-auto pb-14 px-10 flex flex-col items-center gap-7">
-
-                {/* Remind Me / Message */}
                 <div className="flex justify-between w-full max-w-[280px]">
                   <div className="flex flex-col items-center gap-2">
                     <div className="w-[58px] h-[58px] rounded-full flex items-center justify-center"
@@ -334,7 +432,6 @@ export default function SecretContent() {
                     </div>
                     <span className="text-white/70 text-xs font-medium">Remind Me</span>
                   </div>
-
                   <div className="flex flex-col items-center gap-2">
                     <div className="w-[58px] h-[58px] rounded-full flex items-center justify-center"
                       style={{ background: "rgba(255,255,255,0.1)", backdropFilter: "blur(16px)" }}>
@@ -352,15 +449,12 @@ export default function SecretContent() {
                   className="relative w-full max-w-[300px] h-[68px] rounded-full flex items-center px-[6px] overflow-hidden"
                   style={{ background: "rgba(255,255,255,0.13)", backdropFilter: "blur(24px)" }}
                 >
-                  {/* Glinting "slide to answer" label */}
                   <span
                     className="slide-label absolute inset-0 flex items-center justify-center text-[15px] font-medium tracking-wide pointer-events-none select-none"
                     style={{ opacity: Math.max(0, 1 - slideX / 70) }}
                   >
                     slide to answer
                   </span>
-
-                  {/* Draggable circle — white with green phone icon */}
                   <div
                     className="relative z-10 w-14 h-14 rounded-full flex items-center justify-center shadow-lg flex-shrink-0 touch-none"
                     style={{
@@ -380,9 +474,9 @@ export default function SecretContent() {
                   </div>
                 </div>
 
-                {/* Decline button */}
+                {/* Decline */}
                 <button
-                  onClick={() => { setShowCall(false); exitFullscreen(); }}
+                  onClick={() => { stopRing(); setShowCall(false); exitFullscreen(); }}
                   className="w-[66px] h-[66px] rounded-full flex items-center justify-center shadow-2xl active:scale-90 transition-transform"
                   style={{ background: "#ff3b30" }}
                   aria-label="Decline"
@@ -395,16 +489,36 @@ export default function SecretContent() {
             </div>
           )}
 
-          {/* ── FULLSCREEN VIDEO ── */}
+          {/* ── CAMERA (fullscreen → PiP) ── */}
+          {cameraPhase && (
+            <div style={cameraStyle}>
+              <video
+                ref={cameraVideoRef}
+                autoPlay
+                playsInline
+                muted
+                className="w-full h-full object-cover"
+                style={{ transform: "scaleX(-1)" }}
+              />
+            </div>
+          )}
+
+          {/* ── VIDEO ── */}
           {callAnswered && (
-            <div className="fixed inset-0 z-50 bg-black flex items-center justify-center" style={{ height: "100dvh" }}>
+            <div className="fixed inset-0 z-50 bg-black" style={{ height: "100dvh" }}>
               <video
                 ref={videoRef}
                 src="/icons/secret/facetime.mp4"
                 className="w-full h-full object-cover"
                 playsInline
                 autoPlay
-                onEnded={() => { setCallAnswered(false); setShowCall(true); setSlideX(0); }}
+                onEnded={() => {
+                  setCallAnswered(false);
+                  setCameraPhase(null);
+                  stopCamera();
+                  setShowCall(true);
+                  setSlideX(0);
+                }}
               />
             </div>
           )}
