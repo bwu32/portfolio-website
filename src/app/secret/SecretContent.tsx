@@ -404,7 +404,7 @@ export default function SecretContent() {
                 className="w-full h-full object-cover"
                 playsInline
                 autoPlay
-                controls
+                onEnded={() => { setCallAnswered(false); setShowCall(true); setSlideX(0); }}
               />
             </div>
           )}
