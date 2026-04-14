@@ -218,7 +218,16 @@ export default function RightColumn({ moreHoveredIndex, onMoreHover }: {
                         </p>
 
                         <p className="text-lg leading-relaxed mb-4">
-                            i'm passionate about engineering solutions that blend{" "}
+                            currently, i'm an incoming field engineer @{" "}
+                            <a
+                                href="https://www.siemens.com"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-block text-white hover:opacity-80 transition-opacity"
+                            >
+                                siemens
+                            </a>
+                            . i'm passionate about engineering solutions that blend{" "}
                             <a
                                 href="https://www.merriam-webster.com/dictionary/creativity"
                                 target="_blank"

@@ -141,6 +141,10 @@ export default function LeftColumn({ moreHoveredIndex, onMoreHover }: {
                 </nav>
             </div>
 
+            <div className="flex flex-col space-y-4">
+            <div className="text-white/40 text-[10px] tracking-widest uppercase">
+                Interviews gotten from this website: <span className="text-white/70">1</span>
+            </div>
             <div className="flex space-x-6">
                 <a
                     href="https://github.com/bwu32"
@@ -216,6 +220,7 @@ export default function LeftColumn({ moreHoveredIndex, onMoreHover }: {
                         height={24}
                     />
                 </a>
+            </div>
             </div>
         </div>
     )
