@@ -12,6 +12,7 @@ export default function LegoContent() {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
     const legoSets = [
+        { image: "/icons/legos/ninjagodisplay.png", date: "Jan 1 2026", description: "Ninjago Character Display 15th Anniversary" },
         { image: "/icons/legos/delorean.png", date: "Jan 1 2026", description: "Back to the Future Time Machine" },
         { image: "/icons/legos/lightningmcqueen.png", date: "Jan 1 2026", description: "Lightning McQueen" },
         { image: "/icons/legos/mclarenw1.png", date: "Jan 1 2026", description: "McLaren W1" },

@@ -29,6 +29,8 @@ export default function VictoryRoyalesContent() {
     }, []);
 
     const wins = [
+        { image: "/icons/projects/vicroys/41726.png", date: "April 17 2026", description: "lost a bet, got a little #skye" },
+        { image: "/icons/projects/vicroys/32926.png", date: "March 29 2026", description: "ninjago" },
         { image: "/icons/projects/vicroys/123125.png", date: "Dec 31 2025", description: "recoil ray" },
         { image: "/icons/projects/vicroys/113025.png", date: "Nov 30 2025", description: "last game ever w talha n powlectro" },
         { image: "/icons/projects/vicroys/112225.png", date: "Nov 22 2025", description: "y am i always ded" },
