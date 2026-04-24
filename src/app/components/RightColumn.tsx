@@ -258,7 +258,7 @@ export default function RightColumn({ moreHoveredIndex, onMoreHover }: {
                             >
                                 #1 victory royale
                             </a>
-                            .
+                            . idk why it's unsecure currently working on a fix
                         </p>
                     </div>
                     <div className="w-60 h-65 relative">
