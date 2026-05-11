@@ -3,7 +3,7 @@ date: "05/04/2024"
 title: "DCC Wars: A Cinematic Masterpiece (if i do say so myself)"
 type: "artwork"
 madeAt: "Design Cultures & Creativity (DCC) Honors Program"
-category: ["Videography", "Academic", "Capstone", "Acting"]
+category: ["Videography", "Academic", "Capstone", "Acting", "Directing"]
 builtWith: ["Premiere Pro", "Storyboarding", "Audacity", "Google Pixel", "Better Writing than the Sequels"]
 link: "https://www.youtube.com/watch?v=tt8DMtjc3pI"
 ---

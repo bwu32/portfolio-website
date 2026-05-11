@@ -3,7 +3,7 @@ date: "05/01/2024"
 title: "TASA Brand Media"
 type: "artwork"
 madeAt: "Taiwanese American Student Association (TASA)"
-category: ["Graphic Design", "Product Design", "Commission", "Merchandise", "Digital Fabrication"]
+category: ["Graphic Design", "Product Design", "Commission", "Merchandise", "Digital Fabrication", "Social Media"]
 builtWith: ["Adobe Illustrator", "Adobe Photoshop", "Canva", "Fusion 360 (CAD / CAM)", "Cricut"]
 link: "https://www.instagram.com/umcptasa/"
 ---
@@ -31,6 +31,13 @@ Inspired by artist booths at **C2E2**, we developed a series of cute, food-centr
 
 - **Bao Bunnies:** A playful take on steamed "bao" buns reimagined as bunnies. The illustration features a chopstick lifting one "bao bunny" from a traditional bamboo steamer basket.
 - **Pineapple Cake Cat:** A callback to our "Street Cat" merch, featuring the signature black cat stretching lazily across a traditional Taiwanese pineapple cake.
+
+## Board Merch
+
+Based off of **concert tour merch**, the design for the board member shirts were meant to showcase professionalism combined with a cute design to facilitate easy spotting of board members during large events. 
+
+- **Personality:** The design features names of every board member and also the title of every major event that TASA was hosting this year, showcasing a level of personalization and a 'meta' feel.
+- **Color Theory:** The pastel blue is super cute and meshes well with the white, allowing for money to be saved with only one color. Lineart was a good choice to further promote the concert tour design.
 
 ## Technical Execution
 

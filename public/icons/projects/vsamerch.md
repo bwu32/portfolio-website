@@ -1,11 +1,11 @@
 ---
-date: "01/30/2026"
+date: "02/22/2026"
 title: "Assorted MAUVSA Merchandise"
 type: "artwork"
 madeAt: "Mid-Atlantic Union of Vietnamese Student Associations (MAUVSA)"
-category: ["Apparel Design", "Merchandise", "Commission", "Graphic Design", "Product Design"]
+category: ["Apparel Design", "Merchandise", "Commission", "Graphic Design", "Product Design", "Social Media"]
 builtWith: ["Paint.NET", "Adobe Illustrator", "Fusion 360", "Cricut", "Heat Transfer Vinyl"]
-link: "https://www.mauvsa.org/events/mac"
+link: "https://instagram.com/mauvsa"
 ---
 
 MAUVSA stands for Mid Atlantic Union of Vietnamese Student Associations, and hosts a variety of events every year.Mauvsa Advance Conference (MAC) is the massive leadership conference for the Mid-Atlantic VSA region, and I was tasked with creating several distinct apparel lines for assorted committees and families.
