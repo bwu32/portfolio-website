@@ -51,13 +51,13 @@ const GUESTBOOK_ENTRIES = [
     message: "FORTNITE LINKEDIN AUTOPOSTER > ",
     date: "2026-01-25"
   },
-   {
+  {
     name: "gabrielle elise hester",
     website: "gabriellehester.com",
     message: "pee pee poo poo",
     date: "2026-02-16"
   },
-   {
+  {
     name: "Anna Dai",
     website: "linkedin.com/in/anna-dai-375709263/",
     message: "worthy is the lamb!!",
@@ -155,50 +155,74 @@ export default function GuestbookContent() {
 
       {/* Sorted Guestbook List */}
       <div className="mb-24">
-        {sortedEntries.map((entry, index) => (
-          <div
-            key={index}
-            className="relative transition-all duration-300 grid grid-cols-12 gap-4 py-6 border-b border-white border-opacity-20 group -mx-2 px-2 hover:opacity-100 opacity-80"
-          >
-            <div className="absolute inset-y-0 left-0 right-0 bg-gradient-to-r from-[#5F72BF] to-transparent opacity-0 group-hover:opacity-10 transition-opacity duration-300 pointer-events-none" />
+        {sortedEntries.map((entry, index) => {
+          // Validate URL
+          const website = entry.website?.trim();
 
-            <div className="col-span-2 text-white text-base group-hover:text-[#E8DDB5] transition-colors font-medium">
-              {entry.name}
+          const isValidWebsite =
+            website &&
+            /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/\S*)?$/.test(website);
+
+          const formattedUrl =
+            website?.startsWith("http")
+              ? website
+              : `https://${website}`;
+
+          return (
+            <div
+              key={index}
+              className="relative transition-all duration-300 grid grid-cols-12 gap-4 py-6 border-b border-white border-opacity-20 group -mx-2 px-2 hover:opacity-100 opacity-80"
+            >
+              <div className="absolute inset-y-0 left-0 right-0 bg-gradient-to-r from-[#5F72BF] to-transparent opacity-0 group-hover:opacity-10 transition-opacity duration-300 pointer-events-none" />
+
+              {/* Name */}
+              <div className="col-span-2 min-w-0 break-words text-white text-base group-hover:text-[#E8DDB5] transition-colors font-medium">
+                {entry.name}
+              </div>
+
+              {/* Website */}
+              <div className="col-span-3 min-w-0 break-words overflow-hidden">
+                {isValidWebsite ? (
+                  <a
+                    href={formattedUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white opacity-50 hover:opacity-100 transition-opacity text-sm flex items-start gap-1 break-all"
+                  >
+                    <span className="break-all">
+                      {entry.website}
+                    </span>
+
+                    <ArrowUpRight className="w-3 h-3 flex-shrink-0 mt-1" />
+                  </a>
+                ) : (
+                  <span className="text-white opacity-40 text-sm break-words">
+                    {entry.website}
+                  </span>
+                )}
+              </div>
+
+              {/* Message */}
+              <div className="col-span-5 min-w-0 break-words whitespace-pre-wrap text-white opacity-60 text-sm leading-relaxed pr-4">
+                {entry.message}
+              </div>
+
+              {/* Date */}
+              <div className="col-span-2 min-w-0 break-words text-white opacity-40 text-sm">
+                {(() => {
+                  const date = new Date(entry.date);
+
+                  return date.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    timeZone: "UTC",
+                  });
+                })()}
+              </div>
             </div>
-
-            <div className="col-span-3 flex items-start">
-              <a
-                href={entry.website.startsWith('http') ? entry.website : `https://${entry.website}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white opacity-50 hover:opacity-100 transition-opacity text-sm flex items-center gap-1"
-              >
-                <span className="truncate">{entry.website}</span>
-                <ArrowUpRight className="w-3 h-3 flex-shrink-0" />
-              </a>
-            </div>
-
-            <div className="col-span-5 text-white opacity-60 text-sm leading-relaxed pr-4">
-              {entry.message}
-            </div>
-
-            <div className="col-span-2 text-white opacity-40 text-sm">
-              {(() => {
-                // Create the date object
-                const date = new Date(entry.date);
-
-                // Add the timezone offset to keep it on the intended day
-                // or simply use UTC methods to avoid the shift:
-                return date.toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                  timeZone: 'UTC' // <--- THIS IS THE KEY
-                });
-              })()}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Scroll to Top */}
