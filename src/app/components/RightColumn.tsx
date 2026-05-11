@@ -206,7 +206,7 @@ export default function RightColumn({ moreHoveredIndex, onMoreHover }: {
                 <div className="flex gap-12">
                     <div className="space-y-6 flex-1">
                         <p className="text-lg leading-relaxed mb-4">
-                            hello there! i'm a recent graduate (spring 2026) with a {" "}
+                            hello there! i'm a recent graduate with a degree in{" "}
                             <a
                                 href="https://ece.umd.edu/undergraduate/degrees/bs-computer-engineering"
                                 target="_blank"
@@ -215,7 +215,7 @@ export default function RightColumn({ moreHoveredIndex, onMoreHover }: {
                             >
                                 computer engineering
                             </a>{" "}
-                            degree from university of maryland, college park.
+                            from university of maryland, college park.
                         </p>
 
                         <p className="text-lg leading-relaxed mb-4">
@@ -245,8 +245,8 @@ export default function RightColumn({ moreHoveredIndex, onMoreHover }: {
                                 className="inline-block text-white hover:opacity-80 transition-opacity"
                             >
                                 functionality
-                            </a>
-                             — and having fun while doing so! as a designer, i'm building up expertise in product, experience, and media design.
+                            </a>{" "}
+                            — and having fun while doing so! as a designer, i'm building up expertise in product, experience, and media design.
                         </p>
 
                         <p className="text-lg leading-relaxed mb-4">
