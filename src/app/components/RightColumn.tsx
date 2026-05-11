@@ -109,13 +109,14 @@ export default function RightColumn({ moreHoveredIndex, onMoreHover }: {
             skills: [
                 "AI Prompting",
                 "Google Notebook LM",
-                "Node.js",
+                "Node.js / Next.js",
                 "React",
                 "HTML",
                 "CSS",
                 "MATLAB",
                 "Excel",
                 "Java",
+                "Python",
                 "C",
                 "Rust",
                 "OCaml",
@@ -205,7 +206,7 @@ export default function RightColumn({ moreHoveredIndex, onMoreHover }: {
                 <div className="flex gap-12">
                     <div className="space-y-6 flex-1">
                         <p className="text-lg leading-relaxed mb-4">
-                            hello there! i'm a senior studying{" "}
+                            hello there! i'm a recent graduate (spring 2026) with a {" "}
                             <a
                                 href="https://ece.umd.edu/undergraduate/degrees/bs-computer-engineering"
                                 target="_blank"
@@ -214,7 +215,7 @@ export default function RightColumn({ moreHoveredIndex, onMoreHover }: {
                             >
                                 computer engineering
                             </a>{" "}
-                            @ university of maryland, college park. i plan to graduate spring 2026.
+                            degree from university of maryland, college park.
                         </p>
 
                         <p className="text-lg leading-relaxed mb-4">
@@ -245,7 +246,7 @@ export default function RightColumn({ moreHoveredIndex, onMoreHover }: {
                             >
                                 functionality
                             </a>
-                            —and having fun while doing so! as a designer, i'm building up expertise in product, experience, and media design.
+                             — and having fun while doing so! as a designer, i'm building up expertise in product, experience, and media design.
                         </p>
 
                         <p className="text-lg leading-relaxed mb-4">
