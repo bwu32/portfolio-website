@@ -63,6 +63,18 @@ const GUESTBOOK_ENTRIES = [
     message: "worthy is the lamb!!",
     date: "2026-02-18"
   },
+  {
+    name: "Tony Yin",
+    website: "I dont have one yet :) but this inspires me to make my own",
+    message: "shibal",
+    date: "2026-03-26"
+  },
+  {
+    name: "Aman",
+    website: "its in the works",
+    message: "Dudes will eat anything, but as soon as pickles are on their burger...",
+    date: "2026-03-26"
+  },
 ];
 
 export default function GuestbookContent() {
