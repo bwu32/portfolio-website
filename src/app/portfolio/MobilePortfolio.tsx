@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
-import { ArrowUpRight, RotateCcw, Search, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { ArrowUpRight, RotateCcw, Search, X, ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import Background from "@/app/components/Background";
 
@@ -12,6 +12,7 @@ interface Project {
     title: string;
     madeAt: string;
     category: string[];
+    displayMode: 'professional' | 'artwork';
     image: string;
     builtWith: string[];
     link: string;
@@ -27,6 +28,9 @@ interface GalleryImage {
 export default function MobilePortfolio() {
     const [projects, setProjects] = useState<Project[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
+    const [displayMode, setDisplayMode] = useState<'all' | 'professional' | 'artwork'>('all');
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [showFilterDropdown, setShowFilterDropdown] = useState(false);
     const [showTopBtn, setShowTopBtn] = useState(false);
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -35,6 +39,7 @@ export default function MobilePortfolio() {
     const [sheetDragY, setSheetDragY] = useState(0);
     const [slideDir, setSlideDir] = useState<'next' | 'prev' | null>(null);
 
+    const dropdownRef = useRef<HTMLDivElement>(null);
     const touchStartX = useRef<number>(0);
     const lightboxThumbRefs = useRef<(HTMLButtonElement | null)[]>([]);
     const sheetRef = useRef<HTMLDivElement>(null);
@@ -83,6 +88,7 @@ export default function MobilePortfolio() {
                                     madeAt: metadata.madeAt || "",
                                     image: metadata.image || "",
                                     link: metadata.link || "#",
+                                    displayMode: metadata.type?.toLowerCase() === 'professional' ? 'professional' : 'artwork',
                                     category: Array.isArray(metadata.category) ? metadata.category : [],
                                     builtWith: Array.isArray(metadata.builtWith) ? metadata.builtWith : [],
                                 } as Project;
@@ -231,10 +237,36 @@ export default function MobilePortfolio() {
 
     const currentImg = gallery[currentImageIndex] || { src: '', caption: '' };
 
-    const filteredProjects = projects.filter(p =>
-        p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.builtWith.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()))
-    );
+    const categoryCounts = useMemo(() => {
+        const counts: Record<string, number> = {};
+        projects.forEach(p => p.category.forEach(cat => { counts[cat] = (counts[cat] || 0) + 1; }));
+        return counts;
+    }, [projects]);
+
+    const allCategories = useMemo(() => Object.keys(categoryCounts).sort(), [categoryCounts]);
+
+    const filteredProjects = useMemo(() => {
+        const searchLower = searchQuery.toLowerCase();
+        return projects.filter(p => {
+            const matchesDisplay = displayMode === 'all' || p.displayMode === displayMode;
+            const matchesSearch = p.title.toLowerCase().includes(searchLower) ||
+                p.madeAt.toLowerCase().includes(searchLower) ||
+                p.category.some(cat => cat.toLowerCase().includes(searchLower)) ||
+                p.builtWith.some(t => t.toLowerCase().includes(searchLower));
+            const matchesCategory = selectedCategories.length === 0 || selectedCategories.some(cat => p.category.includes(cat));
+            return matchesDisplay && matchesSearch && matchesCategory;
+        });
+    }, [projects, displayMode, searchQuery, selectedCategories]);
+
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (showFilterDropdown && dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+                setShowFilterDropdown(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [showFilterDropdown]);
 
     return (
         <div className="text-white min-h-screen px-6 py-12 font-sans relative">
@@ -269,7 +301,7 @@ export default function MobilePortfolio() {
             </header>
 
             {/* SEARCH BAR */}
-            <div className="relative mb-12">
+            <div className="relative mb-4">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60" />
                 <input
                     type="text"
@@ -278,6 +310,57 @@ export default function MobilePortfolio() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full bg-[#0f172a]/50 border border-white/10 rounded-3xl py-4 pl-12 pr-4 text-s uppercase tracking-widest focus:outline-none focus:border-[#5F72BF] transition-all"
                 />
+            </div>
+
+            {/* FILTER CONTROLS */}
+            <div className="flex items-center gap-2 mb-8 flex-wrap">
+                {(selectedCategories.length > 0 || searchQuery !== "" || displayMode !== 'all') && (
+                    <button
+                        onClick={() => { setSelectedCategories([]); setSearchQuery(""); setDisplayMode('all'); }}
+                        className="flex items-center gap-1.5 px-3 py-2 text-[10px] uppercase tracking-widest text-white/40 active:text-[#E8DDB5]"
+                    >
+                        <RotateCcw className="w-3 h-3" /> Clear
+                    </button>
+                )}
+                <div className="relative flex-1">
+                    <select
+                        value={displayMode}
+                        onChange={(e) => setDisplayMode(e.target.value as 'all' | 'professional' | 'artwork')}
+                        className="w-full bg-[#2b366d]/40 text-white/60 text-[11px] font-medium uppercase tracking-widest px-4 py-1.5 rounded-full border border-white/10 shadow-sm appearance-none cursor-pointer pr-8 focus:outline-none"
+                    >
+                        <option value="all">DISPLAY: ALL</option>
+                        <option value="professional">Professional</option>
+                        <option value="artwork">Creative</option>
+                    </select>
+                    <ChevronDown className="w-3 h-3 text-white/40 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                </div>
+                <div className="relative flex-[2]" ref={dropdownRef}>
+                    <button
+                        onClick={() => setShowFilterDropdown(!showFilterDropdown)}
+                        className={`w-full flex items-center justify-between gap-2 px-4 py-1.5 rounded-full border text-[11px] font-medium uppercase tracking-widest shadow-sm transition-all ${selectedCategories.length > 0 ? "bg-[#5F72BF]/60 border-[#5F72BF] text-white" : "bg-[#2b366d]/40 border-white/10 text-white/60"}`}
+                    >
+                        FILTER {selectedCategories.length > 0 && `(${selectedCategories.length})`}
+                        <ChevronDown className="w-3 h-3 flex-shrink-0" />
+                    </button>
+                    {showFilterDropdown && (
+                        <div className="absolute top-full mt-2 right-0 w-64 bg-[#1a1f3a] border border-white/10 rounded-2xl shadow-2xl z-40 p-2">
+                            <div className="grid grid-cols-2 gap-1">
+                                {allCategories.map(cat => (
+                                    <button
+                                        key={cat}
+                                        onClick={() => setSelectedCategories(prev =>
+                                            prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
+                                        )}
+                                        className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-[10px] uppercase tracking-wider transition-all ${selectedCategories.includes(cat) ? "bg-[#5F72BF] text-white" : "text-white/60 active:bg-white/5 border border-transparent"}`}
+                                    >
+                                        <span className="truncate">{cat}</span>
+                                        <span className="ml-1 opacity-80 font-mono">[{categoryCounts[cat]}]</span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
 
             {/* PROJECT LIST */}
@@ -317,8 +400,14 @@ export default function MobilePortfolio() {
                 {/* EMPTY STATE */}
                 {filteredProjects.length === 0 && (
                     <div className="text-center py-20">
-                        <RotateCcw className="w-8 h-8 mx-auto text-white/10 mb-4" />
-                        <p className="text-white/40 uppercase tracking-widest text-xs font-bold">No results for &quot;{searchQuery}&quot; :(</p>
+                        <Search className="w-8 h-8 mx-auto text-white/10 mb-4" />
+                        <p className="text-white/40 uppercase tracking-widest text-xs font-bold mb-6">No projects found :(</p>
+                        <button
+                            onClick={() => { setSearchQuery(""); setSelectedCategories([]); setDisplayMode('all'); }}
+                            className="flex items-center gap-2 mx-auto px-6 py-3 bg-[#2b366d] text-white text-[10px] font-bold uppercase tracking-[0.2em] rounded-full border border-white/10"
+                        >
+                            <RotateCcw className="w-3 h-3" /> Reset All Filters
+                        </button>
                     </div>
                 )}
             </main>

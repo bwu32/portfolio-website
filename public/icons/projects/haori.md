@@ -3,7 +3,7 @@ date: "08/08/2025"
 title: "Demon Slayer Haori Kimono"
 type: "artwork"
 madeAt: "Otakon 2025"
-category: ["Apparel Design", "Graphic Design", "Cosplay", "Personal"]
+category: ["Apparel Design", "Cosplay", "Personal"]
 builtWith: ["Sewing", "Fabric Dyeing", "Textiles", "Cricut", "Heat Transfer Vinyl"]
 link: "N/A"
 ---

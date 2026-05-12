@@ -27,6 +27,9 @@ interface Project {
     content?: string;
 }
 
+// TEMPORARY — remove this block and the MAUVSA_FILTER div in the JSX when no longer needed
+const MAUVSA_CATEGORIES = ["Graphic Design", "Social Media", "Non-Profit", "Merchandise", "Videography"];
+
 export default function PortfolioContent() {
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const [selectedProject, setSelectedProject] = useState<number | null>(null);
@@ -267,6 +270,8 @@ export default function PortfolioContent() {
         return () => el.removeEventListener("scroll", handleModalScroll);
     }, [activeProject]);
 
+    const isMauvsaActive = MAUVSA_CATEGORIES.every(c => selectedCategories.includes(c)) && selectedCategories.length === MAUVSA_CATEGORIES.length;
+
     return (
         <main className="min-h-screen py-12 px-6 md:px-[240px]">
             <div className="fixed inset-0 -z-10"><Background /></div>
@@ -283,13 +288,32 @@ export default function PortfolioContent() {
 
             {/* Filter Bar */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mt-4 mb-12">
-                <p className="text-lg text-white opacity-50 max-w-[300px] leading-relaxed">now this is awesome.</p>
+                <div className="relative flex-1">
+                    {/* invisible spacer — keeps the wrapper at one-line height so absolute text starts at the right position */}
+                    <p className="text-lg leading-relaxed invisible select-none" aria-hidden="true">now this is awesome.</p>
+                    <p className="absolute top-0 left-0 right-0 text-lg text-white opacity-50 leading-relaxed">
+                        {isMauvsaActive
+                            ? <>now this is awesome. this is my curated selection for my cabinet portfolio. feel free to peruse the rest of my website. enjoy your stay eboard :)</>
+                            : <>now this is awesome.</>
+                        }
+                    </p>
+                </div>
                 <div className="flex flex-wrap items-center gap-3 md:ml-auto">
                     {(selectedCategories.length > 0 || searchQuery !== "" || displayMode !== 'all') && (
                         <button onClick={() => { setSelectedCategories([]); setSearchQuery(""); setDisplayMode('all'); }} className="group flex items-center gap-1.5 px-3 py-2 text-[10px] uppercase tracking-widest text-white/40 hover:text-[#E8DDB5]">
                             <RotateCcw className="w-3 h-3 transition-transform duration-500 group-hover:rotate-[-270deg]" /> Clear All
                         </button>
                     )}
+                    {/* MAUVSA_FILTER — remove this div when no longer needed */}
+                    <div>
+                        <button
+                            onClick={() => { setSelectedCategories(isMauvsaActive ? [] : MAUVSA_CATEGORIES); setDisplayMode('all'); setSearchQuery(""); }}
+                            className={`px-4 py-2 rounded-full border text-[10px] uppercase tracking-widest transition-all ${isMauvsaActive ? "bg-[#5F72BF] border-[#5F72BF] text-white" : "bg-[#2b366d] border-white/10 text-white/60 hover:text-white"}`}
+                        >
+                            MAUVSA FILTER
+                        </button>
+                    </div>
+                    {/* END MAUVSA_FILTER */}
                     <div className="relative">
                         <select value={displayMode} onChange={(e) => setDisplayMode(e.target.value as any)} className="bg-[#2b366d] text-white text-[10px] uppercase tracking-widest px-4 py-2 rounded-full border border-white/10 appearance-none cursor-pointer pr-8 min-w-[160px] focus:outline-none">
                             {displayMode === 'custom' && <option value="custom">CUSTOM</option>}
