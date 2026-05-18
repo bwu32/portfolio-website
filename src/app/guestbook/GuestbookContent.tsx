@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react"; // Added useMemo
+import { useMemo, useRef, useEffect, useState } from "react";
 import Background from "@/app/components/Background";
-import { useState, useEffect } from "react";
 import CursorGlow from "@/app/components/CursorGlow";
 import { ArrowUpRight } from "lucide-react";
 
@@ -75,25 +74,45 @@ const GUESTBOOK_ENTRIES = [
     message: "Dudes will eat anything, but as soon as pickles are on their burger...",
     date: "2026-03-26"
   },
+  {
+    name: "Jack Meng",
+    website: "exoad.net",
+    message: "legend behind SOUP OR MAN!!! :O",
+    date: "2026-05-17"
+  },
 ];
 
 export default function GuestbookContent() {
-  // Auto-sort entries by date (Descending: Newest first)
-
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // back to top button
   useEffect(() => {
     const handleScroll = () => {
-      // Appears after scrolling down one full window height
       if (window.scrollY > window.innerHeight) {
         setShowScrollTop(true);
       } else {
         setShowScrollTop(false);
       }
+
+      if (!headerRef.current || !containerRef.current) return;
+      const headerBottom = headerRef.current.getBoundingClientRect().bottom;
+      const containerTop = containerRef.current.getBoundingClientRect().top;
+      const fadeHeight = 60;
+      const fadeOpaque = headerBottom - containerTop;
+
+      if (fadeOpaque <= 0) {
+        containerRef.current.style.maskImage = '';
+        containerRef.current.style.webkitMaskImage = '';
+      } else {
+        const fadeVisible = fadeOpaque + fadeHeight;
+        const mask = `linear-gradient(to bottom, transparent ${fadeOpaque}px, black ${fadeVisible}px)`;
+        containerRef.current.style.maskImage = mask;
+        containerRef.current.style.webkitMaskImage = mask;
+      }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -146,7 +165,7 @@ export default function GuestbookContent() {
       </p>
 
       {/* Table Header */}
-      <div className="sticky top-0 z-20 py-4 grid grid-cols-12 gap-4 text-white text-sm font-medium border-b border-white border-opacity-20 -mx-2 px-2">
+      <div ref={headerRef} className="sticky top-0 z-20 -mx-2 py-4 grid grid-cols-12 gap-4 text-white text-sm font-medium border-b border-white border-opacity-20 px-2">
         <div className="col-span-2">Name</div>
         <div className="col-span-3">Website</div>
         <div className="col-span-5">Message</div>
@@ -154,7 +173,7 @@ export default function GuestbookContent() {
       </div>
 
       {/* Sorted Guestbook List */}
-      <div className="mb-24">
+      <div ref={containerRef} className="mb-24">
         {sortedEntries.map((entry, index) => {
           // Validate URL
           const website = entry.website?.trim();
